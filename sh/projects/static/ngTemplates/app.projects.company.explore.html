@@ -1,0 +1,108 @@
+<div ng-controller="projectManagement.projects.company.explore" style="padding-top:20px;">
+  <div class="col-md-3" style="border-right:solid 2px #eeeeee;">
+    <div class="row text-center">
+      <h3>{{customerData.name}}</h3>
+    </div>
+    <div class="row">
+
+      <div class="row">
+        <div class="col-md-4 text-right">
+          <strong>TIN:</strong>
+        </div>
+        <div class="col-md-8">
+          <span>{{customerData.tin}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 text-right">
+          <strong>CIN:</strong>
+        </div>
+        <div class="col-md-8">
+          <span>{{customerData.cin}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 text-right">
+          <strong>MOB:</strong>
+        </div>
+        <div class="col-md-8">
+          <span class="text-muted">{{customerData.mobile}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 text-right">
+          <strong>TEL:</strong>
+        </div>
+        <div class="col-md-8">
+          <span class="text-muted">{{customerData.telephone}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 text-right">
+          <strong>About:</strong>
+        </div>
+        <div class="col-md-8">
+          <span class="text-muted">{{customerData.about}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 text-right">
+          <strong>ADDRESS:</strong>
+        </div>
+        <div class="col-md-8">
+          <span class="text-muted">{{customerData.address.street}}</span>
+          <span class="text-muted">{{customerData.address.city}}</span>
+          <span class="text-muted">{{customerData.address.state}}</span>
+          <span class="text-muted">{{customerData.address.pincode}}</span>
+          <span class="text-muted">{{customerData.address.country}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="container-fluid col-md-6" ng-repeat="c in projects">
+
+      <div class=" card" style="padding:0px;cursor:pointer">
+        <div class="container-fluid" style="padding:30px;padding-top:0px;">
+          <div class="row">
+            <div class="row">
+              <div class="col-md-12" style="cursor:pointer;height:135px;overflow:hidden;">
+                <h3>{{c.title}}</h3>
+                <span> {{c.description}}</span>
+              </div>
+            </div>
+            <hr>
+          </div>
+          <div class="row">
+            <div class="col-md-11" style="position:relative;cursor:pointer;" ng-click="rowActionClicked('projectBrowser')">
+              <strong>{{c.team.length}}</strong> Team members <br>
+              <strong>{{c.files.length}}</strong> files <br>
+            </div>
+          </div>
+          <!-- <div class="row">
+            <div class="col-md-4">
+              <label>Status : </label> <br> <span class="text-success" style="font-size:20px;">In Progress</span>
+            </div>
+            <div class="col-md-4 text-center">
+              <span style="font-size:30px;">45%</span>
+              <br> Coding
+            </div>
+            <div class="col-md-4 text-center">
+              <span style="font-size:30px;">60%</span>
+              <br> QA
+            </div>
+          </div> -->
+        </div>
+        <!-- <div class="row" style="margin:0px;">
+          <a class="col-md-4 bg-blue pull-right text-center" style="cursor:pointer;color:#000;padding:10px;" target="_blank" href="project/{{data.pk}}">Start</a>
+
+          <a class="col-md-4 bg-black text-center" style="cursor:pointer;padding:10px;" target="_blank" href="/api/projects/projectDownload/?projectpk={{data.pk}}">Report</a>
+
+          <div class="col-md-4 bg-aqua text-center" style="padding:10px;">
+            Review
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

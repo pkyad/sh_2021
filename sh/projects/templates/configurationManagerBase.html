@@ -1,0 +1,53 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html ng-app="app" ng-controller="imageViewerCont" style="scrollbar-width: thin;">
+  <head>
+    <meta charset="utf-8">
+    <title>{{BRAND_NAME}} - Configuration Manager</title>
+    <meta name="viewport" content="initial-scale=1">
+    <!-- stock css libraries -->
+
+    {% if useCDN %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" charset="utf-8">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" charset="utf-8">
+      <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github.min.css"> -->
+    {% else %}
+      <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" charset="utf-8">
+      <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" charset="utf-8">
+    {% endif %}
+
+  </head>
+  <body style="height:100vh;">
+    <div flash-message="4000" style="position:fixed;top:70px;right:10px;z-index:9999;min-width:300px;"></div>
+    <div ng-include="imageViewerUrl"></div>
+    {% if useCDN %}
+      <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.4.9/angular-sanitize.min.js"></script>
+    {% else %}
+    <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+      <script src="{% static 'js/jquery.cookie-1.4.1.min.js' %}"></script>
+      <script src="{% static 'js/bootstrap.min.js' %}"></script>
+      <script src="{% static 'js/angular.min.js' %}"></script>
+      <script src="{% static 'js/angular-sanitize.min.js' %}"></script>
+    {% endif %}
+
+    <script src="{% static 'js/ui-bootstrap-tpls-0.14.3.min.js' %}"></script>
+    <script src="{% static 'js/angular-bootstrap-confirm.min.js' %}"></script>
+    <script src="{% static 'js/angular-flash.js' %}"></script>
+    <script src="{% static 'js/angular-aside.min.js' %}"></script>
+    <script src="{% static 'js/fabric.min.js' %}"></script>
+    <script src="{% static 'js/configurationManager.js' %}"></script>
+    <script src="{% static 'js/custom/nativeJS.js' %}"></script>
+    <script src="{% static 'js/custom/directives.js' %}"></script>
+    <script src="{% static 'js/custom/directives.native.js' %}"></script>
+    <script src="{% static 'js/custom/filters.js' %}"></script>
+    <script src="{% static 'js/custom/services.js' %}"></script>
+
+  </body>
+</html>

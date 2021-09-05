@@ -1,0 +1,329 @@
+<div class="container-fluid" ng-controller="customerbody" style="background-color:#fffef9">
+  <div class="row" ng-if="custType=='client'">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12" style="padding:50px 15px;font-size:20px;margin-bottom:20px">
+          <div class="col-md-1">
+            <img style="width: 90px;height:90px;" class="img-circle" ng-src="{{customerData.contactData.dp}}">
+          </div>
+          <div class="col-md-4">
+            <strong><i class="fa fa-user"></i> {{customerData.contactData.name}}</strong><br>
+            <strong><i class="fa fa-mobile"></i> </strong>{{customerData.contactData.mobile}}<br>
+            <strong><i class="fa fa-envelope-o"></i> </strong>{{customerData.contactData.email}}<br>
+          </div>
+          <div class="col-md-7">
+            <strong><i class="fa fa-building-o"></i> {{customerData.contactData.company.name}}</strong><br>
+            <div class="row">
+              <div class="col-md-4">
+                <strong><i class="fa fa-mobile"></i></strong> {{customerData.contactData.company.telephone}}
+              </div>
+              <div class="col-md-4">
+                <strong><i class="fa fa-globe"></i></strong> <a href="{{customerData.contactData.company.web}}" target="_blank">{{customerData.contactData.company.web}}</a>
+              </div>
+              <div class="col-md-4">
+                <strong><i class="fa fa-font-awesome"></i></strong> {{customerData.contactData.company.logo}}
+              </div>
+            </div>
+            <div class="row" ng-if="customerData.contactData.company.address">
+              <div class="col-md-12">
+                <strong><i class="fa fa-map-marker"></i></strong> {{customerData.contactData.company.address.street}} , {{customerData.contactData.company.address.city}} , {{customerData.contactData.company.address.state}} , {{customerData.contactData.company.address.pincode}}
+                , {{customerData.contactData.company.address.country}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="col-md-12 text-center text-muted" style="font-size:30px;padding-bottom:20px">
+            <strong><i class="fa fa-file-pdf-o"></i> Billing</strong>
+          </div>
+          <div class="col-md-12 card" ng-repeat="deal in customerData.dealsData" style="border-left:3px solid blue;padding:15px;margin-bottom:10px;border-radius:15px">
+            <strong style="font-size:22px">{{deal.name}}</strong>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Value</th>
+                  <th scope="col">Created</th>
+                  <th scope="col">Updated</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Download</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="inv in deal.contractData">
+                  <td>{{inv.pk}}</td>
+                  <td><i class="fa fa-{{deal.currency | lowercase}}" style="margin-right:20px;"></i>{{inv.value}}</td>
+                  <td>{{inv.created | timeAgo}}</td>
+                  <td>{{inv.updated | timeAgo}}</td>
+                  <td>{{inv.status | humanize}} <br><span ng-if="inv.status == 'billed'"> <strong>Due Date:</strong> {{inv.dueDate | date : 'dd-MMM-yyyy'}}</span></td>
+                  <td><a ng-if="inv.status != 'cancelled'" href="/api/clientRelationships/downloadInvoice/?contract={{inv.pk}}" class="btn btn-primary btn-sm zoomOnHover" target="_blank"><i class="fa fa-download"></i></a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="row" ng-if="customerData.invData.length>0">
+        <hr>
+        <div class="col-md-10 col-md-offset-1">
+          <div class="col-md-12 text-center text-muted" style="font-size:30px;padding-bottom:20px">
+            <strong><i class="fa fa-file-pdf-o"></i> Invoices</strong>
+          </div>
+          <div class="col-md-12 card" ng-repeat="inv in customerData.invData" style="border-left:3px solid blue;padding:15px;margin-bottom:20px;border-radius:15px">
+            <div class="col-md-3" style="border-right:solid 2px #eeeeee;">
+              <div class="row" style="font-size:20px">
+                <div class="col-md-12">
+                  <span><i class="fa fa-hashtag"></i> {{inv.poNumber}}</span>
+                </div>
+                <div class="col-md-12">
+                  <span><i class="fa fa-building"></i> {{inv.name}}</span>
+                </div>
+                <div class="col-md-12">
+                  <span><i class="fa fa-user"></i> {{inv.personName}}</span>
+                </div>
+                <div class="col-md-12">
+                  <span><i class="fa fa-phone"></i> {{inv.phone}}</span>
+                </div>
+                <div class="col-md-12">
+                  <span><i class="fa fa-envelope"></i> {{inv.email}}</span>
+                </div>
+                <div class="col-md-12">
+                  <span><i class="fa fa-file-text"></i> {{inv.gstIn}}</span>
+                </div>
+                <div class="col-md-12">
+                  <span><i class="fa fa-shopping-basket"></i> {{inv.deliveryDate | date : 'dd-MMM-yyyy'}}</span>
+                </div>
+                <div class="col-md-12">
+                  <span><i class="fa fa-money"></i> {{inv.payDueDate | date : 'dd-MMM-yyyy'}}</span>
+                </div>
+                <div class="col-md-12">
+                  <span><i class="fa fa-map-marker"></i> {{inv.address}}</span><br>
+                  <span>{{inv.city}} , {{inv.pincode}}</span><br>
+                  <span>{{inv.state}} , {{inv.country}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-9">
+              <div class="row text-right" ng-if="inv.status=='Received'||inv.status=='NotReceivedAndArchived'">
+                <div class="col-md-12">
+                  <span ><a class="btn btn-primary zoomOnHover" target="_blank" href="/api/finance/invoiceDownload?value={{inv.pk}}&typ=outbond" style="min-width:50px"><i class="fa fa-download "></i> Download Invoice</a></span>
+                </div>
+              </div>
+              <table class="invoiceTable" style=" width: 100%;">
+                <tbody>
+                  <tr style="background-color: #eeeeee;height: 50px;">
+                    <th>S.No</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>HSN/SAC Code</th>
+                    <th>Tax</th>
+                    <th>Sub Total</th>
+                  </tr>
+                  <tr ng-repeat="v in inv.qtyData track by $index">
+                    <td>{{$index + 1}}</td>
+                    <td>{{v.product}}</td>
+                    <td>{{v.price}}</td>
+                    <td>{{v.qty}}</td>
+                    <td>{{v.hsn.code}}</td>
+                    <td>{{v.tax}} %</td>
+                    <td>{{v.total | number}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" ng-if="customerData.companyProjects.length>0">
+        <hr>
+        <div class="col-md-10 col-md-offset-1">
+          <div class="col-md-12 text-center text-muted" style="font-size:30px;padding-bottom:20px">
+            <strong>Bugs</strong>
+          </div>
+          <div class="col-md-12">
+            <div class="col-md-4">
+              <div class="col-md-12 text-center" ng-repeat="p in customerData.companyProjects" style="padding:15px 5px;background-color:{{form.selectedProject==p.pk?'#a1efdd':'#eee'}};cursor:pointer;font-size:20px;margin-bottom:10px;border-radius:10px" ng-click="form.selectedProject=p.pk">
+                {{p.title}}
+              </div>
+            </div>
+            <div class="col-md-8" style="border-left:2px solid #eee">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Title</label>
+                  <input type="text" class="form-control" ng-model="form.title">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label style="margin-top:20px;">Priority</label>
+                  <div class="row">
+                    <div class="col-xs-4 text-center">
+                      <img src="/static/images/images_low.png" style="height:50px;height:50px;" class="img img-circle">
+                      <br>
+                      Low
+                      <br>
+                      <input ng-model="form.priority" type="radio" value="low">
+                    </div>
+                    <div class="col-xs-4 text-center">
+                      <img src="/static/images/images_medi.png" style="height:50px;height:50px;" class="img img-circle">
+                      <br>
+                      Medium
+                      <br>
+                      <input ng-model="form.priority" type="radio" value="medium">
+                    </div>
+                    <div class="col-xs-4 text-center">
+                      <img src="/static/images/images_high.png" style="height:50px;height:50px;" class="img img-circle">
+                      <br>
+                      High
+                      <br>
+                      <input ng-model="form.priority" type="radio" value="high">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Steps To Reproduce The Bug</label>
+                  <textarea class="form-control" rows="4" cols="50" ng-model="form.description" style="resize: none;"></textarea>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label>Attachment</label>
+                  <input type="file" file-model="form.fil">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Tentative Closing Date</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" show-weeks="false" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="form.tentresdt" is-open="status.opened" disabled min-date="today"/>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" ng-click="status.opened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <span class="btn btn-primary" ng-click="saveBug()">Save</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" ng-if="customerData.bugsData.length>0">
+        <hr>
+        <div class="col-md-10 col-md-offset-1">
+          <div class="col-md-12 text-center text-muted" style="font-size:30px;padding-bottom:20px">
+            <strong>Requested Bugs</strong>
+          </div>
+          <div class="col-md-12" ng-repeat="pb in customerData.bugsData" ng-init="clr=randomClr()">
+            <strong style="font-size:20px"><i class="fa fa-globe"></i> {{pb.name}}</strong>
+            <table class="table table-hover" style="background-color:{{clr}};border-radius:10px">
+              <thead>
+                <tr>
+                  <th scope="col">Priority</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Created</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Attachment</th>
+                  <th scope="col">Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="bug in pb.data">
+                  <td>{{bug.priority | humanize}}</td>
+                  <td>{{bug.title}}</td>
+                  <td>{{bug.description}}</td>
+                  <td>{{bug.created | date : 'dd-mm-yyyy'}}</td>
+                  <td>{{bug.status}}</td>
+                  <td><a href="{{bug.file}}" target="_blank" ng-if="bug.file"><i class="fa fa-eye fa-2x"></i></a></td>
+                  <td>{{bug.result}}</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" ng-if="custType=='invoice'" style="padding-top:20px">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="col-md-12 text-center text-muted" style="font-size:30px;padding-bottom:20px">
+        <strong><i class="fa fa-file-pdf-o"></i> Invoices</strong>
+      </div>
+      <div class="col-md-12 card" ng-repeat="inv in customerData.invData" style="border-left:3px solid blue;padding:15px;margin-bottom:20px;border-radius:15px">
+        <div class="col-md-3" style="border-right:solid 2px #eeeeee;">
+          <div class="row" style="font-size:20px">
+            <div class="col-md-12">
+              <span><i class="fa fa-hashtag"></i> {{inv.poNumber}}</span>
+            </div>
+            <div class="col-md-12">
+              <span><i class="fa fa-building"></i> {{inv.name}}</span>
+            </div>
+            <div class="col-md-12">
+              <span><i class="fa fa-user"></i> {{inv.personName}}</span>
+            </div>
+            <div class="col-md-12">
+              <span><i class="fa fa-phone"></i> {{inv.phone}}</span>
+            </div>
+            <div class="col-md-12">
+              <span><i class="fa fa-envelope"></i> {{inv.email}}</span>
+            </div>
+            <div class="col-md-12">
+              <span><i class="fa fa-file-text"></i> {{inv.gstIn}}</span>
+            </div>
+            <div class="col-md-12">
+              <span><i class="fa fa-shopping-basket"></i> {{inv.deliveryDate | date : 'dd-MMM-yyyy'}}</span>
+            </div>
+            <div class="col-md-12">
+              <span><i class="fa fa-money"></i> {{inv.payDueDate | date : 'dd-MMM-yyyy'}}</span>
+            </div>
+            <div class="col-md-12">
+              <span><i class="fa fa-map-marker"></i> {{inv.address}}</span><br>
+              <span>{{inv.city}} , {{inv.pincode}}</span><br>
+              <span>{{inv.state}} , {{inv.country}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="row text-right" ng-if="inv.status=='Received'||inv.status=='NotReceivedAndArchived'">
+            <div class="col-md-12">
+              <span ><a class="btn btn-primary zoomOnHover" target="_blank" href="/api/finance/invoiceDownload?value={{inv.pk}}&typ=outbond" style="min-width:50px"><i class="fa fa-download "></i> Download Invoice</a></span>
+            </div>
+          </div>
+          <table class="invoiceTable" style=" width: 100%;">
+            <tbody>
+              <tr style="background-color: #eeeeee;height: 50px;">
+                <th>S.No</th>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>HSN/SAC Code</th>
+                <th>Tax</th>
+                <th>Sub Total</th>
+              </tr>
+              <tr ng-repeat="v in inv.qtyData track by $index">
+                <td>{{$index + 1}}</td>
+                <td>{{v.product}}</td>
+                <td>{{v.price}}</td>
+                <td>{{v.qty}}</td>
+                <td>{{v.hsn.code}}</td>
+                <td>{{v.tax}} %</td>
+                <td>{{v.total | number}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

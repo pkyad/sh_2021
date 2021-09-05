@@ -1,0 +1,17 @@
+<div class="modal-body">
+  <div class="form-group">
+    <label>Resolution Comment</label>
+    <textarea class="form-control" ng-model="form.resultComments" rows="8" cols="80"></textarea>
+  </div>
+  <div class="form-group">
+    <label>Resolution Comment</label>
+    <select class="form-control" ng-model="form.result">
+      <option value="resolved">Full Resolution</option>
+      <option value="partial">Partially resolved</option>
+      <option value="parked">Could not resolved</option>
+    </select>
+  </div>
+
+  <button type="button" class="btn btn-primary" ng-click="save()" name="button">Save</button>
+
+</div>

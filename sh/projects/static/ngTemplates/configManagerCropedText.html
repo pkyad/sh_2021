@@ -1,0 +1,22 @@
+<div class="modal-body" >
+
+  <div class="form-group">
+    <label>Label</label>
+    <input type="text" class="form-control" ng-model="form.label" ng-enter="save()" >
+  </div>
+  <div class="form-group">
+    <label>Default</label>
+    <input type="text" class="form-control" ng-model="form.default" >
+  </div>
+  <label>Sample Result : </label> <span style="font-size:20px;">{{form.text}}</span>
+  <div style="padding:10px"><img src="{{imgUrl}}" alt="Cropped Image" width="100%"/>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" ng-click=cancel()>
+    Cancel
+  </button>
+  <button type="button" class="btn btn-success pull-right" ng-click="save()">
+    Save
+  </button>
+</div>

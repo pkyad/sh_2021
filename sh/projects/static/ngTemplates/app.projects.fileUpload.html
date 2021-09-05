@@ -1,0 +1,197 @@
+<style>
+  #project {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #project td,
+  #project th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  #project tr:nth-child(even) {
+    background-color: #fff;
+  }
+
+  #project th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #eee;
+    color: #000;
+  }
+
+  input:focus {
+    background-color: #f1f1f1;
+  }
+</style>
+<div ng-controller="projectManagement.projects.project.explore" style="margin-top:15px;">
+  <div class="container-fluid" ng-if="project.status!='coding'">
+    <table id="project">
+      <tbody>
+        <th>S.No</th>
+        <th>Begin Doc</th>
+        <th>Begin Doc</th>
+        <th>Page Count</th>
+        <tr ng-repeat="v in fileUploadData track by $index">
+          <td>{{$index + 1}}</td>
+          <td>
+            <span ng-if="v.path">{{v.path}}</span>
+            <span ng-if="v.file">{{v.file}}</span>
+          </td>
+          <td>
+            {{v.children[v.children.length -1].path  }}
+          </td>
+          <td>
+            {{v.children.length + 1}}
+          </td>
+          <!-- <td><button type="button" class="btn btn-danger btn-sm" mwl-confirm title="Confirm" message="Are you sure you want to delete?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" placement="bottom" on-confirm="deleteTableRow(v.pk,$index)"
+          confirm-button-type="danger" cancel-button-type="default"> <i class="fa fa-trash"></i> </button></td> -->
+        </tr>
+        <!-- <tr ng-repeat="item in items">
+        <td width="4%">{{$index + 1 + fileUploadData.length}}</td>
+        <td>
+        <div class="col-md-9">
+        <input ng-model="item.path" type="text" class="form-control-pos">
+      </div>
+      <div class="col-md-3 pull-right">
+      <input type="file" file-model="item.file">
+    </div>
+  </td>
+  <td width="3%">
+</td>
+<td></td>
+<td></td>
+<td width="2%">
+<button type="button" class="btn btn-danger btn-sm" ng-click="deleteEmptyRow($index)"> <i class="fa fa-trash"></i> </button>
+</td>
+</tr>
+<tr>
+<td width="4%"><button style="background-color:white;border:none;" ng-click="addTableRow()"><i class="fa fa-plus" style="cursor:pointer"></i></button></td>
+</tr> -->
+      </tbody>
+    </table>
+    <!-- <div class="pull-right">
+<button type="button" class="btn btn-success" ng-click="save()">
+Save
+</button>
+</div> -->
+    <div class="col-md-12 text-center" style="margin-top:20px" ng-if="showLoadMore">
+      <span class="btn btn-primary" ng-click="fetchFilesData()">Loam More</span>
+    </div>
+  </div>
+  <div class="container-fluid" ng-if="project.status=='coding'">
+    <div class="col-md-2" style="padding:0px;font-size:16px;margin-top:20px">
+      <strong style="margin-right:13px;">Phase</strong>
+      <switch ng-model="pendingForm.rephase" class="neutral" ng-change="phaseChange()"></switch><strong style="margin-left:13px;">Re Phase</strong>
+    </div>
+    <div class="col-md-10" style="border-left:2px solid #eee">
+      <div class="col-md-4 text-center" style="font-size:18px;margin-top:20px" ng-if="pendingForm.rephase">
+        <div class="col-md-6">
+          <input type="radio" name="typ" value="recoding" ng-model="pendingForm.typ" id="recoding" ng-change="changeFiles()">
+          <label for="recoding"> Re Coding</label>
+        </div>
+        <div class="col-md-6">
+          <input type="radio" name="typ" value="reqc" ng-model="pendingForm.typ" id="reqc" ng-change="changeFiles()">
+          <label for="reqc"> Re Qc</label>
+        </div>
+      </div>
+      <div class="col-md-4 text-center" style="font-size:18px;margin-top:20px" ng-if="!pendingForm.rephase">
+        <div class="col-md-6">
+          <input type="radio" name="typ" value="coding" ng-model="pendingForm.typ" id="recoding" ng-change="changeFiles()">
+          <label for="recoding"> Coding</label>
+        </div>
+        <div class="col-md-6">
+          <input type="radio" name="typ" value="qc" ng-model="pendingForm.typ" id="reqc" ng-change="changeFiles()">
+          <label for="reqc"> Qc</label>
+        </div>
+      </div>
+      <div class="col-md-6" ng-if="pendingForm.typ=='coding'">
+        <div class="form-group">
+          <label>Coder's List</label>
+          <select class="form-control" ng-model="pendingForm.selectedcoder">
+            <option value="{{v.pk}}" ng-repeat="v in projectcanCodeList">{{v.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6" ng-if="pendingForm.typ=='qc'">
+        <div class="form-group">
+          <label>Qc's List</label>
+          <select class="form-control" ng-model="pendingForm.selectedqc">
+            <option value="{{v.pk}}" ng-repeat="v in projectcanQcList">{{v.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-3" ng-if="pendingForm.typ=='recoding'">
+        <div class="form-group">
+          <label>Coder's List</label>
+          <select class="form-control" ng-model="pendingForm.recoder" ng-change="fetchpendingFilesData()">
+            <option value="{{$index}}" ng-repeat="v in projectCoderList">{{v.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-3" ng-if="pendingForm.typ=='recoding'">
+        <div class="form-group">
+          <label>Re Coder's List</label>
+          <select class="form-control" ng-model="pendingForm.selecteRedcoder">
+            <option value="{{v.pk}}" ng-repeat="v in projectRecoderList">{{v.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-2" ng-if="pendingForm.typ=='reqc'">
+        <div class="form-group">
+          <label>Qc's List</label>
+          <select class="form-control" ng-model="pendingForm.reqc" ng-change="fetchpendingFilesData()">
+            <option value="{{$index}}" ng-repeat="v in projectqcList">{{v.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-2" ng-if="pendingForm.typ=='reqc'">
+        <div class="form-group">
+          <label>Re Qc's List</label>
+          <select class="form-control" ng-model="pendingForm.selectedReqc">
+            <option value="{{v.pk}}" ng-repeat="v in projectReqcList">{{v.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-2 text-right" style="margin-top:20px" ng-if="pendingFilesData.length>0">
+        <span class="btn btn-primary" mwl-confirm title="Confirm" message="Are you sure To Assign?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="assignFiles()"
+        confirm-button-type="default" cancel-button-type="default">Assign {{pendingForm.typ}} <i class="fa fa-user fa-lg"></i></span>
+      </div>
+      <div class="col-md-2 text-right" style="margin-top:20px" ng-if="pendingFilesData.length>0">
+        <span class="btn btn-primary" mwl-confirm title="Confirm" message="Are you sure To Unlock?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="unlockFiles()"
+        confirm-button-type="default" cancel-button-type="default">Unlock {{pendingForm.typ}} <i class="fa fa-user fa-lg"></i></span>
+      </div>
+    </div>
+    <div class="col-md-12" style="margin-top:15px">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col"><input type="checkbox" ng-model="pendingForm.allSelected" ng-click="selectAll()"> Select All</th>
+            <th scope="col">Location</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="v in pendingFilesData track by $index">
+            <td><input type="checkbox" ng-model="v.selected" ng-change="changeSelect(v)"></td>
+            <td>
+              <span ng-if="v.path">{{v.path}}</span>
+              <span ng-if="v.file">{{v.file}}</span>
+            </td>
+            <td>
+              <a href="{{v.path}}" target="_blank" type="button" class="btn btn-primary" ng-if="v.path">
+                View
+              </a>
+              <a href="{{v.file}}" target="_blank" type="button" class="btn btn-primary" ng-if="v.file">
+                View
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,327 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html ng-app="app"  id="main">
+  <head>
+    <meta charset="utf-8">
+    <!-- <link rel="icon" type="image/jpg" href="https://www.syrow.com/wp-content/themes/Divi/images/favicon-32x32.png"> -->
+    <link rel="icon" type="image/jpg" href="{{BRAND_LOGO}}">
+    <title>{{BRAND_NAME}}</title>
+    <meta name="viewport" content="initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" charset="utf-8">
+  </head>
+  {% verbatim %}
+  <body ng-controller="main">
+    <div flash-message="4000" style="position:fixed;top:70px;right:10px;z-index:9999;min-width:300px;"></div>
+    <style>
+      #project {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      #project td,
+      #project th {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+
+      #project tr:nth-child(even) {
+        background-color: #fff;
+      }
+
+      #project th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #eee;
+        color: #000;
+      }
+    </style>
+    <div class="container-fluid" style="padding-top:20px;" >
+      <div class="col-md-5" style="border-right:1px solid #eee;padding:7px;">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Type</label>
+              <select class="form-control" name="" ng-model="form.type">
+                <option value="name">Name</option>
+                <option value="email">Email</option>
+                <option value="text">Text</option>
+                <option value="date">Date</option>
+                <option value="boolean">Boolean</option>
+                <option value="dropdown">Dropdown</option>
+                <option value="datetime">Date and Time</option>
+                <option value="number">Number</option>
+                <option value="smallText">Small Text</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row" ng-if="form.type=='name'">
+          <div class="col-md-3" >
+            <label>Prefix</label>
+            <input type="checkbox" ng-model="form.prefix">
+          </div>
+          <div class="col-md-5" >
+            <label>First Name</label>
+            <input type="checkbox" ng-model="form.fName">
+          </div>
+          <div class="col-md-4" >
+            <label>Middle Name</label>
+            <input type="checkbox" ng-model="form.mName">
+          </div>
+          <div class="col-md-6" >
+            <label>Last Name</label>
+            <input type="checkbox" ng-model="form.lName">
+          </div>
+          <div class="col-md-6" >
+            <label>Company Name</label>
+            <input type="checkbox" ng-model="form.compName">
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" class="form-control" placeholder="" ng-model="form.name">
+        </div>
+        <div class="row" ng-if="form.type=='name' && false">
+          <div class="col-md-12">
+            <label>Name Format</label>
+          </div>
+          <div class="col-md-12">
+            <div class="col-md-2" style="padding:0px">
+              <select class="form-control" ng-model="form.nf1">
+                <option value="">NA</option>
+                <option value="PN">Prefix</option>
+                <option value="FN">FN</option>
+                <option value="MN">MN</option>
+                <option value="LN">LN</option>
+                <option value="CN">Company</option>
+              </select>
+            </div>
+            <div class="col-md-1" style="padding:0px">
+              <input type="text" class="form-control" ng-model="form.nf2">
+            </div>
+            <div class="col-md-1" style="padding:0px">
+              <select class="form-control" ng-model="form.nf3">
+                <option value="">NA</option>
+                <option value="PN">Prefix</option>
+                <option value="FN">FN</option>
+                <option value="MN">MN</option>
+                <option value="LN">LN</option>
+              </select>
+            </div>
+            <div class="col-md-1" style="padding:0px">
+              <input type="text" class="form-control" ng-model="form.nf4">
+            </div>
+            <div class="col-md-1" style="padding:0px">
+              <select class="form-control" ng-model="form.nf5">
+                <option value="">NA</option>
+                <option value="PN">Prefix</option>
+                <option value="FN">FN</option>
+                <option value="MN">MN</option>
+                <option value="LN">LN</option>
+              </select>
+            </div>
+            <div class="col-md-1" style="padding:0px">
+              <input type="text" class="form-control" ng-model="form.nf6">
+            </div>
+            <div class="col-md-2" style="padding:0px">
+              <select class="form-control" ng-model="form.nf7">
+                <option value="">NA</option>
+                <option value="PN">Prefix</option>
+                <option value="FN">FN</option>
+                <option value="MN">MN</option>
+                <option value="LN">LN</option>
+              </select>
+            </div>
+            <div class="col-md-1" style="padding:0px">
+              <input type="text" class="form-control" ng-model="form.nf8">
+            </div>
+            <div class="col-md-2" style="padding:0px">
+              <select class="form-control" ng-model="form.nf9">
+                <option value="">NA</option>
+                <option value="CN">Company</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Required</label>
+              <input type="checkbox" ng-model="form.required">
+            </div>
+          </div>
+        </div>
+        <div class="row" ng-if="['name', 'email', 'text' , 'smallText'].indexOf(form.type) != -1">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Casing</label>
+              <select class="form-control" name="" ng-model="form.case">
+                <option value="ANY_CASE">Any Case</option>
+                <option value="UPPER_CASE">UPPER CASE</option>
+                <option value="CAMEL_CASE">Camel Case</option>
+                <option value="LOWER_CASE">lower case</option>
+                <option value="GENERAL">General</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Maximum Length</label>
+              <input type="text" class="form-control" ng-model="form.maxLength">
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Restricted Characters</label>
+              <input type="text" class="form-control" ng-model="form.restrict">
+              <p class="help-block">To exclude characters * enter [*], you can add more symbols or characters inside the squre bracket, you can also use Regular expressions</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Multiple Entry</label>
+              <input type="checkbox" ng-model="form.multi">
+            </div>
+          </div>
+        </div>
+        <div class="row" ng-if="form.multi">
+          <div class="col-md-6">
+            <label>Multi Seperator :</label>
+            <input type="text" class="form-control" ng-model="form.multiSeperator">
+          </div>
+          <div class="col-md-6">
+            <label>Multi Limit :</label>
+            <input type="text" class="form-control" ng-model="form.multiLimit">
+          </div>
+        </div>
+
+        <div class="form-group" ng-if="form.type == 'date' || form.type == 'datetime'">
+          <label>Date Format :</label>
+          <input type="text" class="form-control" ng-model="form.dateFormat">
+          <p class="help-block">Click <span class="text-primary" ng-click="showDateDirectives()">here</span> to know the list of directives </p>
+        </div>
+        <div class="form-group" ng-if="!form.required">
+          <label>Default</label>
+          <input type="text" class="form-control" placeholder="" ng-model="form.default">
+        </div>
+
+        <div class="form-group" ng-if="form.type=='dropdown'">
+          <label>Dropdown options</label>
+          <textarea rows="8" cols="80" class="form-control" placeholder="Add values Seprated by a comma ' , '" ng-model="form.dropOptions"></textarea>
+        </div>
+
+        <div class="row"  style="padding-bottom:15px;" ng-if="form.type=='boolean'">
+          <div class="col-md-3 text-center" style="margin-bottom:15px;">
+            <label>Checkbox</label><br>
+            <input type="checkbox" ng-model="form.checkbox" ng-click="updateSelection('check')">
+          </div>
+          <div class="col-md-3 text-center" style="margin-bottom:15px;">
+            <label>Switch</label><br>
+            <input type="checkbox" ng-model="form.switchh" ng-click="updateSelection('switch')">
+          </div>
+        </div>
+        <div class="">
+          <button type="button" class="btn btn-primary" ng-click="saveFields()" ng-if="!hideit">
+            Add Field
+          </button>
+          <button type="button" class="btn btn-primary" ng-click="updateField()" ng-if="hideit">
+            Update
+          </button>
+        </div>
+      </div>
+      <div class="col-md-7" style="padding:7px;padding-top:15px;">
+          <table id="project">
+            <tr>
+              <th>Name</th>
+              <th style="width:100px;">Type</th>
+              <th>Required</th>
+              <th>Default</th>
+              <th>Action</th>
+            </tr>
+            <tr ng-repeat="f in fields" ng-mouseover="open = true" ng-mouseleave="open = false" style="{{edit[$index] ? 'background-color:#f5e1a5': ''}};">
+              <td width="20%">{{f.name}}</td>
+              <td width="30%">
+                <span style="text-transform:capitalize;"><b>({{f.type}})</b> </span>
+                <div ng-if="f.type == 'name'">
+                  <span>Prefix </span><span><i class="fa fa-{{f.prefix ? 'check':'times'}}" style="{{f.prefix ? 'color:#33951f' : 'color:#cf3030'}}"></i></span><br>
+                  <span>First Name </span><span><i class="fa fa-{{f.fName ? 'check':'times'}}" style="{{f.fName ? 'color:#33951f' : 'color:#cf3030'}}"></i></span><br>
+                  <span>Middle Name </span><span><i class="fa fa-{{f.mName ? 'check':'times'}}" style="{{f.mName ? 'color:#33951f' : 'color:#cf3030'}}"></i></span><br>
+                  <span>Last Name </span><span><i class="fa fa-{{f.lName ? 'check':'times'}}" style="{{f.lName ? 'color:#33951f' : 'color:#cf3030'}}"></i></span><br>
+                  <span>Company Name </span><span><i class="fa fa-{{f.compName ? 'check':'times'}}" style="{{f.compName ? 'color:#33951f' : 'color:#cf3030'}}"></i></span>
+                </div>
+                <div ng-if="f.type == 'date'">
+                  <span>Date Picker</span>
+                </div>
+                <div ng-if="f.type == 'datetime'">
+
+                  <span>Date & Time Picker</span>
+                </div>
+                <div ng-if="f.type == 'boolean'">
+                  <span ng-if="f.checkbox"> Checkbox</span>
+                  <span ng-if="f.switchh"> Switch</span>
+                </div>
+                <div ng-if="f.type == 'dropdown'">
+                  <span>{{f.dropOptions}}</span>
+                </div>
+                <div ng-if="f.type == 'text'">
+                  <span>Textarea</span>
+                </div>
+                <div ng-if="f.type == 'number'">
+                  <span>Number</span>
+                </div>
+              </td>
+              <td width="10%">
+                <div class="text-center">
+                  <i class="fa fa-2x fa-{{f.required==true ? 'check-circle' : 'times-circle'}}" style="{{f.required==true ? 'color:#33951f' : 'color:#cf3030'}}"></i>
+                </div>
+              </td>
+              <td width="15%"> {{f.default}}</td>
+              <td ng-if="!hideit">
+                <div class="btn-group btn-group-sm pull-right" ng-show="open">
+                  <button type="button" class="btn btn-success" ng-click="editField($index)">
+                    <i class="fa fa-pencil"></i>
+                  </button>
+                  <button type="button" class="btn btn-danger" ng-click="removeField($index,f.pk)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+              <td width="9%" ng-if="hideit">
+              </td>
+            </tr>
+          </table>
+      </div>
+    </div>
+
+
+      {% endverbatim %}
+
+      <script src="{% static 'js/autobahn.min.js' %}"></script>
+      <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+      <!-- <script src="{% static 'js/jquery.cookie-1.4.1.min.js' %}"></script> -->
+      <!-- <script src="{% static 'js/bootstrap.min.js' %}"></script> -->
+      <script src="{% static 'js/angular.min.js' %}"></script>
+      <script src="{% static 'js/angular-flash.js' %}"></script>
+      <script src="{% static 'js/formEditor.js' %}"></script>
+      <script src="{% static 'js/ace.js' %}"></script>
+      <script src="{% static 'js/ace/ext-language_tools.js' %}"></script>
+      <script type="text/javascript">
+        var ipc = require('electron').ipcRenderer;
+        window.addEventListener("message", function receiveMessage(event) {
+          console.log(event)
+          if (typeof event.data == 'object' && event.data.type == 'UIPathIPC') {
+            ipc.send('UIPathIPC' , event.data.data)
+          }
+        }, false);
+      </script>
+  </body>
+</html>

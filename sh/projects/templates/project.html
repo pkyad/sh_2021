@@ -1,0 +1,289 @@
+{% extends "projectstart.html" %}
+
+{% block startcontent %}
+
+<script type="text/javascript">
+  var projectpk = '{{projectid}}';
+  var statusType = '{{typ}}';
+  var imageViewerUrl = '{{imageViewerUrl}}';
+  var projectName = '{{projectnameBase}}';
+</script>
+<style>
+  #effect {
+    color:#fff;
+  }
+  #effect:hover {
+    color:#000;
+  }
+  body{
+    height:100vh;
+    overflow:hidden;
+    background: #f0f0f0;
+  }
+
+  input[type="text"]
+  {
+    font-size:20px;
+  }
+
+</style>
+
+{% verbatim %}
+
+  <div class="container-fluid" style="padding-bottom:2em;padding-left:0px;"  >
+    <div class="col-md-8" style="padding:0px;">
+      <iframe id="imageviewer" ng-src="{{sceServerUrl}}" style="width:100%;height:100vh;border:none;scrollbar-width: none;"></iframe>
+    </div>
+
+    <form  autocomplete="on">
+      <div id="codingWindow" class="" style="overflow-y:scroll;height:100vh;width:34%;position:absolute;right:0px;padding-bottom:20px;overflow-x: hidden;padding-left: 21px;padding-right: 15px;scrollbar-width: none;">
+
+        <div class="row">
+          <div class="col-md-2">
+            <span class="btn btn-default" ng-click="PrecDov()" ng-if="showPrevBtn">Prev</span>
+          </div>
+          <div class="col-md-2" style="margin-top:-5px">
+            <select class="form-control" ng-model="flags.ddValue" ng-change="ddChange()" style="height:30px" ng-if="showPrevBtn||showNxtBtn">
+              <option value="{{$index}}" ng-repeat="d in ddSelectionData">{{d}}</option>
+            </select>
+          </div>
+
+          <div class="col-md-6 text-right">
+            <strong>Page {{pageIndex+1}} Of {{totalPages}} - {{currFlName}}</strong>
+          </div>
+          <div class="col-md-2 text-right">
+            <span class="btn btn-default" ng-click="nextDoc()" ng-if="showNxtBtn">Next</span>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:15px;">
+          <div class="form-group" ng-repeat="f in fields track by $index">
+            <div ng-if="f.type == 'name'">
+              <label>{{f.name}} </label> &nbsp; <span ng-if="f.miltiIndex > 0" style="color:red;cursor:pointer" mwl-confirm title="Delete User" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="deleteMulti($index)" confirm-button-type="danger" cancel-button-type="default"><i class="fa fa-trash-o fa-lg"></i></span>
+              <div class="col-md-12" style="padding:0px">
+                <div class="col-md-1" ng-if="f.prefix" ng-init="f.valueP=''" style="padding:0px" ng-init="f.domId='valueP'+$index">
+                  <label>Prefix</label> <br>
+                  <input ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="text" class="form-control" ng-model="f.valueP" ng-focus="fillData(f,'valueP')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='valueP'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}}" id="{{f.domId}}" restrict-chars="{{f.restrict}}" name="{{f.name}}prefix">
+                  <span ng-if="f.required && errorsArray[$index].name.prefix " style="color:red">Prefix Required</span>
+                </div>
+                <div class="col-md-4" ng-if="f.fName" style="padding:0px" ng-init="f.domId='valueF'+$index">
+                  <label>FN</label> <br>
+                  <input ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="text" class="form-control" ng-model="f.valueF" ng-focus="fillData(f,'valueF')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='valueF'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}}" id="{{f.domId}}" restrict-chars="{{f.restrict}}" name="{{f.name}}fname">
+                  <span ng-if="f.required && errorsArray[$index].name.fname " style="color:red">First Name Required</span>
+                </div>
+                <div class="col-md-2" ng-if="f.mName" style="padding:0px" ng-init="f.domId='valueM'+$index">
+                  <label>MN</label> <br>
+                  <input ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="text" class="form-control" ng-model="f.valueM" ng-focus="fillData(f,'valueM')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='valueM'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}}" id="{{f.domId}}" restrict-chars="{{f.restrict}}" name="{{f.name}}mname">
+                  <span ng-if="f.required && errorsArray[$index].name.mname " style="color:red">Middle Name Required</span>
+                </div>
+                <div class="col-md-5" ng-if="f.lName" style="padding:0px" ng-init="f.domId='valueL'+$index">
+                  <label>LN</label> <br>
+                  <input ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="text" class="form-control" ng-model="f.valueL" ng-focus="fillData(f,'valueL')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='valueL'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}}" id="{{f.domId}}" restrict-chars="{{f.restrict}}" name="{{f.name}}lname">
+                  <span ng-if="f.required && errorsArray[$index].name.lname " style="color:red">Last Name Required</span>
+                </div>
+              </div>
+
+              <div class="col-md-12" style="padding:0px;">
+
+                <div class="col-md-11" ng-if="f.compName" style="padding:0px" ng-init="f.domId='valueC'+$index">
+                  <label>Company Name</label> <br>
+                  <input ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="text" class="form-control" ng-model="f.valueC" ng-focus="fillData(f,'valueC')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='valueC'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}};{{f.autoFormat ? 'border-right:solid 3px red;':''}}" id="{{f.domId}}" restrict-chars="{{f.restrict}}"  name="{{f.name}}compName">
+                  <span ng-if="f.required && errorsArray[$index].name.compName " style="color:red">Company Name Required</span>
+                </div>
+                <div class="col-md-1" style="padding-top:23px;" ng-if="f.multi">
+                  <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-if="f.type == 'dropdown'" ng-init="f.domId='value'+$index">
+
+              <div class="form-group col-md-11">
+                <label>{{f.name}} </label> &nbsp; <span ng-if="f.miltiIndex > 0" style="color:red;cursor:pointer" mwl-confirm title="Delete User" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="deleteMulti($index)" confirm-button-type="danger" cancel-button-type="default" ><i class="fa fa-trash-o fa-lg"></i></span>
+                <select class="form-control" ng-model="f.value" ng-focus="fillData(f,'value')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}}" id="{{f.domId}}">
+                  <option value="{{v}}" ng-repeat="v in f.dropOptions.split(',')">{{v}}</option>
+                </select>
+                <span ng-if="f.required && errorsArray[$index].dropdown " style="color:red">Choose Anyone Option</span>
+
+              </div>
+
+              <div class="col-md-1" style="padding:0px;padding-top:23px;" ng-if="f.multi">
+                <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+              </div>
+
+
+            </div>
+            <div class="row" ng-if="f.type == 'email'" ng-init="f.domId='value'+$index">
+
+              <div class="form-group col-md-11">
+                <label>{{f.name}} </label> &nbsp; <span ng-if="f.miltiIndex > 0" style="color:red;cursor:pointer" mwl-confirm title="Delete User" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="deleteMulti($index)" confirm-button-type="danger" cancel-button-type="default" ><i class="fa fa-trash-o fa-lg"></i></span>
+                <input name="{{f.name}}email" ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="text" class="form-control" placeholder="abc@xyz.com" ng-model="f.value" ng-focus="fillData(f,'value')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}};{{f.autoFormat ? 'border-right:solid 3px red;':''}}" id="{{f.domId}}" restrict-chars="{{f.restrict}}">
+                <span ng-if="f.required && errorsArray[$index].email " style="color:red">{{f.name}} Required or Incorrect</span>
+              </div>
+              <div class="col-md-1" style="padding:0px;padding-top:23px;" ng-if="f.multi">
+                <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+              </div>
+            </div>
+            <div class="row" ng-if="f.type == 'number'" ng-init="f.domId='value'+$index">
+
+              <div class="form-group col-md-11">
+                <label>{{f.name}} </label> &nbsp; <span ng-if="f.miltiIndex > 0" style="color:red;cursor:pointer" mwl-confirm title="Delete User" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="deleteMulti($index)" confirm-button-type="danger" cancel-button-type="default" ><i class="fa fa-trash-o fa-lg"></i></span>
+                <input  ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="number" class="form-control" step="0.01" placeholder="Enter Only Numbers" ng-model="f.value" ng-focus="fillData(f,'value')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}};{{f.autoFormat ? 'border-right:solid 3px red;':''}}" id="{{f.domId}}" restrict-chars="{{f.restrict}}">
+                <span ng-if="f.required && errorsArray[$index].number " style="color:red">{{f.name}} Required or Incorrect</span>
+              </div>
+
+              <div class="col-md-1" style="padding:0px;padding-top:23px;" ng-if="f.multi">
+                <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+              </div>
+
+
+            </div>
+            <div class="form-group" ng-if="f.type == 'date'" ng-init="f.dtMode='fullDate'">
+              <label>{{f.name}} </label> &nbsp; <span ng-if="f.miltiIndex > 0" style="color:red;cursor:pointer" mwl-confirm title="Delete User" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="deleteMulti($index)" confirm-button-type="danger" cancel-button-type="default" ><i class="fa fa-trash-o fa-lg"></i></span>
+              <div class="row">
+                <div class="col-md-4">
+                  <span><select  class="form-control" ng-model="f.dtMode">
+                    <option value="{{v}}" ng-repeat="v in ['fullDate','Month&Year','Only Year', 'date&month']">{{v}}</option>
+                  </select>
+                  </span>
+                </div>
+                <div class="col-md-7">
+                  <div class="input-group" ng-init="f.domId='value'+$index">
+                    <input ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="text" class="form-control" ng-model="f.value" show-weeks="false" uib-datepicker-popup="MM-dd-yyyy" is-open="fromDate.opened" ng-focus="fillData(f,'value')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}};{{f.autoFormat ? 'border-right:solid 3px red;':''}}" id="{{f.domId}}" ng-if="f.dtMode=='fullDate'" restrict-chars="/">
+                    <input ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="text" class="form-control" ng-model="f.value" show-weeks="false" uib-datepicker-popup="MM-yyyy" is-open="fromDate.opened" datepicker-options="{minMode: 'month'}" ng-focus="fillData(f,'value')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}};{{f.autoFormat ? 'border-right:solid 3px red;':''}}" id="{{f.domId}}" ng-if="f.dtMode=='Month&Year'" restrict-chars="/">
+
+                    <input ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="text" class="form-control" ng-model="f.value" show-weeks="false" uib-datepicker-popup="MM-dd" is-open="fromDate.opened" ng-focus="fillData(f,'value')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}};{{f.autoFormat ? 'border-right:solid 3px red;':''}}" id="{{f.domId}}" ng-if="f.dtMode=='date&month'" restrict-chars="/">
+
+                    <input ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="text" class="form-control" ng-model="f.value" show-weeks="false" uib-datepicker-popup="yyyy" is-open="fromDate.opened" datepicker-options="{minMode: 'year'}" ng-focus="fillData(f,'value')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}};{{f.autoFormat ? 'border-right:solid 3px red;':''}}" id="{{f.domId}}" ng-if="f.dtMode=='Only Year'" restrict-chars="/">
+
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" ng-click="fromDate.opened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                  </div>
+                  <span ng-if="f.required && errorsArray[$index].date " style="color:red;">{{f.name}} Required</span>
+                </div>
+
+                <div class="col-md-1" style="padding:0px;" ng-if="f.multi">
+                  <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+                </div>
+
+              </div>
+            </div>
+            <div class="row" ng-if="f.type == 'boolean'" ng-init="f.domId='value'+$index">
+
+              <div class="form-group col-md-11">
+                <label>{{f.name}}</label> &nbsp; <span ng-if="f.miltiIndex > 0" style="color:red;cursor:pointer" mwl-confirm title="Delete User" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="deleteMulti($index)" confirm-button-type="danger" cancel-button-type="default" ><i class="fa fa-trash-o fa-lg"></i></span>
+                <input type="checkbox" ng-model="f.value" ng-if="f.checkbox" ng-focus="fillData(f,'value')" id="{{f.domId}}">
+                <switch ng-model="f.value" class="green" ng-if="f.switchh" ng-focus="fillData(f,'value')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}}" id="{{f.domId}}"></switch>
+              </div>
+
+              <div class="col-md-1" style="padding:0px;" ng-if="f.multi">
+                <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+              </div>
+
+            </div>
+            <div class="form-group" ng-if="f.type == 'datetime'" ng-init="f.dtMode='fullDate'">
+              <label>{{f.name}}</label> &nbsp; <span ng-if="f.miltiIndex > 0" style="color:red;cursor:pointer" mwl-confirm title="Delete User" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="deleteMulti($index)" confirm-button-type="danger" cancel-button-type="default" ><i class="fa fa-trash-o fa-lg"></i></span>
+              <div class="row" style="padding-top:10px;" ng-init="f.domId='value'+$index">
+                <div class="col-md-7">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <span><select  class="form-control" ng-model="f.dtMode">
+                        <option value="{{v}}" ng-repeat="v in ['fullDate','Month&Year','Only Year', 'date&month']">{{v}}</option>
+                      </select></span>
+                    </div>
+                    <div class="col-md-7">
+                      <div class="input-group">
+                        <input ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="text" class="form-control" ng-model="f.value" show-weeks="false" uib-datepicker-popup="MM-dd-yyyy" is-open="startDate.opened" ng-focus="fillData(f,'value')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}};{{f.autoFormat ? 'border-right:solid 3px red;':''}}" id="{{f.domId}}" ng-if="f.dtMode=='fullDate'" restrict-chars="/">
+
+                        <input ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="text" class="form-control" ng-model="f.value" show-weeks="false" uib-datepicker-popup="MM-yyyy" is-open="startDate.opened" datepicker-options="{minMode: 'month'}" ng-focus="fillData(f,'value')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}};{{f.autoFormat ? 'border-right:solid 3px red;':''}}" id="{{f.domId}}" ng-if="f.dtMode=='Month&Year'" restrict-chars="/">
+
+                        <input ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="text" class="form-control" ng-model="f.value" show-weeks="false" uib-datepicker-popup="MM-dd" is-open="startDate.opened" datepicker-options="{minMode: 'month'}" ng-focus="fillData(f,'value')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}};{{f.autoFormat ? 'border-right:solid 3px red;':''}}" id="{{f.domId}}" ng-if="f.dtMode=='date&month'" restrict-chars="/">
+
+                        <input ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" type="text" class="form-control" ng-model="f.value" show-weeks="false" uib-datepicker-popup="yyyy" is-open="startDate.opened" datepicker-options="{minMode: 'year'}" ng-focus="fillData(f,'value')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}};{{f.autoFormat ? 'border-right:solid 3px red;':''}}" id="{{f.domId}}" ng-if="f.dtMode=='Only Year'" restrict-chars="/">
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="startDate.opened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                      </div>
+                      <span ng-if="f.required && errorsArray[$index].datetime " style="color:red">{{f.name}} Required</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4" style="margin-top:-35px;">
+                  <uib-timepicker ng-model="f.value" hour-step="1" minute-step="30" show-meridian="true" ng-focus="fillData(f,'value')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}}" id="{{f.domId}}"></uib-timepicker>
+                </div>
+                <div class="col-md-1" style="padding:0px;" ng-if="f.multi">
+                  <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+                </div>
+
+              </div>
+            </div>
+            <div class="form-group" ng-if="f.type == 'text'">
+              <label>{{f.name}}</label> &nbsp; <span ng-if="f.miltiIndex > 0" style="color:red;cursor:pointer" mwl-confirm title="Delete User" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="deleteMulti($index)" confirm-button-type="danger" cancel-button-type="default" ><i class="fa fa-trash-o fa-lg"></i></span>
+              <div class="row" ng-init="f.domId='value'+$index">
+                <div class="col-md-11" >
+                  <textarea ng-ctrl="autoCapture(f.name)" ng-click="markField(f.name)" class="form-control" rows="4"  maxlength="{{f.maxLength}}" ng-model="f.value" ng-change="count(f)" ng-focus="fillData(f,'value',f.domId)" style="font-size:20px;resize:none;border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}};{{f.autoFormat ? 'border-right:solid 3px red;':''}}" id="{{f.domId}}" restrict-chars="{{f.restrict}}"></textarea>
+                  </div>
+                  <div class="col-md-1" style="padding-left:0" ng-if="f.multi">
+                    <div style="margin-top:50px">
+                      <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span> <br>
+                      <span >{{f.countvalue?f.countvalue:'0'}}/{{f.maxLength}}</span>
+                    </div>
+                  </div>
+
+              </div>
+              <ul style="padding-left:12px">
+                <li>It should contain 5 min Characters & {{f.maxLength}} max characters - {{f.value.length}}</li>
+              </ul>
+              <span ng-if="f.required && errorsArray[$index].text " style="color:red;padding:0;margin:0">{{f.name}} Required</span>
+            </div>
+
+            <div class="form-group" ng-if="f.type == 'smallText'">
+              <label>{{f.name}}</label> &nbsp; <span ng-if="f.miltiIndex > 0" style="color:red;cursor:pointer" mwl-confirm title="Delete User" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="deleteMulti($index)" confirm-button-type="danger" cancel-button-type="default" ><i class="fa fa-trash-o fa-lg"></i></span>
+              <div class="row" ng-init="f.domId='value'+$index">
+                <div class="col-md-11" >
+                  <input name="{{f.name}}smallText" ng-ctrl="autoCapture(f.name)" type="text" class="form-control" name="{{f.name}}" autocomplete="on" value="" maxlength="{{f.maxLength}}" ng-model="f.value" ng-focus="fillData(f,'value')" style="border:{{inpData.obj.pk==f.pk&&inpData.typ=='value'&&inpData.obj.miltiIndex==f.miltiIndex?'3px solid blue':''}};{{f.autoFormat ? 'border-right:solid 3px red;':''}}" id="{{f.domId}}" restrict-chars="{{f.restrict}}">
+                </div>
+                <div class="col-md-1" style="padding:0px;" ng-if="f.multi">
+                  <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+                </div>
+                <span ng-if="f.required && errorsArray[$index].text " style="color:red;padding:0;margin:0">{{f.name}} Required</span>
+              </div>
+            </div>
+            <!-- <div class="form-group" ng-if="f.multi">
+              <span class="btn btn-primary" ng-click="addMore(f,$index)">Add More <i class="fa fa-plus-circle"></i></span>
+            </div> -->
+
+          </div>
+
+
+
+        </div>
+        <div ng-if="!apiMode">
+          <hr style="margin:10px -10px;border:double">
+          <div class="row">
+            <div class="form-group">
+              <label>Coder Comment :</label>
+              <textarea class="form-control" rows="4" style="resize:none;height:100px" maxlength="499" ng-model="comment.text" placeholder="Write Some Comment To Qc ..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button type="button" class="btn btn-success pull-left" ng-click="saveDynamicForm()">
+            <span ng-if="!saving">Save</span>
+            <span ng-if="saving"> <i class="fa fa-spin fa-spinner"></i> </span>
+          </button>
+          <button type="button" class="btn btn-primary pull-right" ng-click="resetForm()">
+            Reset
+          </button>
+
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+
+
+
+  {% endverbatim %}
+  {% endblock %}

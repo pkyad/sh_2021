@@ -1,0 +1,44 @@
+{% load staticfiles%} {% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Password Reset</title>
+  {% if useCDN %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" charset="utf-8">
+  {% else %}
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" charset="utf-8">
+  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" charset="utf-8">
+  {% endif %}
+  <link rel="stylesheet" href="{% static 'css/signin.css' %}" charset="utf-8">
+</head>
+<body>
+  <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12" style="background-color:#d4d4d4;height:100%;padding-top:3vh;margin-top:15vh;min-height:60vh;border-radius:30px">
+    <a style="outline: none;border:none;cursor:pointer" href="/"><img class="text-center" src="{{icon_logo}}" alt="" Style="display:block;margin-left: auto;margin-right: auto;height:3vw"></a>
+
+    <form method="post" class="form-signin" action="" style="font-size:1.1vw;max-width:25vw">{% csrf_token %}
+      <h2 class="form-signin-heading" style="margin-top:2vh;font-size:2vw" align='center'>Password Reset</h2>
+      {% if authStatus.status != 'default' %}
+      <div class="alert alert-{{authStatus.status}}">{{authStatus.message}}</div>
+      {% endif %}
+      <label for="newPwd" style="color:black;margin-top:10px">New Password</label>
+      <input id="newPwd" name="newPwd" type="password" class="form-control" placeholder="New Password" required value='{{intVal.newPwd}}'>
+      <label for="cofPwd" style="color:black;margin-top:10px">Confirm Password</label>
+      <input id="cofPwd" name="cofPwd" type="password" class="form-control" placeholder="Confirm Password" required value='{{intVal.cofPwd}}'>
+      <button style="margin-bottom:15px;margin-top:15px" class="btn btn-lg btn-primary btn-block" type="submit">Save</button>
+    </form>
+  </div>
+  <!-- /container -->
+  {% if useCDN %}
+  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  {% else %}
+  <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+  <script src="{% static 'js/jquery.cookie-1.4.1.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  {% endif %}
+</body>
+
+</html>

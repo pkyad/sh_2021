@@ -1,0 +1,233 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CIOC - ERP</title>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" charset="utf-8">
+    <style media="screen">
+      .card{
+        display: block;
+        padding-bottom: 10px;
+        box-shadow: 0px 2px 8px rgba(26, 24, 20, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="row" style="min-height:50px;color:white;background:rgb(10, 45, 92);margin:0px;">
+      <div class="col-md-2" style="padding-top:15px;">
+        <img src="{{logo}}" style="height:20px;" alt="">
+      </div>
+      <div class="col-md-1 pull-right text-right" style="padding-top:15px;">
+        <a style="color:white;" href="/logout/">Logout</a>
+      </div>
+      <div class="col-md-2 pull-right text-right" style="">
+        <form class="" action="/dashboard/" method="post">{% csrf_token %}
+          <button type="submit" class="btn btn-default" style="height:50px;background: #fa4616;color: white;border: none;">
+            Show Performance
+          </button>
+        </form>
+      </div>
+      <div class="col-md-2 pull-right text-right" style="padding-top:15px;">
+        Hi, {{name}}
+      </div>
+    </div>
+
+    {% if performance %}
+    <div class="row" style="margin:0px;">
+      <div class="col-md-10 col-md-offset-1">
+        <div class="container-fluid  col-md-2" style="border-radius:15px;padding:30px;height:100px;" >
+            <div class="row card" >
+              <div class="col-md-12 text-center" style="font-size:25px">
+                <strong>{{performance.generalTasks}}</strong>
+              </div>
+              <div class="col-md-12 text-center" style="font-size:15px">
+                <span> Tasks points </span>
+              </div>
+            </div>
+        </div>
+        <div class="container-fluid  col-md-2" style="border-radius:15px;padding:30px;height:100px;" >
+            <div class="row card" >
+              <div class="col-md-12 text-center" style="font-size:25px">
+                <strong>{{performance.counts.codingCount}}</strong>
+              </div>
+              <div class="col-md-12 text-center" style="font-size:15px">
+                <span>Coding Count</span>
+              </div>
+            </div>
+        </div>
+        <div class="container-fluid  col-md-2" style="border-radius:15px;padding:30px;height:100px;" >
+            <div class="row card" >
+              <div class="col-md-12 text-center" style="font-size:25px">
+                <strong>{{performance.counts.qcCount}}</strong>
+              </div>
+              <div class="col-md-12 text-center" style="font-size:15px">
+                <span>QC Count</span>
+              </div>
+            </div>
+        </div>
+
+        <div class="container-fluid  col-md-2" style="border-radius:15px;padding:30px;height:100px;" >
+            <div class="row card" >
+              <div class="col-md-12 text-center" style="font-size:25px">
+                <strong>{{performance.counts.recodingCount}}</strong>
+              </div>
+              <div class="col-md-12 text-center" style="font-size:15px">
+                <span>Re Coding Count</span>
+              </div>
+            </div>
+        </div>
+        <div class="container-fluid  col-md-2" style="border-radius:15px;padding:30px;height:100px;" >
+            <div class="row card" >
+              <div class="col-md-12 text-center" style="font-size:25px">
+                <strong>{{performance.counts.reqcCount}}</strong>
+              </div>
+              <div class="col-md-12 text-center" style="font-size:15px">
+                <span>Re QC Count</span>
+              </div>
+            </div>
+        </div>
+
+
+        <div class="container-fluid  col-md-2" style="border-radius:15px;padding:30px;height:100px;" >
+            <div class="row card" >
+              <div class="col-md-12 text-center" style="font-size:25px">
+                <strong>{{performance.counts.lddcoderCount}}</strong>
+              </div>
+              <div class="col-md-12 text-center" style="font-size:15px">
+                <span>LDD Coding Count</span>
+              </div>
+            </div>
+        </div>
+        <div class="container-fluid  col-md-2" style="border-radius:15px;padding:30px;height:100px;" >
+            <div class="row card" >
+              <div class="col-md-12 text-center" style="font-size:25px">
+                <strong>{{performance.counts.lddqcCount}}</strong>
+              </div>
+              <div class="col-md-12 text-center" style="font-size:15px">
+                <span>LDD QC Count</span>
+              </div>
+            </div>
+        </div>
+        <div class="container-fluid  col-md-2" style="border-radius:15px;padding:30px;height:100px;" >
+            <div class="row card" >
+              <div class="col-md-12 text-center" style="font-size:25px">
+                <strong>{{performance.counts.wpercent}}</strong>
+              </div>
+              <div class="col-md-12 text-center" style="font-size:15px">
+                <span>Mistakes (%)</span>
+              </div>
+            </div>
+        </div>
+        <div class="container-fluid  col-md-2" style="border-radius:15px;padding:30px;height:100px;" >
+            <div class="row card" >
+              <div class="col-md-12 text-center" style="font-size:25px">
+                <strong>{{performance.points.coding}}</strong>
+              </div>
+              <div class="col-md-12 text-center" style="font-size:15px">
+                <span>Coding Points</span>
+              </div>
+            </div>
+        </div>
+        <div class="container-fluid  col-md-2" style="border-radius:15px;padding:30px;height:100px;" >
+            <div class="row card" >
+              <div class="col-md-12 text-center" style="font-size:25px">
+                <strong>{{performance.points.qa}}</strong>
+              </div>
+              <div class="col-md-12 text-center" style="font-size:15px">
+                <span> QC Points </span>
+              </div>
+            </div>
+        </div>
+        <div class="container-fluid  col-md-2" style="border-radius:15px;padding:30px;height:100px;" >
+            <div class="row card" >
+              <div class="col-md-12 text-center" style="font-size:25px">
+                <strong>{{performance.points.total}}</strong>
+              </div>
+              <div class="col-md-12 text-center" style="font-size:15px">
+                <span> Total Points </span>
+              </div>
+            </div>
+        </div>
+        <div class="container-fluid  col-md-2" style="border-radius:15px;padding:30px;height:100px;" >
+            <div class="row card" >
+              <div class="col-md-12 text-center" style="font-size:25px">
+                <strong>{{performance.target}}</strong>
+              </div>
+              <div class="col-md-12 text-center" style="font-size:15px">
+                <span>Coding / QC Terget</span>
+              </div>
+            </div>
+        </div>
+      </div>
+
+    </div>
+
+    {% if announcements %}
+    <div class="row" style="margin: 15px;">
+      <div class="col-md-10 col-md-offset-1">
+        <h1>Announcements</h1>
+        {% for ann in announcements %}
+        <div class="container-fluid" style="border-radius:15px;margin-bottom:10px;" >
+            <div class="row card" style="padding-left:20px;">
+              {{ann.message}} <br> <span>{{ann.created | date:"D d M Y"}}</span>
+              {% if ann.fil %}
+              <a href="{{ann.fil.url}}"><i class="fa fa-file"></i></a>
+              {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% endif %}
+    <div style="margin:0px;margin-top:30px;" class="row">
+
+      <div style="" class="col-md-10 col-md-offset-1">
+
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Batch Name</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for proj in projects %}
+              <tr ng-repeat="p in allProjectsData">
+                <td >{{proj.pk}}</td>
+                <td>{{proj.title}}</td>
+                <td> <span class="text-success" style="font-size:20px;">{{proj.status}}</span> </td>
+                <td>
+                  {% if proj.can_code %}
+                  <a class="col-md-4 pull-right text-center" style="cursor: pointer;color:#fa4616;padding: 10px;background:rgb(244, 213, 213);"  href="/project/coder/{{proj.pk}}">Coding</a>
+                  {% endif %}
+                  <a  class="col-md-4 text-center" style="cursor:pointer;padding:10px;background:#eee;" href="/projectDocs/?project={{proj.pk}}">Docs</a>
+                  {% if proj.can_qa %}
+                  <a class="col-md-4 text-center" ng-if="p.status=='coding' && p.can_qc" style="cursor: pointer;padding: 10px;background:rgb(196, 224, 247);color:#2f73ab;"  href="/project/qa/{{proj.pk}}">Qc</a>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script> -->
+  </body>
+</html>

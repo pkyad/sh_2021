@@ -1,0 +1,8 @@
+*.html~
+!spec/*.html~
+*.pyc
+!spec/*.pyc
+docs/build
+media_root
+tools/scripts
+environments

@@ -1,0 +1,91 @@
+<div class="row" style="margin-top:17px;">
+  <div class="col-md-1" style="padding-left:25px;">
+    <button type="button" class="btn btn-primary btn-block" ng-click="add()">
+      Add +
+    </button>
+  </div>
+  <div class="col-md-1" >
+    <button type="button" class="btn btn-default btn-block" ng-click="reset()">
+      Reset
+    </button>
+  </div>
+  <div class="col-md-1" >
+    <button type="button" class="btn btn-default btn-block" ng-click="download()">
+      Download
+    </button>
+  </div>
+  <div class="col-md-1">
+    <label> Location </label>
+  </div>
+  <div class="col-md-2">
+    <select ng-change="refresh()" class="form-control" ng-model="form.location">
+      <option value="All">All</option>
+      <option value="Udupi">Udupi</option>
+      <option value="Mysuru">Mysuru</option>
+      <option value="Bengaluru">Bengaluru</option>
+      <option value="Houston">Houston</option>
+      <option value="Philadelphia">Philadelphia</option>
+    </select>
+  </div>
+
+  <div class="col-md-1 text-right">
+    <label> Customer </label>
+  </div>
+  <div class="col-md-2">
+    <select ng-change="refresh()" class="form-control" ng-model="form.customer">
+      <option value="All">All</option>
+      <option value="{{v.pk}}" ng-repeat="v in customerList">{{v.name}}</option>
+    </select>
+  </div>
+
+  <div class="col-md-1 text-right">
+    <label> Team Lead </label>
+  </div>
+  <div class="col-md-2">
+    <select ng-change="refresh()" class="form-control" ng-model="form.teamLead">
+      <option value="All">All</option>
+      <option value="{{v.pk}}" ng-repeat="v in teamLeads">{{v.first_name + ' ' + v.last_name}}</option>
+    </select>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="pager">
+      <div class="col-md-1" style="width:3%;padding:0px;" >
+        <li class="previous">
+          <a href="" ng-click="prev()" style="margin-top: 0px;"><span aria-hidden="true"></span> <i class="fa fa-angle-left" style="color:black;font-size:35px"></i></a>
+        </li>
+      </div>
+      <div class="col-md-11" style="width:94%;padding:0px;">
+        <div class="col-md-2" ng-repeat="d in dates" style="cursor:pointer;padding:0px;padding-right:5px;min-height:60vh;" ng-drop="true" ng-drop-success="onDropComplete($data,$event , $index);">
+          <div class="container-fluid {{$index == selectIndex ? 'bg-blue' : ''}} " style="padding-top:10px;">
+            <span style="font-size:20px;">{{d | date:'dd'}}</span>
+            <span>{{d | date:'MMM'}}</span>
+          </div>
+          <br>
+
+          <div class="card draggable text-left {{p.teamLead == me.pk ? 'bg-blue': ''}} " ng-repeat="p in projects[$index]" style="margin-bottom:10px;padding:3px;" ng-drag="true" ng-drag-data="p" data-allow-transform="true">
+            <span style="font-size:20px;">{{p.name}}</span> <br>
+            <span style="font-size:17px;">{{p.companyName}}</span> <br>
+            <span> <i class="fa fa-user"></i> {{p.teamLead | getName}} </span> <br>
+            <span> <i class="fa fa-clock-o"></i> {{p.timeZone}} </span> <br>
+            <span ng-if="p.teamLead == me.pk" > <i class="fa fa-trash" mwl-confirm
+            title="Confirm"
+            message="Are you sure?"
+            confirm-text="Yes <i class='fa fa-check'></i>"
+            cancel-text="No"
+            on-confirm="deletePlan(p.pk)"
+            confirm-button-type="danger"
+            cancel-button-type="default" ></i> </span> <br>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1" style="width:3%;padding:0px;">
+        <li class="next">
+          <a href="" style="margin-top: 0px;" ng-click="next()"><i class="fa fa-angle-right" style="color:black;font-size:35px"></i> <span aria-hidden="true"></span></a>
+        </li>
+      </div>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="container-fluid" style="padding:10px;">
+  <div class="form-group">
+    <label>Team Title</label>
+    <input type="text" class="form-control" id="" placeholder="" ng-model="form.team">
+  </div>
+  <div class="form-group">
+    <label>Team Manager</label>
+    <input type="text" class="form-control" id="" placeholder="" uib-typeahead="Reporting as Reporting.username for Reporting in Reporting($viewValue)" ng-model="form.manager">
+  </div>
+  <button type="button" class="btn btn-primary pull-right" ng-click="saveTeam()">
+    Save
+  </button>
+</div>

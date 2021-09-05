@@ -1,0 +1,54 @@
+{% load staticfiles%} {% load staticfiles %} {% load socialaccount %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Login</title>
+  {% if useCDN %}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" charset="utf-8"> {% else %}
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" charset="utf-8">
+  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" charset="utf-8"> {% endif %}
+  <link rel="stylesheet" href="{% static 'css/signin.css' %}" charset="utf-8">
+</head>
+<body>
+  <div class="col-md-8" style="background-image: url('{{backgroundImage}}');background-size: cover;height:100%;position:absolute;left:0px;">
+  </div>
+  <div class="col-md-4" style="background-color:#eeeeee;height:100%;position:absolute;right:0px;">
+    <form method="post" class="form-signin" action="">
+      <h2 class="form-signin-heading" style="color:black;margin-top:200px;">Ex-employee Login</h2>
+      {% csrf_token %}
+       {% if authStatus.status != 'default' %}
+      <div class="alert alert-{{authStatus.status}}">{{authStatus.message}}</div>
+      {% endif %}
+      <div class="form-group" style="margin-bottom:5px;font-size:13px">
+          {% if authStatus.showFullForm %}
+          <input type="email" class="form-control" name="email" placeholder="Email" value="{{authStatus.email}}" required disabled/>
+          <input type="hidden" class="form-control" name="email" value="{{authStatus.email}}"/>
+          {% else %}
+          <input type="email" class="form-control" name="email" placeholder="Email" value="{{authStatus.email}}" required/>
+          {% endif %}
+        </div>
+      {% if authStatus.showFullForm %}
+      <div class="form-group" style="margin-bottom:5px;font-size:13px">
+        <input name="eOtp" type="text" class="form-control" placeholder="4 Digits OTP" value="{{authStatus.eOtp}}" maxlength="4" minlength="4" required>
+      </div>
+      <button style="margin-bottom:20px;" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      {% else %}
+      <button style="margin-bottom:20px;" class="btn btn-lg btn-primary btn-block" type="submit">Send OTP</button>
+     {% endif %}
+      <a href="/"><i class="fa fa-user"></i> User Login</a>
+    </form>
+  </div>
+  <!-- /container -->
+  {% if useCDN %}
+  <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  {% else %}
+  <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+  <script src="{% static 'js/jquery.cookie-1.4.1.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  {% endif %}
+</body>
+</html>

@@ -1,0 +1,54 @@
+<div class="col-md-4" style="margin-bottom:20px;" ng-controller="projectManagement.project.item">
+  <div class="container-fluid card" style="padding:0px;min-height:235px;border-radius:15px;border:{{data.archived?'2px solid #ed8888':''}}">
+    <div class="row" style="margin:0px;margin-bottom:5px;padding-bottom:10px;border-bottom:2px solid #eee">
+      <div class="col-md-11" ng-click="rowActionClicked('projectBrowser')" style="cursor:pointer;height:50px;overflow:hidden;">
+        <h3>{{data.title}}</h3>
+      </div>
+      <div class="col-md-1" style="padding-top:20px;">
+        <a target="_blank" href="/configurationManager/?name={{data.title}}"><i class="fa fa-th-large"></i></a>
+      </div>
+    </div>
+    <!-- {{data.filesDetails == undefined}} -->
+    <div class="row">
+      <div class="col-md-10">
+        <div class="row" style="margin:0px;margin-bottom:10px;border-bottom:2px solid #eee">
+          <div class="col-md-6">
+            <span class="text-muted" style="font-size:20px;">{{data.filesDetails.codingval}} ( {{data.filesDetails.coding}} % )</span> <br> <label>Coding</label>
+          </div>
+          <div class="col-md-6">
+            <span class="text-muted" style="font-size:20px;">{{data.filesDetails.qcval}} ( {{data.filesDetails.qc}} % )</span> <br> <label>Qc</label>
+          </div>
+          <!-- <div class="col-md-6">
+            <span class="text-muted" style="font-size:20px;">{{data.filesDetails.reCodingval}} ( {{data.filesDetails.recoding}} % )</span> <br> <label>Recoding</label>
+          </div>
+          <div class="col-md-6">
+            <span class="text-muted" style="font-size:20px;">{{data.filesDetails.reQcval}} ( {{data.filesDetails.reqc}} % )</span> <br> <label>ReQc</label>
+          </div> -->
+        </div>
+        <div class="row" style="margin:0px;">
+          <div class="col-md-6">
+            <label>Status : </label> <br> <span class="text-success" style="font-size:25px;">{{data.status | humanize}}</span>
+          </div>
+          <div class="col-md-5">
+            <label>Total Docs : </label> <br> <span class="text-success" style="font-size:25px;">{{data.filesDetails.totalFiles | number}}</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-md-2" >
+        <i style="cursor:pointer;" class="fa fa-pencil" ng-click="edit();$event.stopPropagation();"></i> <br>
+        <i style="cursor:pointer;padding-top:10px;margin-bottom:10px;" class="fa fa-info fa-lg" ng-click="rowActionClicked('projectFields')"></i><br>
+        <i class="fa fa-file" ng-click="rowActionClicked('fileupload');$event.stopPropagation();" style="cursor:pointer;margin-bottom:20px;"></i><br>
+        <i class="fa  fa-cc" ng-if="data.can_cc" ng-click="rowActionClicked('projectCC');$event.stopPropagation();" style="cursor:pointer;margin-bottom:20px;"></i>
+      </div>
+
+    </div>
+    <div class="row" style="margin:0px;" ng-if="data.coding">
+      <a  ng-if="data.status=='coding' && data.can_code" class="col-md-4 bg-blue pull-right text-center" style="cursor:pointer;color:#000;padding:10px;" target="_blank" href="/project/coder/{{data.pk}}">Coding</a>
+      <a class="col-md-4 bg-aqua text-center" ng-if="data.status=='coding' && data.can_qc" style="cursor:pointer;padding:10px;" target="_blank" href="/project/qa/{{data.pk}}">Qc</a>
+
+      <a class="col-md-4 bg-black text-center" style="cursor:pointer;padding:10px;"  ng-click="openReport(data.pk)">Report</a>
+    </div>
+  </div>
+</div>

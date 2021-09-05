@@ -1,0 +1,44 @@
+<div class="container-fluid" ng-controller="exEmployeeBody" style="background-color:#fffef9">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="row">
+        <div class="col-md-12" style="padding:50px 15px;font-size:20px;margin-bottom:20px">
+          <div class="col-md-2 text-right">
+            <img style="width: 90px;height:90px;" class="img-circle" ng-src="{{exEmpData.profile.displayPicture}}">
+          </div>
+          <div class="col-md-8">
+            <div class="col-md-5" style="padding-left:0px">
+              <strong><i class="fa fa-user"></i> {{exEmpData.fullName}}</strong><br>
+              <strong><i class="fa fa-mobile"></i> </strong>{{exEmpData.profile.mobile}}<br>
+              <strong><i class="fa fa-envelope-o"></i> </strong>{{exEmpData.email}}<br>
+            </div>
+            <div class="col-md-7" style="padding-right:0px">
+              <strong>Personal Email : </strong>{{exEmpData.profile.email}}<br>
+              <strong>Joining Date : </strong>{{exEmpData.payroll.joiningDate | date : 'dd-MMM-yyyy'}}<br>
+              <strong>Releaving Date : </strong>{{exEmpData.payroll.lastWorkingDate | date : 'dd-MMM-yyyy'}}<br>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <div class="btn-group">
+            <button type="button" name="button" class="btn btn-primary"><i class="fa fa-download"></i> Download Offer Letter</button>
+            <button type="button" name="button" class="btn btn-warning"><i class="fa fa-download"></i> Download Exprience Letter</button>
+            <button type="button" name="button" class="btn btn-danger"><i class="fa fa-download"></i> Download Releaving Letter</button>
+          </div>
+        </div>
+      </div>
+      <div class="row" ng-if="exEmpData.payslipsData.length>0">
+        <div class="col-md-12 text-center text-muted" style="font-size:30px;padding:30px 15px">
+          <strong><i class="fa fa-file-pdf-o"></i> Payslips</strong>
+        </div>
+        <div class="col-md-2" ng-repeat="slip in exEmpData.payslipsData">
+          <a href="/api/payroll/getPayslip/?payslip={{exEmpData.pk}}&report={{slip.report_id}}" target="_blank"><div class="col-md-12 text-center zoomOnHover"  style="background-color:#97f29b;cursor:pointer;font-size:17px;padding:15px 5px;border-radius:10px">
+            {{slip.slipMonth}} <i class="fa fa-download fa-lg"></i>
+          </div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

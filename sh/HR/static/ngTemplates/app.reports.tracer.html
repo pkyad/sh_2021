@@ -1,0 +1,70 @@
+<div class="" style="min-height:93vh;">
+  <breadcrumb></breadcrumb>
+
+  <div class="row" style="margin:0px;">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Project</label>
+        <input uib-typeahead="p as p.title for p in projectSearch($viewValue)" ng-model="form.project" type="text" class="form-control" placeholder="Search By project title">
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label>File</label>
+        <input ng-enter="fetchFiles()" ng-model="form.fileName" type="text" class="form-control" placeholder="File name">
+      </div>
+    </div>
+    <div class="col-md-3">
+      <user-field url="/api/HR/userSearch/" user="form.user" label="Coder or QC"></user-field>
+    </div>
+    <div class="col-md-2" style="padding-top:25px;">
+      <button type="button" ng-click="fetchFiles()" class="btn btn-default">
+        Search <i class="fa fa-search"></i>
+      </button>
+      <button type="button" ng-click="reset()" class="btn btn-primary">
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <div style="margin:0px;padding:20px;" class="container-fluid">
+    <div ng-repeat="d in form.data track by $index" class="row card">
+
+      <div class="row" style="padding:30px;">
+        <strong>{{d.path}}</strong>
+      </div>
+
+      <div class="col-md-2" ng-repeat="u in d.userValMap track by $index" ng-if="u[0].user">
+        <div class="row" style="margin:10px;">
+          <div class="form-group text-center">
+            <img ng-src="{{u.user | getDP}}" class="img img-circle" style="height:20px;width:20px;" alt=""><br>
+            <label>{{u[0].user | getName}}</label> <br>
+            ({{u[0].stage}}) <br>
+            {{u[0].user.created | date:'dd-MMM-yyyy hh:mm a'  }} <br>
+          </div>
+        </div>
+
+        <div class="row" style="margin:0px;" ng-repeat="v in u track by $index">
+          <strong>{{v.fieldName}}</strong> <br>
+          <span>{{v.value}}<br></span> <br>
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+    <div class="row text-center">
+      <button ng-click="prev()" type="button" class="btn btn-default">
+        Prev
+      </button>
+      <button ng-click="next()" type="button" class="btn btn-default">
+        Next
+      </button>
+    </div>
+
+  </div>
+
+
+</div>

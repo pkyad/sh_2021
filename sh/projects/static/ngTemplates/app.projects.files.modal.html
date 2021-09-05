@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <h3>{{project.title}}</h3>
+</div>
+
+<div class="modal-body" style="padding:30px;">
+
+  <div class="row" ng-repeat="f in project.files">
+    <a href="{{f.attachment}}" target="_blank">{{f.name}}</a>
+  </div>
+
+</div>

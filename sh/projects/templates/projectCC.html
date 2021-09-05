@@ -1,0 +1,242 @@
+{% extends "projectstart.html" %} {% block startcontent %}
+
+<script type="text/javascript">
+  var projectpk = '{{projectid}}';
+  var filePk = '{{fileid}}';
+  var statusType = '{{typ}}';
+  var imageViewerUrl = '{{imageViewerUrl}}';
+  var qaCanEdit = '{{canEdit}}' == 'True';
+</script>
+<style>
+  #effect {
+    color: #fff;
+  }
+
+  #effect:hover {
+    color: #000;
+  }
+  body{
+    height:100vh;
+    overflow:hidden;
+    background: #f0f0f0;
+  }
+
+  input[type="text"]
+  {
+      font-size:20px;
+  }
+</style>
+
+{% verbatim %}
+
+
+
+<div class="container-fluid" style="padding-bottom:2em;padding-left:0px;">
+  <div class="col-md-8" style="padding:0px;">
+    <iframe id="imageviewer" ng-src="{{sceServerUrl}}" style="width:100%;height:100vh;border:none;"></iframe>
+  </div>
+  <div id="codingWindow" style="overflow-y:scroll;height:100vh;width:34%;position:absolute;right:0px;padding-bottom:20px;overflow-x: hidden;padding-left: 21px;padding-right: 15px;">
+    <div class="row">
+      <div class="col-md-3" style="margin-top:-5px">
+        <select class="form-control" ng-model="flags.ddValue" ng-change="ddChange()" style="height:30px" ng-if="showPrevBtn||showNxtBtn">
+          <option value="{{$index}}" ng-repeat="d in ddSelectionData">{{d}}</option>
+        </select>
+      </div>
+      <div class="col-md-6 text-center">
+        <!-- <strong>{{flHeaderName}}</strong> -->
+        <strong>QC : {{parentField.qa.first_name}} {{parentField.qa.last_name}}</strong>
+      </div>
+      <div class="col-md-3 text-right">
+        <strong>Page {{pageIndex+1}} Of {{totalPages}}</strong>
+      </div>
+    </div>
+    <div class="row" style="padding-top:15px">
+      <div class="col-md-2">
+        <span class="btn btn-default" ng-click="PrecDov()" ng-if="showPrevBtn">Prev</span>
+      </div>
+      <div class="col-md-8 text-center" style="padding-top:10px;font-size:15px">
+        <strong>{{currFlName}}</strong>
+      </div>
+      <div class="col-md-2 text-right">
+        <span class="btn btn-default" ng-click="nextDoc()" ng-if="showNxtBtn">Next</span>
+      </div>
+    </div>
+
+    <div class="container-fluid" style="padding-top:15px">
+      <strong style="font-size:17px">QC Comment :</strong> {{parentField.qcComment}}
+
+      <div ng-init="f.editing=true;" class="row" ng-repeat="f in fieldValuesData track by $index" style="min-height:60px;padding-top:10px;">
+        <div class="col-md-12" style="padding:0px">
+          <strong ng-if="f.field.type != 'boolean'"><span ng-if="f.showDelete" style="color:red;cursor:pointer" mwl-confirm title="Delete User" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="deleteMulti($index)" confirm-button-type="danger" cancel-button-type="default" ><i class="fa fa-trash-o fa-lg"></i></span>  {{f.field.name}} :</strong>
+        </div>
+        <div class="col-md-12" style="padding:0px">
+          <span ng-if="f.field.type == 'name'">
+            <div class="row">
+              <div class="col-md-1" ng-if="f.field.prefix" style="padding:0px">
+                <label  style="font-size:12px;margin-bottom:3px">Prefix</label>
+                <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" ng-model="f.prefix" class="form-control" restrict-chars="{{f.field.restrict}}">
+              </div>
+              <div class="col-md-4" ng-if="f.field.fName" style="padding:0px">
+                <label style="font-size:12px;margin-bottom:3px">FN</label>
+                <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" ng-model="f.fname" class="form-control" restrict-chars="{{f.field.restrict}}">
+              </div>
+              <div class="col-md-3" ng-if="f.field.mName" style="padding:0px">
+                <label style="font-size:12px;margin-bottom:3px">MN</label>
+                <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" ng-model="f.mName" class="form-control" restrict-chars="{{f.field.restrict}}">
+              </div>
+              <div class="col-md-4" ng-if="f.field.lName" style="padding:0px">
+                <label style="font-size:12px;margin-bottom:3px">LN</label>
+                <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" ng-model="f.lname" class="form-control" restrict-chars="{{f.field.restrict}}">
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-11" ng-if="f.field.compName" style="padding:0px">
+                <label style="font-size:12px;margin-bottom:3px">Company Name</label>
+                <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" ng-model="f.compName" class="form-control" restrict-chars="{{f.field.restrict}}" >
+              </div>
+              <div class="col-md-1" style="padding-top:23px;" ng-if="f.field.multi">
+                <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+              </div>
+            </div>
+          </span>
+          <span ng-if="f.field.type == 'email'">
+            <div class="row">
+              <div class="col-md-11" style="padding:0px">
+                <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" ng-model="f.email" class="form-control" restrict-chars="{{f.field.restrict}}">
+              </div>
+              <div class="col-md-1" style="" ng-if="f.field.multi">
+                <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+              </div>
+            </div>
+          </span>
+          <span ng-if="f.field.type == 'text'">
+            <div class="row">
+              <div class="col-md-11" style="padding:0px">
+                <textarea ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}};font-size:20px;" name="name" rows="4" cols="80" ng-model="f.txt"  class="form-control" restrict-chars="{{f.field.restrict}}"></textarea>
+              </div>
+              <div class="col-md-1" style="" ng-if="f.field.multi">
+                <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+              </div>
+            </div>
+          </span>
+          <span ng-if="f.field.type == 'date'">
+            <div class="row">
+              <div class="col-md-3" style="padding:0px">
+                <span><select ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" class="form-control" ng-model="f.dtMode">
+                  <option value="{{v}}" ng-repeat="v in ['fullDate','Month&Year','Only Year', 'date&month']">{{v}}</option>
+                </select></span>
+              </div>
+              <div class="col-md-8" style="padding:0px">
+                <div class="input-group" >
+                  <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" class="form-control" show-weeks="false" uib-datepicker-popup="MM-dd-yyyy" ng-model="f.dt" is-open="f.AVOpened" ng-if="f.dtMode=='fullDate'" restrict-chars="/" />
+                  <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" class="form-control" show-weeks="false" uib-datepicker-popup="MM-yyyy" datepicker-options="{minMode: 'month'}" ng-model="f.dt" is-open="f.AVOpened" ng-if="f.dtMode=='Month&Year'" restrict-chars="/" />
+                  <input  ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" class="form-control" show-weeks="false" uib-datepicker-popup="yyyy" datepicker-options="{minMode: 'year'}" ng-model="f.dt" is-open="f.AVOpened" ng-if="f.dtMode=='Only Year'" restrict-chars="/" />
+
+
+                  <input  ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" class="form-control" show-weeks="false" uib-datepicker-popup="MM-dd" ng-model="f.dt" is-open="f.AVOpened" ng-if="f.dtMode=='date&month'" restrict-chars="/" />
+
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="f.AVOpened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-1" style="" ng-if="f.field.multi">
+                <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+              </div>
+            </div>
+          </span>
+          <span ng-if="f.field.type == 'boolean'">
+            <div class="row">
+              <div class="col-md-11">
+                <strong><span ng-if="f.showDelete" style="color:red;cursor:pointer" mwl-confirm title="Delete User" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="deleteMulti($index)" confirm-button-type="danger" cancel-button-type="default" ><i class="fa fa-trash-o fa-lg"></i></span>  {{f.field.name}} : <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="checkbox" ng-model="f.bool" > </strong>
+              </div>
+              <div class="col-md-1" style="" ng-if="f.field.multi">
+                <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+              </div>
+            </div>
+
+          </span>
+          <span ng-if="f.field.type == 'dropdown'">
+            <div class="row">
+              <div class="col-md-11" style="padding:0px">
+                <select ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" class="form-control" ng-model="f.char">
+                  <option value="{{v}}" ng-repeat="v in f.field.dropOptions.split(',')">{{v}}</option>
+                </select>
+              </div>
+              <div class="col-md-1" style="" ng-if="f.field.multi">
+                <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+              </div>
+            </div>
+          </span>
+          <span ng-if="f.field.type == 'datetime'" >
+            <div class="row" style="margin:0px;">
+              <div class="col-md-7" style="padding:0px;padding-top:30px;">
+                <div class="row">
+                  <div class="col-md-4" style="padding:0px">
+                    <span><select  class="form-control" ng-model="f.dtMode">
+                      <option value="{{v}}" ng-repeat="v in ['fullDate','Month&Year','Only Year', 'date&month']">{{v}}</option>
+                    </select></span>
+                  </div>
+                  <div class="col-md-7" style="padding:0px">
+                    <div class="input-group" >
+                      <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" class="form-control" show-weeks="false" uib-datepicker-popup="MM-dd-yyyy" ng-model="f.dtTime" is-open="f.AVOpened" ng-if="f.dtMode=='fullDate'" restrict-chars="/" />
+                      <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" class="form-control" show-weeks="false" uib-datepicker-popup="MM-yyyy" datepicker-options="{minMode: 'month'}" ng-model="f.dtTime" is-open="f.AVOpened" ng-if="f.dtMode=='Month&Year'" restrict-chars="/" />
+                      <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" class="form-control" show-weeks="false" uib-datepicker-popup="yyyy" datepicker-options="{minMode: 'year'}" ng-model="f.dtTime" is-open="f.AVOpened" ng-if="f.dtMode=='Only Year'" restrict-chars="/" />
+
+                      <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" class="form-control" show-weeks="false" uib-datepicker-popup="MM-dd" ng-model="f.dtTime" is-open="f.AVOpened" ng-if="f.dtMode=='date&month'" restrict-chars="/" />
+
+
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="f.AVOpened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4" style="padding:0px">
+                <uib-timepicker ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" ng-model="f.dtTime" hour-step="1" minute-step="30" show-meridian="true" ></uib-timepicker>
+              </div>
+              <div class="col-md-1" style="padding-top:30px;" ng-if="f.field.multi">
+                <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+              </div>
+            </div>
+          </span>
+          <span ng-if="f.field.type == 'number'">
+            <div class="row">
+              <div class="col-md-11" style="padding:0px">
+                <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="number" ng-model="f.number" class="form-control">
+              </div>
+              <div class="col-md-1" style="" ng-if="f.field.multi">
+                <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+              </div>
+            </div>
+          </span>
+          <span ng-if="f.field.type == 'smallText'">
+            <div class="row">
+              <div class="col-md-11" style="padding:0px">
+                <input ng-focus="selector.idx = $index" style="border:{{selector.idx == $index ?'3px solid blue':''}}" type="text" ng-model="f.char" class="form-control" restrict-chars="{{f.field.restrict}}" >
+              </div>
+              <div class="col-md-1" style="" ng-if="f.field.multi">
+                <span class="btn btn-primary" ng-click="addMore(f,$index)"><i class="fa fa-plus-circle"></i></span>
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
+      <hr style="margin:10px -10px;border:double">
+      <div class="row">
+        <button type="button" ng-click="resubmit()" class="btn btn-default">
+          Submit changes
+        </button>
+      </div>
+
+
+    </div>
+  </div>
+
+
+
+
+
+  {% endverbatim %} {% endblock %}

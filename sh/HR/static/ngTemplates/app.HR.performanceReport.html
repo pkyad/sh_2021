@@ -1,0 +1,35 @@
+<div class="modal-header text-right">
+<i class="fa fa-close fa-2x" ng-click="close()"></i>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="form-group col-md-4">
+        <label>From Date</label>
+        <div class="input-group">
+          <input type="text" class="form-control" show-weeks="false" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="dateForm.stDate" is-open="stDate.opened" disabled/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="stDate.opened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label>To Date</label>
+        <div class="input-group">
+          <input type="text" class="form-control" show-weeks="false" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="dateForm.edDate" is-open="edDate.opened" disabled/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="edDate.opened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin:0px;">
+    <div class="col-md-3" ng-repeat="team in teams" style="padding:0px;padding-top:25px">
+      <div class="btn-group btn-group btn-block">
+        <!-- <span class="btn btn-primary" ng-click="fetchData()"><i class="fa fa-refresh"></i> Fetch Data</span> -->
+        <a href="/api/projects/downloadPerformanceReport/?team={{team.pk}}&stDate={{dateForm.stDate.toJSON().split('T')[0]}}&edDate={{dateForm.edDate.toJSON().split('T')[0]}}" target="_blank"><span class="btn btn-default"><i class="fa fa-download"></i> Download For {{team.title}} </span></a>
+      </div>
+    </div>
+  </div>
+</div>

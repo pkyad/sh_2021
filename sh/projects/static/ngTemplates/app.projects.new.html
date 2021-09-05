@@ -1,0 +1,117 @@
+<div class="col-md-4" style="margin-top:10px;">
+  <div class="btn-group btn-group-sm">
+    <button type="button" class="btn btn-default" ng-click="resetForm()">
+        Reset
+    </button>
+    <button type="button" class="btn btn-default" ng-click="$state.go('home.projects')">
+        Back <i class="fa fa-mail-reply"></i>
+    </button>
+    <button type="button" class="btn btn-primary" ng-click="postProject()">
+        Save <i class="fa fa-floppy-o"></i>
+    </button>
+  </div>
+  <h3 ng-if="form.title.length==0" class="text-muted" style="word-wrap:break-word;">Untitled..</h3>
+  <h3 style="word-wrap:break-word;">{{form.title}}</h3>
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <users-Field data="form.team" url="/api/HR/userSearch/" col="6" label="team lead"></users-Field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <label style="margin-right:20px;">LDD ? </label> <input type="checkbox" ng-model="form.ldd">
+    </div>
+    <div class="col-md-6">
+      <label style="margin-right:20px;">Coding ? </label> <input type="checkbox" ng-model="form.coding">
+    </div>
+  </div>
+
+  <div ng-if="form.coding">
+    <div class="row">
+      <div class="col-md-12">
+        <label>Coder Group</label>
+        <input uib-typeahead="u as u.title for u in teamSearch($viewValue)" ng-model="form.coderTeam" type="text" class="form-control" placeholder="Search By Name">
+      </div>
+    </div>
+    <div class="row" style="padding-top:30px">
+      <div class="col-md-12">
+        <label>QC Group</label>
+        <input uib-typeahead="u as u.title for u in teamSearch($viewValue)" ng-model="form.qaTeam" type="text" class="form-control" placeholder="Search By Name">
+      </div>
+    </div>
+    <div class="row" style="padding-top:30px">
+      <div class="col-md-12">
+        <label>Re-Coder Group</label>
+        <input uib-typeahead="u as u.title for u in teamSearch($viewValue)" ng-model="form.reCoderTeam" type="text" class="form-control" placeholder="Search By Name">
+      </div>
+    </div>
+    <div class="row" style="padding-top:30px">
+      <div class="col-md-12">
+        <label>Re-QC Group</label>
+        <input uib-typeahead="u as u.title for u in teamSearch($viewValue)" ng-model="form.reQaTeam" type="text" class="form-control" placeholder="Search By Name">
+      </div>
+    </div>
+    <div class="row" style="padding-top:30px">
+      <div class="col-md-12">
+        <label>CC Group</label>
+        <input uib-typeahead="u as u.title for u in teamSearch($viewValue)" ng-model="form.ccTeam" type="text" class="form-control" placeholder="Search By Name">
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="col-md-8" style="position:relative; min-height:90vh;top:0px;right:0px;padding:0px;">
+  <div style="overflow:auto;height:100%;position:absolute;width:100%;border-left:solid 3px #eee;padding:20px;">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" style="margin-top:10px;">
+            <label>Title</label>
+            <input type="text" ng-model="form.title" class="form-control" placeholder="Title..">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" style="margin-top:30px;">
+            <label>Enable QC Edit</label>
+            <input type="checkbox" ng-model="form.qaCanEdit" >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Company</label>
+        <input uib-typeahead="c as c.name for c in companySearch($viewValue)" ng-model="form.company" type="text" class="form-control" placeholder="Search By Company Name">
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Start date</label>
+        <div class="input-group">
+          <input type="text" class="form-control" show-weeks="false" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="form.dueDate" is-open="status.opened" disabled/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="status.opened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Factor</label>
+        <input ng-model="form.factor" type="text" class="form-control" placeholder="Points per field">
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Description</label>
+        <textarea class="form-control" rows="5" cols="40" placeholder="Description" ng-model="form.description"></textarea>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <media-Field data="data.files" url="/api/projects/media/"></media-Field>
+    </div>
+  </div>
+</div>

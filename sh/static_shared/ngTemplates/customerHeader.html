@@ -1,0 +1,22 @@
+<nav class="navbar navbar-default navbar-fixed-top" style="box-shadow: rgba(8, 19, 31, 0.5) 0px 3px 10px 0px;background-color:white;height:6vh">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" aria-expanded="false" aria-controls="navbar" ng-click="logout()">
+        <i class="fa fa-sign-out"></i> Log Out
+      </button>
+      <span class="navbar-brand" style="margin-left:0px;padding:7px;cursor:pointer">
+        <img ng-src="{{brandLogo}}" style="height:100%;" />
+      </span>
+      <div class="navbar-brand"><strong class="collapse navbar-collapse" style="font-size:22px"><i class="fa fa-angle-right fa-lg"></i> {{headerTitle}}</strong></div>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav header_nav pull-right">
+        <li style="margin-left:30px;">
+          <button type="button" class="btn btn-warning" style="background-color:#f23f3f;margin-top:10px;" ng-click="logout()">
+            <i class="fa fa-sign-out"></i> Log Out
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

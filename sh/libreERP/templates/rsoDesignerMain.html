@@ -1,0 +1,152 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html ng-app="app"  id="main">
+  <head>
+    <meta charset="utf-8">
+    <!-- <link rel="icon" type="image/jpg" href="https://www.syrow.com/wp-content/themes/Divi/images/favicon-32x32.png"> -->
+    <link rel="icon" type="image/jpg" href="{{BRAND_LOGO}}">
+    <title>{{BRAND_NAME}} Robotic Service Designer</title>
+    <meta name="viewport" content="initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" charset="utf-8">
+    <style media="screen">
+    input:focus, textarea:focus, select:focus{
+      outline: none;
+    }
+
+    .draggable{
+      box-shadow: 0px 0px 20px rgba(176, 176, 176, 0.25);
+      border: 0.5px solid #ddd;
+      border-radius: 12px;
+      background:white;
+    }
+    body{
+      background-attachment: scroll;
+      background-clip: border-box;
+      background-color: rgba(0, 0, 0, 0);
+      background-image: linear-gradient(0deg,rgba(255, 255, 255, 0.8),rgba(255, 255, 255, 0.8)),url("/static/images/grid-new.png");
+      background-origin: padding-box;
+      background-position: 0% 0%;
+      background-position-x: 0%;
+      background-position-y: 0%;
+      background-repeat: repeat;
+      background-size: auto;
+    }
+    .paddingtop10{
+      padding-top:10px;
+    }
+
+    .circle-icon {
+      background: #3f51b5;
+      padding: 9px;
+      border-radius: 50%;
+      color: white;
+      padding: 10px;
+      padding-left: 17px;
+      padding-right: 17px;
+      position: absolute;
+      left: 43%;
+      top: -22px;
+    }
+
+    /* .arrowDirection:hover{
+      transition : font-size 16px;
+    } */
+
+    /* .arrowDirection{
+
+    } */
+
+    </style>
+  </head>
+  {% verbatim %}
+  <body ng-controller="main" >
+
+    <div class="row" style="height:5vh;background:white;border-bottom:solid 2px #eee;margin:0px;">
+      <div class="container-fluid" style="padding-right:0px;">
+        <img src="/static/images/epsilonai_logo_dark.svg" style="height:3vh;margin: 7px;" alt=""> <span>Robotic Service Orchestrator</span>
+
+        <span style="margin-left:300px;"> <strong>Process : </strong> Order to cash ( ID : 3494 ) </span>
+
+
+        <button ng-click="save()" type="button" class="btn btn-primary pull-right" style="height:5vh;">
+          Save
+        </button>
+      </div>
+    </div>
+
+
+    <div class="row" style="height:95vh;margin:0px;">
+      <div class="container-fluid">
+        <div ng-init="b.hovering=false;" ng-mouseenter="b.hovering=true;" ng-mouseleave="b.hovering=false;" ng-repeat="b in blocks" id="draggable{{b.id}}" class="ui-widget-content draggable" style="width: {{b.width}}px; height: {{b.height}}px; border-color:{{b.color}};position:absolute">
+
+          <div class="row handle" style="margin:0px;">
+
+            <span class="circle-icon" ng-if="b.type == 'start'">
+              <i class="fa fa-bolt fa-2x"></i>
+            </span>
+
+            <span class="circle-icon" style="background:rgb(244, 23, 23);bottom:-30px;top:unset;" ng-if="b.type == 'end'">
+              <i class="fa fa-map-pin fa-2x"></i>
+            </span>
+
+            <i class="fa fa-cog fa-lg text-muted" ng-if="b.hovering && (b.type != 'condition' && b.type != 'conditionOption')" style="cursor:pointer;margin:5px;"></i>
+            <i class="fa fa-trash fa-lg text-muted" ng-if="b.hovering && (b.type != 'condition' && b.type != 'conditionOption' && b.type != 'start')" ng-click="delete($index)" style="cursor:pointer;position:absolute;bottom:10px;right:10px;"></i>
+
+
+            <div uib-dropdown is-open="status.isopen" style="position:absolute;bottom:-10px;left:50%;z-index:1111;">
+              <i class="fa fa-plus-circle fa-lg text-muted" ng-if="(b.hovering || status.isopen) && b.canAdd && b.type == 'condition'" style="cursor:pointer;color:{{b.color}};" ng-click="addBlock($index , b , $event , 'case' )"></i>
+
+              <i uib-dropdown-toggle class="fa fa-plus-circle fa-lg text-muted dropdown-toggle" ng-if="(b.hovering || status.isopen) && b.canAdd && b.type != 'condition'" style="cursor:pointer;color:{{b.color}};"></i>
+
+              <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                <li role="menuitem" ng-click="addBlock($index , b, $event , 'action')"><a href="">Add User Action</a></li>
+                <li role="menuitem" ng-click="addBlock($index , b, $event , 'condition')"><a href="">Add Condition</a></li>
+                <li role="menuitem" ng-click="addBlock($index , b, $event , 'process')"><a href="">Add RPA process</a></li>
+                <li role="menuitem" ng-click="addBlock($index , b, $event , 'notification')"><a href="">Add Notification</a></li>
+                <li role="menuitem" ng-click="addBlock($index , b, $event , 'logic')"><a href="">Add Logic</a></li>
+                <li class="divider" ></li>
+                <li role="menuitem" ng-click="addBlock($index , b, $event , 'connect')"><a href="">Connect to another step</a></li>
+              </ul>
+            </div>
+            <img class="pull-right" ng-if="b.icon" src="{{b.icon}}" style="height:35px;border-radius: 20%;margin:5px;" alt="">
+            <span ng-if="!b.icon && b.type != 'condition' && b.type != 'conditionOption'" class="pull-right" style="padding:10px;padding-top:4px;padding-bottom:4px;background:{{b.color}};color:white;border-radius:12px;margin:5px;letter-spacing: 0.2px;" ng-if="!b.icon"> {{b.label}}</span>
+          </div>
+          <div class="row" style="margin:0px;">
+            <div class="container-fluid {{b.type == 'condition' || b.type == 'conditionOption'? 'text-center paddingtop10':'' }}">
+              <span style="font-size: 14px;font-weight: bold;color: #26344a;"> <i ng-if="b.type == 'condition'" class="fa fa-th text-muted handle" style="margin-right:7px;"></i><span contenteditable ng-model="b.name"></span></span> <br ng-if="b.type != 'condition' && b.type != 'conditionOption'">
+              <span ng-if="b.type != 'condition'" class="text-muted" style="word-break: break-word;font-size: 12px;font-style: italic;letter-spacing: 0.3px;color: #26344a;">  <i ng-if="b.type == 'conditionOption'" class="fa fa-th text-muted handle" style="margin-right:7px;"></i>  <span contenteditable ng-model="b.description"></span>  </span>
+            </div>
+          </div>
+        </div>
+
+        <div ng-repeat="c in connectors" id="connector{{c.from}}-{{c.to}}" style="position:absolute;border-radius:10px;z-index:-1">
+          <i class="fa fa-caret-right fa-2x arrowDirection" id="arrow{{c.from}}-{{c.to}}" style="position:absolute;color:rgb(41, 157, 142);"></i>
+          <span id="label{{c.from}}-{{c.to}}" style="position:absolute;color:rgb(41, 157, 142);width:40px;">{{c.label}}</span>
+
+      </div>
+    </div>
+
+
+
+    {% endverbatim %}
+
+    <script type="text/javascript">
+      var USER = '{{request.user.username}}';
+      var WS_SERVER = '{{WS_SERVER}}';
+    </script>
+
+
+    <script src="{% static 'js/autobahn.min.js' %}"></script>
+    <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+    <script src="{% static 'js/jquery.cookie-1.4.1.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/angular.min.js' %}"></script>
+    <script src="{% static 'js/ui-bootstrap-tpls-0.14.3.min.js' %}"></script>
+    <script src="{% static 'js/rsoDesignerMain.js' %}"></script>
+    <script src="{% static 'js/ace.js' %}"></script>
+    <script src="{% static 'js/ace/ext-language_tools.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+
+.ngCalOptions >li >a:hover ,.ngCalOptions >li >a:focus , .highlighted , .inlistForm:hover {
+  /*background: rgba(0, 0, 0, 0.2) none repeat scroll 0% 0%;*/
+  border-right:4px solid red !important;
+}
+
+.ngCalOptions >li >a{
+  text-decoration: none;
+  box-sizing: border-box;
+  /*color: #fff;*/
+
+}

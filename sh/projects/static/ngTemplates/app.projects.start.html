@@ -1,0 +1,130 @@
+<div class="container-fluid" style="padding-top:15px;" ng-controller="projectManagement.projects.project.explore" >
+  <div class="col-md-12" >
+    <span><b>{{fileData.file}}</b></span>
+  </div>
+  <div class="col-md-8" style="margin-top:15px;">
+    <iframe src="http://localhost:8000/imageViewer/?imageurl=https://cdn.fileinfo.com/img/ss/lg/txt_109.jpg" width="100%" height="900px" style="border:none;" ></iframe>
+  </div>
+  <div class="col-md-4">
+    <div class="row">
+      <button type="button" class="btn btn-default" ng-click="prev()" style="border-radius:20px !important;">
+        Prev
+      </button>
+      <button type="button" class="btn btn-default pull-right" ng-click="next()" style="border-radius:20px !important;">
+        Next
+      </button>
+    </div>
+    <div class="row" style="margin-top:15px;">
+      <div class="form-group" ng-repeat="f in fields">
+        <!-- <label>{{f.name}}</label> -->
+        <div class="form-group" ng-if="f.type == 'name' && f.prefix">
+          <label>Prefix</label>
+          <!-- <span ng-if="f.required && !f.valueP" style="color:#f02020;font-size:1.4em;">*</span> -->
+          <select class="form-control" name="" ng-model="f.valueP" >
+            <option value="mr">Mr.</option>
+            <option value="mrs">Mrs.</option>
+            <option value="dr">Dr.</option>
+          </select>
+          <span ng-if="f.required && error.name.prefix " style="color:red">Choose Anyone Option</span>
+        </div>
+        <div class="form-group" ng-if="f.type == 'name' && f.fName" >
+          <label>First Name</label>
+          <!-- <span ng-if="f.required && !f.valueF" style="color:#f02020;font-size:1.4em;">*</span> -->
+          <input type="text" class="form-control" ng-model="f.valueF" >
+          <span ng-if="f.required && error.name.fname " style="color:red">First Name Field was Required</span>
+          <!-- placeholder="{{f.required && !f.valueF ? 'This is a required Field': ''}}" -->
+        </div>
+        <div class="form-group" ng-if="f.type == 'name' && f.mName">
+          <label>Middle Name</label>
+          <input type="text" class="form-control" ng-model="f.valueM">
+          <span ng-if="f.required && error.name.mname " style="color:red">Middle Name Field was Required</span>
+        </div>
+        <div class="form-group" ng-if="f.type == 'name' && f.lName">
+          <label>Last Name</label>
+          <input type="text" class="form-control" ng-model="f.valueL">
+          <span ng-if="f.required && error.name.lname " style="color:red">Last Name Field was Required</span>
+        </div>
+        <!-- <input ng-if="f.type == 'name'" type="text" ng-model="f.value" class="form-control" id="" placeholder=""> -->
+        <div class="form-group" ng-if="f.type == 'dropdown'">
+          <label>{{f.name}}</label>
+          <select class="form-control" ng-model="f.value">
+            <option value="{{v}}" ng-repeat="v in f.dropOptions.split(',')">{{v}}</option>
+          </select>
+          <span ng-if="f.required && error.dropdown " style="color:red">Choose Anyone Option</span>
+        </div>
+        <div class="form-group" ng-if="f.type == 'email'">
+          <label>{{f.name}}</label>
+          <input type="text" class="form-control" placeholder="abc@xyz.com" ng-model="f.value">
+          <span ng-if="f.required && error.email " style="color:red">{{f.name}} Field was Required or Incorrect</span>
+        </div>
+        <div class="form-group" ng-if="f.type == 'number'">
+          <label>{{f.name}}</label>
+          <input type="number" class="form-control" step="0.01" placeholder="Enter Only Numbers" ng-model="f.value">
+          <span ng-if="f.required && error.number " style="color:red">{{f.name}} Field was Required or Incorrect</span>
+        </div>
+        <div class="form-group" ng-if="f.type == 'date'">
+          <label>{{f.name}}</label>
+          <div class="input-group">
+            <input type="text" class="form-control" ng-model="f.value" show-weeks="false" uib-datepicker-popup="dd-MMMM-yyyy" is-open="fromDate.opened" ng-init="today">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="fromDate.opened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </div>
+          <span ng-if="f.required && error.date " style="color:red;">{{f.name}} Field was Required</span>
+        </div>
+        <div class="form-group" ng-if="f.type == 'boolean'">
+          <label>{{f.name}}</label>
+          <input type="checkbox" ng-model="f.value" ng-if="f.checkbox">
+          <switch ng-model="f.value" class="green" ng-if="f.switchh"></switch>
+        </div>
+        <div class="form-group" ng-if="f.type == 'datetime'">
+          <label>{{f.name}}</label>
+          <div class="row" style="padding-top:10px;">
+            <div class="col-md-6">
+              <div class="input-group">
+                <input type="text" class="form-control" ng-model="f.value" show-weeks="false" uib-datepicker-popup="dd-MMMM-yyyy" is-open="startDate.opened" ng-init="today">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="startDate.opened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+              </div>
+              <span ng-if="f.required && error.datetime " style="color:red">{{f.name}} Field was Required</span>
+            </div>
+            <div class="col-md-6" style="margin-top:-35px;">
+              <uib-timepicker ng-model="f.value" hour-step="1" minute-step="30" show-meridian="true" ></uib-timepicker>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" ng-if="f.type == 'text'">
+          <label>{{f.name}}</label>
+          <div class="row">
+            <div class="col-md-10" style="height:150px">
+              <textarea class="form-control" rows="5" style="resize:none;height:150px"  maxlength="300" ng-model="f.value" ng-change="count()"></textarea>
+              </div>
+              <div class="col-md-2" style="height:150px;padding-left:0">
+                <div style="margin-top:130px">
+                  <span >{{countvalue}}/300</span>
+                </div>
+              </div>
+          </div>
+          <ul style="padding-left:12px">
+            <li>It should contain 5 min Characters & 300 max characters</li>
+          </ul>
+          <span ng-if="f.required && error.text " style="color:red;padding:0;margin:0">{{f.name}} Field was Required</span>
+        </div>
+        {{f.type}} {{f.name}}
+        <div class="form-group" ng-if="f.type == 'smallText'">
+          <label>{{f.name}}</label>
+          <div class="row">
+            <div class="col-md-10" style="height:150px">
+              <input type="text" class="form-control" name="" value="" maxlength="{{f.maxLength}}" ng-model="f.value" >
+            </div>
+            <span ng-if="f.required && error.text " style="color:red;padding:0;margin:0">{{f.name}} Field was Required</span>
+          </div>
+        </div>
+      <button type="button" class="btn btn-success" ng-click="saveDynamicForm()">
+        Save
+      </button>
+    </div>
+  </div>
+
+</div>

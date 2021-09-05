@@ -1,0 +1,89 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html ng-app="app"  id="main">
+  <head>
+    <meta charset="utf-8">
+    <!-- <link rel="icon" type="image/jpg" href="https://www.syrow.com/wp-content/themes/Divi/images/favicon-32x32.png"> -->
+    <link rel="icon" type="image/jpg" href="{{BRAND_LOGO}}">
+    <title>{{BRAND_NAME}} Python Runtime for UIPath</title>
+    <meta name="viewport" content="initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" charset="utf-8">
+    <style media="screen">
+    input:focus, textarea:focus, select:focus{
+      outline: none;
+    }
+    </style>
+  </head>
+  {% verbatim %}
+  <body ng-controller="main">
+      <div ng-show="runtime" class="text-center" style="padding:40px;">
+        <i ng-if="!done" class="fa fa-spinner fa-spin fa-4x"></i> <br>
+        <span ng-if="done">Complete , Please close this window</span> <br>
+        <img src="/static/images/python.png" style="width:100px;">
+      </div>
+
+      <div ng-show="!runtime">
+        <div id="aceEditor" style="width:50%;height:100vh;"></div>
+        <div style="width:50%;margin-left:50%;height:100vh;position:fixed;background:rgb(0, 0, 0);top:0px;">
+          <div class="row" style="margin:0px;background:rgb(20, 20, 20);height:33px;overflow:hidden;">
+            <button ng-click="save()" type="button" class="btn btn-default pull-left" style="color:white;background:rgb(99, 196, 12);border
+            :none;border-radius:0px;">
+              Save <i class="fa fa-floppy-o"></i>
+            </button>
+            <button type="button" class="btn btn-default pull-left" style="color:white;background:red;border
+            :none;border-radius:0px;" ng-click="run()">
+            Run <i class="fa fa-play"></i>
+            </button>
+            <div class="col-md-9 text-right pull-right" style="padding-top:6px;">
+              <span style="color:#eee;">Python 2.7.5</span>
+            </div>
+          </div>
+
+          <div class="row" style="margin:0px;color:rgb(142, 142, 142);height:94vh;overflow:auto;">
+            <div ng-repeat="log in logs track by $index" style="white-space: pre-wrap">{{log}}<br></div>
+
+            <div style="color:rgb(105, 105, 105);color:white;">
+              <span>$ </span><input ng-enter="command()" ng-model="cmdText" type="text" style="border-radius : 0px;background:black;border:none;width:90%;">
+            </div>
+
+          </div>
+
+
+
+        </div>
+      </div>
+
+
+      {% endverbatim %}
+
+      <script type="text/javascript">
+        var USER = '{{request.user.username}}';
+        var WS_SERVER = '{{WS_SERVER}}';
+      </script>
+
+
+      <script src="{% static 'js/autobahn.min.js' %}"></script>
+      <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+      <!-- <script src="{% static 'js/jquery.cookie-1.4.1.min.js' %}"></script> -->
+      <!-- <script src="{% static 'js/bootstrap.min.js' %}"></script> -->
+      <script src="{% static 'js/angular.min.js' %}"></script>
+      <script src="{% static 'js/pythonIDE.js' %}"></script>
+      <script src="{% static 'js/ace.js' %}"></script>
+      <script src="{% static 'js/ace/ext-language_tools.js' %}"></script>
+      <script type="text/javascript">
+        const remote = require('electron').remote;
+        var ipc = require('electron').ipcRenderer;
+        window.addEventListener("message", function receiveMessage(event) {
+          console.log(event)
+          if (typeof event.data == 'object' && event.data.type == 'UIPathIPC') {
+            ipc.send('UIPathIPC' , event.data.data)
+          }
+        }, false);
+
+
+      </script>
+
+  </body>
+</html>

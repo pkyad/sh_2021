@@ -1,0 +1,15 @@
+<div style="font-size:20px" ng-enter="copyToClipboard(true)">
+  <div class="col-md-12" style="padding:10px;padding-bottom:3px">
+    <button type="button" class="btn btn-default" ng-click="changeText('cap')">HELLO WORLD</button>
+    <button type="button" class="btn btn-default" ng-click="changeText('small')">hello world</button>
+    <button type="button" class="btn btn-default" ng-click="changeText('cam')">Hello world</button>
+    <button type="button" class="btn btn-default" ng-click="changeText('fstCap')">Hello World</button>
+    <button type="button" class="btn btn-primary" ng-click="formatDate(text)">Parse Date</button>
+    <button type="button" class="btn btn-default pull-right" ng-if="showSendBtn" ng-click="copyToClipboard(true)"> <i class="fa fa-paper-plane"></i> </button>
+  </div>
+  <div class="col-md-12" style="padding:10px;padding-top:3px">
+    <textarea type="text" rows="4" class="form-control" ng-model="text" placeholder="Selected Text" style="font-size:18px" id="txtInput" ng-init="keepFocus()"> </textarea>
+  </div>
+  <div style="padding:10px"><img src="{{imgUrl}}" alt="Cropped Image" width="100%"/>
+  </div>
+</div>

@@ -1,0 +1,170 @@
+<div class="" style="min-height:93vh;position:relative;">
+  <div class="container-fluid" style="padding:0px;">
+    <breadcrumb></breadcrumb>
+
+    <div class="container-fluid" style="padding-top:15px;">
+
+      <div class="row">
+        <div class=" col-md-4">
+          <div class="row" style="background-color:#ff4b4b;margin:2em;position:relative">
+            <div class=" text-center" style="width:30%;float:left;display:table;padding: 2em 0 2em;">
+              <span style=""><i class="fa fa-exclamation-circle" style="font-size:50px;color:#fff;display: table-cell;vertical-align: middle;"></i></span>
+            </div>
+            <div style="width:70%;float:left;padding: 2em 0 2em;">
+              <span class="text-center" style="font-size:18px;color:#fff;"><b>On Going Complaints/Suggestions</b></span><br />
+              <div style="position:relative;">
+                <span style="font-size:20px;color:#fff;text-align: left;"><b>{{complaintsDash}}</b></span><br />
+                <!--
+                <span style="font-size:20px;color:#eee;text-align: left;"><b>&#x20b9; {{adv.retloan}}</b> <span style="padding-left:15px;position:absolute;top:25px;right:30%;"><i class="fa fa-caret-down fa-2x"></i> </span> </span><br />
+                <span style="padding-left:15px;position:absolute;top:-10px;right:30%;"><i class="fa fa-caret-up fa-2x"></i> </span>
+                -->
+              </div>
+            </div>
+            <div style="position:absolute;right:5%;top:5px;z-index:0"><i class="fa fa-exclamation-circle" style="font-size:7em;color:rgba(00, 00, 00, 0.1);"></i></div>
+          </div>
+        </div>
+        <div class="col-md-offset-1 col-md-6" style="margin-top:2em;">
+          <!-- <h3>Compaints/Suggestions </h3>
+          <hr> -->
+          <div class="col-md-12 text-center text-muted" ng-if="complaints.length == 0" >
+            <span><b>No complaints/Suggestions..</b> </span>
+          </div>
+          <div class="row" style="padding:10px;" ng-if="complaints.length > 0" ng-repeat="c in complaints | limitTo:climit" >
+            <div class="col-md-12 msg" style="{{c.status == 'created'? 'background:#c5d6fc;':'background:#f6eb8b;' }}">
+              <div style="position:absolute;left:5%;top:5px;z-index:0"><i class="fa fa-exclamation-circle" style="font-size:7em;color:rgba(128, 128, 128, 0.1);"></i></div>
+              <div ng-if="c.status == 'created'" class="time pull-right text-center" style="{{c.status == 'created'? 'background:#a8bff4;':'background:#ded05f;' }}margin-top:8px;">
+                <button type="button" class="btn btn-primary" ng-click="resolve(c.pk);c.status = 'resolved';" >
+                  Resolve
+                </button>
+              </div>
+              <div class="" style="padding-top:10px;">
+                <p>{{c.txt}}</p>
+              </div>
+              <div class="" style="padding-top:5px;">
+                <p><b>By : {{c.user | getName}}</b> </p>
+              </div>
+              <div class="time pull-right text-center" style="{{c.status == 'created'? 'background:#a8bff4;':'background:#ded05f;' }}">
+                <span>{{c.created | timeAgo}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 text-center" ng-if="complaints.length > 6">
+            <button type="button" class="btn btn-default" ng-click="loadMore(climit,'complaint')" ng-hide="hidecbtn">
+              load more..
+            </button>
+          </div>
+        </div>
+        <!-- <div class="col-md-offset-4 col-md-4">
+          <div class="row" style="background-color:#569bec;margin:2em;position:relative">
+            <div class=" text-center" style="width:30%;float:left;display:table;padding: 2em 0 2em;">
+              <span style=""><i class="fa fa-line-chart" style="font-size:50px;color:#fff;display: table-cell;vertical-align: middle;"></i></span>
+            </div>
+            <div style="width:70%;float:left;padding: 2em 0 2em;">
+              <span class="text-center" style="font-size:20px;color:#fff;"><b>On Going Appraisals</b></span><br />
+              <div style="position:relative;">
+                <span style="font-size:20px;color:#fff;text-align: left;"><b>{{appraisalDash}}</b></span><br />
+              </div>
+            </div>
+            <div style="position:absolute;right:5%;top:5px;z-index:0"><i class="fa fa-line-chart" style="font-size:7em;color:rgba(00, 00, 00, 0.1);"></i></div>
+          </div>
+        </div> -->
+        <!-- <div class="col-md-4">
+          <div class="row" style="background-color:#7dd286;margin:2em;position:relative">
+            <div class=" text-center" style="width:30%;float:left;display:table;padding: 2em 0 2em;">
+              <span style=""><i class="fa fa-comments" style="font-size:50px;color:#fff;display: table-cell;vertical-align: middle;"></i></span>
+            </div>
+            <div style="width:70%;float:left;padding: 2em 0 2em;">
+              <span class="text-center" style="font-size:20px;color:#fff;"><b>Feedbacks</b></span><br />
+              <div style="position:relative;">
+                <span style="font-size:20px;color:#fff;text-align: left;"><b>{{feedsDash}}</b></span><br />
+              </div>
+            </div>
+            <div style="position:absolute;right:5%;top:5px;z-index:0"><i class="fa fa-comments" style="font-size:7em;color:rgba(00, 00, 00, 0.1);"></i></div>
+          </div>
+        </div> -->
+      </div>
+
+      <!-- <div class="col-md-10 col-md-offset-1"> -->
+        <!-- <div class="col-md-6">
+          <h3>Feedback</h3>
+          <hr>
+          <div class="col-md-12 text-center text-muted" ng-if="feeds.length == 0">
+            <span><b>No Feedbacks..</b> </span>
+          </div>
+          <div class="row" style="padding:10px;" ng-if="feeds.length > 0" ng-repeat="f in feeds | limitTo:limit">
+            <div class="col-md-12 msg">
+              <div style="position:absolute;left:5%;top:5px;z-index:0"><i class="fa fa-comments" style="font-size:7em;color:rgba(128, 128, 128, 0.1);"></i></div>
+              <h3>{{f.title}}</h3>
+              <p>{{f.feed}}</p>
+              <div class="time pull-right text-center">
+                <span>{{f.created | timeAgo}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 text-center" ng-if="feeds.length > 6">
+            <button type="button" class="btn btn-default" ng-click="loadMore(limit,'feed')" ng-hide="hideit">
+              load more..
+            </button>
+          </div>
+        </div> -->
+        <!-- <div class="col-md-6">
+          <h3>Compaints/Suggestions </h3>
+          <hr>
+          <div class="col-md-12 text-center text-muted" ng-if="complaints.length == 0">
+            <span><b>No complaints/Suggestions..</b> </span>
+          </div>
+          <div class="row" style="padding:10px;" ng-if="complaints.length > 0" ng-repeat="c in complaints | limitTo:climit">
+            <div class="col-md-12 msg" style="{{c.status == 'created'? 'background:#c5d6fc;':'background:#f6eb8b;' }}">
+              <div style="position:absolute;left:5%;top:5px;z-index:0"><i class="fa fa-exclamation-circle" style="font-size:7em;color:rgba(128, 128, 128, 0.1);"></i></div>
+              <div ng-if="c.status == 'created'" class="time pull-right text-center" style="{{c.status == 'created'? 'background:#a8bff4;':'background:#ded05f;' }}margin-top:8px;">
+                <button type="button" class="btn btn-primary" ng-click="resolve(c.pk);c.status = 'resolved';" >
+                  Resolve
+                </button>
+              </div>
+              <div class="" style="padding-top:10px;">
+                <p>{{c.txt}}</p>
+              </div>
+              <div class="" style="padding-top:5px;">
+                <p><b>By : {{c.user | getName}}</b> </p>
+              </div>
+              <div class="time pull-right text-center" style="{{c.status == 'created'? 'background:#a8bff4;':'background:#ded05f;' }}">
+                <span>{{c.created | timeAgo}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 text-center" ng-if="complaints.length > 6">
+            <button type="button" class="btn btn-default" ng-click="loadMore(climit,'complaint')" ng-hide="hidecbtn">
+              load more..
+            </button>
+          </div>
+        </div>
+      </div> -->
+    </div>
+
+  </div>
+</div>
+<style media="screen">
+  .msg {
+    background-color: #eee;
+    border-left: 3px solid #FF000E;
+    padding-bottom: 10px;
+  }
+  /* .msg:hover {
+    background-color: #eee;
+  } */
+  .rate {
+    color: #ddd;
+    font-size: 1.5em;
+    cursor: pointer;
+  }
+  .rate:hover {
+    color: #FF000E;
+    font-size: 1.5em;
+  }
+  .time{
+    background-color: #ddd;
+    border-radius: 5px;
+    width: 80px;
+    height:22px;
+  }
+</style>

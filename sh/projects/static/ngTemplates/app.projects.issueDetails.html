@@ -1,0 +1,94 @@
+<div class="container-fluid" style="padding:30px;padding-top:10px;">
+  <div class="row text-center">
+    <h3>Issue Details</h3>
+    <hr>
+  </div>
+  <div class="row" style="margin-top:15px;">
+    <div class="col-md-4">
+      <label>
+        <strong>Issue With:</strong>
+      </label>
+    </div>
+    <div class="col-md-4">
+      {{details.title}}
+    </div>
+  </div>
+  <div class="row" style="margin-top:15px;">
+    <div class="col-md-4">
+      <label>
+        <strong>Responsible Person :</strong>
+      </label>
+    </div>
+    <div class="col-md-1">
+      <img ng-src="{{details.responsible | getDP}}" class="img-circle" width="25" />
+    </div>
+    <div class="col-md-4">
+      {{details.responsible | getName}}
+    </div>
+  </div>
+  <div class="row" style="margin-top:15px;">
+    <div class="col-md-4">
+      <label>
+        <strong>Tentative Closing Date :</strong>
+      </label>
+    </div>
+    <div class="col-md-4">
+      {{details.tentresdt}}
+    </div>
+  </div>
+  <div class="row" style="margin-top:15px;">
+    <div class="col-md-4">
+      <label>
+        <strong>Priority:</strong>
+      </label>
+    </div>
+    <div class="col-md-4">
+      <label class="text text-success" ng-if="details.priority=='low'">{{details.priority}}</label>
+      <label class="text text-warning" ng-if="details.priority=='medium'">{{details.priority}}</label>
+      <label class="text text-danger" ng-if="details.priority=='high'">{{details.priority}}</label>
+    </div>
+  </div>
+  <div class="row" style="margin-top:15px;">
+    <div class="col-md-4">
+      <label>
+        <strong>Description :</strong>
+      </label>
+    </div>
+    <div class="col-md-4">
+      {{details.description}}
+    </div>
+  </div>
+  <div class="row" style="margin-top:15px;">
+    <div class="col-md-4">
+      <label>
+        <strong>Result Status :</strong>
+      </label>
+    </div>
+    <div class="col-md-4">
+      <label class="text text-muted" ng-if="details.result== null">Result Status Not Updated.</label>
+      <label class="text text-success" ng-if="details.result=='resolved'">{{details.result}}</label>
+      <label class="text text-warning" ng-if="details.result=='partial'">{{details.result}}</label>
+      <label class="text text-danger" ng-if="details.result=='parked'">{{details.result}}</label>
+    </div>
+  </div>
+  <div class="row" style="margin-top:15px;">
+    <div class="col-md-4">
+      <label>
+        <strong>Result Summary :</strong>
+      </label>
+    </div>
+    <div class="col-md-4">
+      {{details.resultComments}}
+    </div>
+  </div>
+  <div class="row" style="margin-top:15px;">
+    <div class="col-md-4">
+      <label>
+        <strong>Linked File:</strong>
+      </label>
+    </div>
+    <div class="col-md-4">
+      <a target="_blank" href="{{details.file}}">{{details.file.split('__')[1]}}</a>
+    </div>
+  </div>
+</div>

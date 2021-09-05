@@ -1,0 +1,65 @@
+<div ng-controller="projectManagement.projects.company.form">
+  <div class="col-md-6" style="padding-top:20px;" >
+    <div class="form-group">
+      <label>Company</label>
+          <input ng-model="form.name" type="text" class="form-control" placeholder="Company name">
+    </div>
+    <div class="form-group">
+      <label>Mobile</label>
+      <input type="text " class="form-control" ng-model="form.mobile">
+    </div>
+
+    <div class="form-group">
+      <label>About</label>
+      <textarea class="form-control" rows="8" ng-model="form.about"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Telephone</label>
+      <input type="text " class="form-control" ng-model="form.telephone">
+    </div>
+    <div class="form-group">
+      <label>Address</label>
+      <input placeholder="Street" type="text " class="form-control" ng-model="form.address.street">
+      <div class="row" style="margin-top:5px;">
+        <div class=" col-md-6">
+          <input placeholder="City" type="text " class="form-control" ng-model="form.address.city">
+        </div>
+        <div class="col-md-6">
+          <input placeholder="State" type="text " class="form-control" ng-model="form.address.state">
+        </div>
+
+      </div>
+      <div class="row" style="margin-top:5px;">
+        <div class=" col-md-6">
+          <input placeholder="pincode" type="text " class="form-control" ng-model="form.address.pincode">
+        </div>
+        <div class="col-md-6">
+          <input placeholder="Country" type="text " class="form-control" ng-model="form.address.country">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>CIN</label>
+      <input type="text " class="form-control" ng-model="form.cin">
+    </div>
+    <div class="form-group">
+      <label>GSTIN</label>
+      <input type="text " class="form-control" ng-model="form.tin">
+    </div>
+    <div class="form-group">
+      <label>Logo</label>
+      <input type="text " class="form-control" ng-model="form.logo">
+    </div>
+    <div class="form-group">
+      <label>web</label>
+      <input type="text " class="form-control" ng-model="form.web">
+    </div>
+    <div class="btn-group pull-right">
+      <button ng-if="mode=='new'"type="button" class="btn btn-default" ng-click="resetForm()">
+        Reset
+      </button>
+      <button type="button" class="btn btn-primary pull-right" ng-click="createCompany()" >Save</button>
+    </div>
+  </div>
+</div>

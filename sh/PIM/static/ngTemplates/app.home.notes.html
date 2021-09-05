@@ -1,0 +1,47 @@
+<breadcrumb></breadcrumb>
+<div class="container-fluid col-md-10 " id="containerSize" style="border-right:solid 2px #eeeeee;">
+  <uib-tabset>
+    <uib-tab ng-repeat="page in pages" active="tab.active" disable="tab.disabled" ng-click="openPage(page.pk,page.parent,$index)">
+      <uib-tab-heading>
+        {{page.title}}
+      </uib-tab-heading>
+      <div style="margin-top:10px;" class="row">
+        <div class="col-md-1">
+          <button type="button" class="btn btn-default" ng-click="pencil($index)"><i class="fa fa-pencil"></i></button>
+          <button type="button" class="btn btn-default" ng-click="addText($index)"><i class="fa fa-font"></i></button>
+        </div>
+        <div class="btn-group col-md-2">
+          <button type="button" class="btn btn-success" ng-click="save($index)"> <i class="fa fa-floppy-o"></i></button>
+          <button type="button" class="btn btn-default" ng-click="clearAll($index)"> <i class="fa fa-eraser"></i></button>
+          <button type="button" class="btn btn-default" ng-click="addImage($index)"> <i class="fa fa-image"></i> Add Image</button>
+        </div>
+        <div class="col-md-2">
+          <span class="col-md-1 btn"style="width:25px;height:25px;background:green;margin:3px;" id="green" ng-click="setColor('green',$index)"></span>
+          <span class="col-md-1 btn"style="width:25px;height:25px;background:blue;margin:3px;" id="blue" ng-click="setColor('blue',$index)"></span>
+          <span class="col-md-1 btn"style="width:25px;height:25px;background:red;margin:3px;" id="red" ng-click="setColor('red',$index)"></span>
+          <span class="col-md-1 btn"style="width:25px;height:25px;background:yellow;margin:3px;" id="yellow" ng-click="setColor('yellow',$index)"></span>
+          <span class="col-md-1 btn"style="width:25px;height:25px;background:orange;margin:3px;" id="orange" ng-click="setColor('orange',$index)"></span>
+          <span class="col-md-1 btn"style="width:25px;height:25px;background:black;margin:3px;" id="black" ng-click="setColor('black',$index)"></span>
+        </div>
+        <div class="dropdown col-md-1">
+          <!-- <button type="button" class="btn btn-success" ng-click="rect($index)">rectangle</button>
+          <button type="button" class="btn btn-success" ng-click="tri($index)">triangle</button>
+          <button type="button" class="btn btn-success" ng-click="cir($index)">circle</button> -->
+          <select class="shape">
+            <option selected disabled hidden>Choose Shape</option>
+            <option ng-click="shape($index,0)" id="rectangle">Rectangle</option>
+            <option ng-click="shape($index,1)" id="triangle">Circle</option>
+            <option ng-click="shape($index,2)" id="circle">Triangle</option>
+          </select>
+        </div>
+      </div>
+      <canvas style="border:1px solid black" id="canvas{{$index}}" width="1370" height="755"></canvas>
+    </uib-tab>
+  </uib-tabset>
+</div>
+<div class="col-md-2">
+  <h2>NOTES</h2>
+  <div class="btn" ng-repeat="n in notebooks" ng-click="openBook(n.pk)">
+    &emsp;{{$index + 1}}:&nbsp;&emsp;{{n.title}}
+  </div>
+</div>

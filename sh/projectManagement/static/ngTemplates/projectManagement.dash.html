@@ -1,0 +1,151 @@
+<style media="screen">
+  .dashCards {
+    height: 300px;
+    /* width: 300px; */
+    text-align: center;
+    border-radius: 10px;
+  }
+
+  .dashCards h4 {
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .dcircle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    display: inline-block;
+    margin-top: 20px;
+    text-align: center;
+    color: #fff;
+    position: relative;
+  }
+
+  .dcircle span {
+    font-size: 4em;
+    font-weight: bolder;
+    position: absolute;
+    top: 50px;
+    left: 70px;
+  }
+
+  .first span {
+    left: 50px;
+  }
+
+</style>
+<div class="" style="min-height:93vh;position:relative;">
+  <div class="container-fluid" style="padding-top:15px;">
+    <!-- <breadcrumb></breadcrumb> -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="row" style="background-color:#ee8a6f;margin-left:2em;position:relative">
+            <div class=" text-center" style="width:30%;float:left;display:table;padding: 2em 0 2em;">
+              <span style=""><i class="fa fa-tasks" style="font-size:50px;color:#fff;display: table-cell;vertical-align: middle;"></i></span>
+            </div>
+            <div style="width:70%;float:left;padding: 2em 0 2em;">
+              <span class="text-center" style="font-size:18px;color:#fff;"><b>On Going Tasks</b></span><br />
+              <div style="position:relative;">
+                <span style="font-size:20px;color:#fff;text-align: left;"><b>{{projectData.taskCount}}</b></span><br />
+              </div>
+            </div>
+            <div style="position:absolute;right:5%;top:5px;z-index:0"><i class="fa fa-tasks" style="font-size:7em;color:rgba(00, 00, 00, 0.1);"></i></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="row" style="background-color:#e2d373;margin-left:2em;position:relative">
+            <div class=" text-center" style="width:30%;float:left;display:table;padding: 2em 0 2em;">
+              <span style=""><i class="fa fa-folder-open" style="font-size:50px;color:#fff;display: table-cell;vertical-align: middle;"></i></span>
+            </div>
+            <div style="width:70%;float:left;padding: 2em 0 2em;">
+              <span class="text-center" style="font-size:20px;color:#fff;"><b>On Going Projects</b></span><br />
+              <div style="position:relative;">
+                <span style="font-size:20px;color:#fff;text-align: left;"><b>{{projectData.projectCount}}</b></span><br />
+              </div>
+            </div>
+            <div style="position:absolute;right:5%;top:5px;z-index:0"><i class="fa fa-folder-open" style="font-size:7em;color:rgba(00, 00, 00, 0.1);"></i></div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="row" style="background-color:#82b1e8;margin-left:2em;margin-right:2em;position:relative">
+            <div class=" text-center" style="width:30%;float:left;display:table;padding: 2em 0 2em;">
+              <span style=""><i class="fa fa-user-plus" style="font-size:50px;color:#fff;display: table-cell;vertical-align: middle;"></i></span>
+            </div>
+            <div style="width:70%;float:left;padding: 2em 0 2em;">
+              <span class="text-center" style="font-size:20px;color:#fff;"><b>Active Clients</b></span><br />
+              <div style="position:relative;">
+                <span style="font-size:20px;color:#fff;text-align: left;"><b>2</b></span><br />
+              </div>
+            </div>
+            <div style="position:absolute;right:5%;top:5px;z-index:0"><i class="fa fa-user-plus" style="font-size:7em;color:rgba(00, 00, 00, 0.1);"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6"style="padding:10px;">
+          <div class="container-fluid" style="border:1px solid #dedcdc">
+            <h4 class="text-muted">Budget by Employee and WorkLoad</h4>
+            <canvas id="project-mixed-chart" width="430" height="200"></canvas>
+          </div>
+        </div>
+        <div class="col-md-6"style="padding:10px;">
+          <div class="container-fluid" style="border:1px solid #dedcdc">
+            <h4 class="text-muted">Employee satisfaction</h4>
+            <canvas id="Projectexpense-bar-chart" width="430" height="200"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="row"style="padding-top:15px;">
+        <div class="col-md-12">
+          <div class="col-md-3">
+            <div class="container-fluid dashCards" style="background-color:#B9D8D8;">
+              <div style="position:absolute;right:6%;bottom:10px;z-index:0"><i class="fa fa-refresh" style="font-size:7em;color:rgba(00, 00, 00, 0.1);"></i></div>
+              <h4>Project progress</h4>
+              <h5>Over all Completion</h5>
+              <div class="dcircle first">
+                <span>84%</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="container-fluid dashCards" style="background-color:#D5E4A6;">
+              <div style="position:absolute;right:6%;bottom:10px;z-index:0"><i class="fa fa-users" style="font-size:6.5em;color:rgba(00, 00, 00, 0.1);"></i></div>
+              <h4>Team Members</h4>
+              <h5>Indivisuals Working on the Project</h5>
+              <div class="dcircle">
+                <span>{{projectData.teamCount}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="container-fluid dashCards" style="background-color:#FD8F64;">
+              <div style="position:absolute;right:6%;bottom:10px;z-index:0"><i class="fa fa-commenting-o" style="font-size:7em;color:rgba(00, 00, 00, 0.1);"></i></div>
+              <h4>Current Issues</h4>
+              <h5>Issues Reported in the Project</h5>
+              <div class="dcircle">
+                <span>{{projectData.issueCount}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="container-fluid dashCards" style="background-color:#D5C0AC;">
+              <div style="position:absolute;right:6%;bottom:10px;z-index:0"><i class="fa fa-code-fork" style="font-size:7em;color:rgba(00, 00, 00, 0.1);"></i></div>
+              <h4>Commits</h4>
+              <h5>Total Commits for the Project</h5>
+              <div class="dcircle">
+                <span>38</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</section>
+</div>

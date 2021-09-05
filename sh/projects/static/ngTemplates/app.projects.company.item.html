@@ -1,0 +1,43 @@
+<div class="col-md-3" style="padding-bottom:20px;padding-left:10px;padding-right:10px;cursor:pointer" >
+  <div class="container-fluid card" style="padding-bottom:10px; padding-top:10px;" ng-click = "rowActionClicked('details')">
+    <div class="row" style="border-bottom: 1px solid #dedede;">
+      <div class="col-md-12" style="position:relative;display:block;">
+        <div class="row" style="padding-left:10px;">
+          <h3>{{data.name}}</h3>
+          <!-- <div ng-if="{{data.vendor === 'false'}}">
+            {{data.vendor}}
+          </div> -->
+
+        </div>
+        <!-- <div class="row">
+          <span style="position:absolute;left:38px;bottom:-20px;" class="text-muted">
+            <span style="font-size:15px;">{{data.user | getName}}</span>
+          </span>
+        </div> -->
+      </div>
+    </div>
+    <div class="row container-fluid" style="padding-top:20px;height:70px;">
+      <div class="col-md-10" style="z-index: 1;">
+        <span><strong><i style="width:30px;" class="fa fa-mobile"></i> </strong>{{data.mobile}}</span><br>
+        <span><strong><i style="width:30px;"> </i>TIN: </strong>{{data.tin}}</span><br>
+        <span><strong><i style="width:30px;"> </i>CIN: </strong>{{data.cin}}</span><br>
+        <span><strong><i style="width:30px;"class="fa fa-globe"> </i> </strong>{{data.web}}</span>
+
+      </div>
+      <div class = "col-md-2">
+        <div style="padding-right:20px;">
+          <div class="row">
+            <span class="pull-right" style="cursor:pointer;" ng-click = "rowActionClicked('edit');$event.stopPropagation();">
+              <i class="fa fa-pencil fa-lg" style="margin-top:0px;"></i>
+            </span>
+          </div>
+          <!-- <div class="row">
+            <span class="pull-right" style="cursor:pointer;" ng-click = "rowActionClicked('details')">
+              <i class="fa fa-info-circle fa-lg" style="margin-top:20px;"></i>
+            </span>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

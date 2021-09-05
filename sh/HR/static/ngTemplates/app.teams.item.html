@@ -1,0 +1,10 @@
+<div class="col-md-3" style="margin-bottom:20px;">
+  <div class="container-fluid card" style="padding:0px;border-radius:15px;cursor:pointer" ng-click="rowActionClicked('browserTeams')">
+    <div class="col-md-10" style="padding:20px;font-size:20px">
+      <i class="fa fa-users fa-lg text-muted"></i> <strong> {{data.title}}</strong>
+    </div>
+    <div class="col-md-2" style="padding-top:15px">
+      <i class="fa fa-trash fa-2x text-danger" ng-click="delete(data.pk,$index);$event.stopPropagation();"></i>
+    </div>
+  </div>
+</div>

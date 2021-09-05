@@ -1,0 +1,59 @@
+<div class="row" ng-controller="sudo.manageUsers.editDesignation">
+
+  <div class="col-md-6">
+    <br>
+    <div class="text-center">
+      <h3>Designation For {{form.user | getName}}</h3>
+    </div>
+
+    <div class="form-group">
+      <label>Reporting To</label>
+      <input uib-typeahead="Reporting as Reporting.username for Reporting in Reporting($viewValue)" ng-model="form.reportingTo" type="text" class="form-control" placeholder="Select Reporting To">
+    </div>
+
+    <div class="form-group">
+      <label>HR Partner</label>
+      <input uib-typeahead="Reporting as Reporting.username for Reporting in Reporting($viewValue)" ng-model="form.hrApprover" type="text" class="form-control" placeholder="Select HR Partner">
+    </div>
+
+    <div class="form-group">
+      <label>Primary Approver</label>
+      <input uib-typeahead="Reporting as Reporting.username for Reporting in Reporting($viewValue)" ng-model="form.primaryApprover" type="text" class="form-control" placeholder="Select Primary Approver">
+    </div>
+
+    <div class="form-group">
+      <label>Secondary Approver</label>
+      <input uib-typeahead="Reporting as Reporting.username for Reporting in Reporting($viewValue)" ng-model="form.secondaryApprover" type="text" class="form-control" placeholder="Select Secondary Approver">
+    </div>
+
+    <div class="form-group">
+      <label>Sallary Grade</label>
+      <input uib-typeahead="sal as sal.title for sal in sallarySearch($viewValue)" ng-model="form.salaryGrade" type="text" class="form-control" placeholder="Select Sallary Grade">
+    </div>
+    <div class="form-group">
+      <label>Team</label>
+      <div class="input-group">
+        <input uib-typeahead="team as team.title for team in teamSearch($viewValue)" ng-model="form.teamPk" type="text" class="form-control" placeholder="Search using name">
+        <span ng-click="openCreateTeam()" ng-if="form.teamPk.length>0 || form.teamPk.pk " class="input-group-addon btn btn-primary"><i class="fa fa-{{form.teamPk.pk ? 'pencil':'plus'}}"></i> {{form.teamPk.pk?  'Update':'New'}}</span>
+        <span ng-click="addTeam()" class="input-group-addon btn btn-success">Add <i class="fa fa-plus-circle"></i></span>
+      </div>
+      <p ng-if="form.teamPk.length>0 && form.teamPk.pk == null" class="help-block">No Team with this name exist!. Click <span class="badge">new</span> to create.</p>
+    </div>
+    <div class="col-md-6" style="margin-bottom:15px;" ng-repeat="data in form.team">
+      <div class="container-fluid card" style="padding:0px;border-radius:10px" >
+        <span class="pull-right" style="cursor:pointer;padding-right:5px" ng-click="removeTeam($index)"><i class="fa fa-times-circle-o fa-lg"></i></span>
+        <div class="container-fluid" style="padding:10px;font-size:18px">
+          <i class="fa fa-users text-muted"></i> <strong> {{data.title}}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="btn-group ">
+        <button type="button" class="btn btn-primary " ng-click="save()">Save</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>

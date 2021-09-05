@@ -1,0 +1,109 @@
+<div style="position:relative; height:83.5vh;top:0px;right:0px;padding:0px;" ng-controller="admin.teams.explore">
+  <div class="container-fluid" style="padding-top:15px;">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-2">
+          <div class="col-md-12 text-center" style="font-size: 20px;padding-bottom: 20px;">
+            <strong>{{teamData.title}}</strong>
+          </div>
+          <div class="col-md-12 text-center">
+            <img style="width: 120px;height:120px;" class="img img-circle" ng-if="teamData.manager.profile.displayPicture != null" ng-src="{{teamData.manager.profile.displayPicture}}">
+            <img style="width: 120px;height:120px;" class="img img-circle" ng-if="teamData.manager.profile.displayPicture == null" src="/static/images/userIcon.png">
+          </div>
+          <div class="col-md-12" style="font-size: 15px;padding-top: 20px">
+            <strong>Team counts :</strong> #{{teamData.teamMembers.length}}<br><br>
+            <strong>Manager :</strong> {{teamData.manager.first_name}}<br>
+            <strong>Mobile :</strong> {{teamData.manager.profile.mobile}}<br>
+            <strong>Emp ID :</strong> #{{teamData.manager.profile.empID}}<br><br>
+            <span style="font-size:20px"><strong style="font-size:30px">{{teamData.completedProjects}}</strong> Completed</span><br>
+            <span style="font-size:20px"><strong style="font-size:30px">{{teamData.ongoingProjects}}</strong> Ongoing</span><br>
+          </div>
+        </div>
+        <div class="col-md-10" style="border-left:2px solid #eee">
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="input-group">
+                <input  uib-typeahead="user as getUsrName(user) for user in userSearch($viewValue)" type="text" class="form-control" ng-model="form.newUser" placeholder="Add a New User">
+                <span class="input-group-btn">
+                  <button class="btn btn-success" type="button" ng-click="addUser()">Add <i class="fa fa-plus-circle"></i></button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <div class="input-group">
+                <input  uib-typeahead="t as getTeamName(t) for t in teamSearch($viewValue)" type="text" class="form-control" ng-model="form.team" placeholder="Search and select a group to add">
+                <span class="input-group-btn">
+                  <button class="btn btn-success" type="button" ng-click="addTeam()">Add <i class="fa fa-plus-circle"></i></button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-md-6 text-center" style="font-size:25px;">
+            <div class="col-md-4">
+              <input type="radio" name="filterDate" value="3M" ng-model="form.filterType"><span> 3 Months</span>
+            </div>
+            <div class="col-md-4">
+              <input type="radio" name="filterDate" value="28D" ng-model="form.filterType"><span> 28 Days</span>
+            </div>
+            <div class="col-md-4">
+              <input type="radio" name="filterDate" value="7D" ng-model="form.filterType"><span> 7 Days</span>
+            </div>
+          </div> -->
+          <div class="col-md-12" style="padding-top:25px;border-top:2px solid #eee">
+            <div class="col-md-4 " style="padding-bottom:20px;" ng-repeat="u in teamData.teamMembers">
+
+              <div class="container-fluid card" style="padding-bottom:0px;border-radius:15px;">
+                <div class="row" style="padding-bottom:15px;margin-right:10px">
+                  <div class="col-md-2" style="padding:5px;">
+                    <img ng-src="{{u | getDP}}" class="img-circle" width="50"/>
+                  </div>
+                  <div class="col-md-9" style="position:relative;display:block;">
+                    <div class="row" style="padding-left:10px;">
+                      <h3>{{u | getName}}</h3>
+                    </div>
+                  </div>
+                  <div class="col-md-1 text-right" style="padding-top:25px">
+                    <i class="fa fa-trash-o fa-2x" style="color:red;cursor:pointer" mwl-confirm title="Delete User" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="deleteUser(u,$index)" confirm-button-type="default" cancel-button-type="default"></i>
+                  </div>
+                </div>
+                <!-- <div class="row container-fluid" style="padding:10px 0px" ng-if="teamData.statsData[u]">
+                  <div class="col-md-8">
+                    <div class="col-md-6 text-center" style="padding:0px;font-size:13px;">
+                      <strong class="text-muted" style="font-size:20px">{{teamData.statsData[u].codingCount | number}}</strong><br>
+                      <strong>Total Coding</strong>
+                    </div>
+                    <div class="col-md-6 text-center" style="padding:0px;font-size:13px;">
+                      <strong class="text-muted" style="font-size:20px">{{teamData.statsData[u].qcCount | number}}</strong><br>
+                      <strong>Total Qc</strong>
+                    </div>
+                    <div class="col-md-6 text-center" style="padding:0px;font-size:13px;">
+                      <strong class="text-muted" style="font-size:20px">{{teamData.statsData[u].lddcoderCount | number}}</strong><br>
+                      <strong>Total LDDCoding</strong>
+                    </div>
+                    <div class="col-md-6 text-center" style="padding:0px;font-size:13px;">
+                      <strong class="text-muted" style="font-size:20px">{{teamData.statsData[u].lddqcCount | number}}</strong><br>
+                      <strong>Total LDDQc</strong>
+                    </div>
+                  </div>
+                  <div class="col-md-4 text-center" style="padding:5px;font-size:13px;padding-top:20px">
+                    <strong style="font-size:20px;color:red">{{teamData.statsData[u].wpercent}} %</strong><br>
+                    <strong>Wrong Percent</strong>
+                  </div>
+
+                </div> -->
+
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="modal-header">
+  List of Projects older than 3 months
+</div>
+
+<div class="modal-body">
+
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Created On</th>
+      <th scope="col">Options</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="p in projects">
+      <th scope="row">{{p.pk}}</th>
+      <td>{{p.name}}</td>
+      <td>{{p.created | date: 'fullDate'}}</td>
+      <td class="text-danger"> <i class="fa fa-trash fa-2x" mwl-confirm title="Delete Projects" message="Are you sure? Once deleted , all data will be lost for this project" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="delete($index)" confirm-button-type="default" cancel-button-type="default"></i> </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+</div>

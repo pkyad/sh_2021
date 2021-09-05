@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h1>Files for {{name}}</h1>
+    <ul>
+      {% for fil in docs %}
+      <li>
+        <a href="{{fil.attachment.url}}">{{fil.name}}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

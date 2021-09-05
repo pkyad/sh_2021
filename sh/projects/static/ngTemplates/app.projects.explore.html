@@ -1,0 +1,530 @@
+<div style="position:relative; height:83.5vh;top:0px;right:0px;padding:0px;" ng-controller="projectManagement.projects.project.explore">
+
+  <div class="col-md-4" style="padding:0px;overflow:auto;height:100%;position:absolute;border-right:solid 2px #eee;">
+    <div class="col-md-10" style="padding-top:15px;overflow:auto;height:100%;position:absolute;">
+      <div class="row" ng-if="project.coding">
+        <div class="col-md-3">
+          <span class="text-muted" style="font-size:20px;">{{project.filesDetails.coding}} %</span> <br> <label>Coding</label>
+        </div>
+        <div class="col-md-3">
+          <span class="text-muted" style="font-size:20px;">{{project.filesDetails.qc}} %</span> <br> <label>Qc</label>
+        </div>
+        <div class="col-md-6 pull-right text-right">
+          <span class="btn btn-primary" mwl-confirm title="Start Coding" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="changeProjectSatus('coding')" confirm-button-type="default" cancel-button-type="default" ng-if="project.status=='created'">Starting Coding</span>
+          <!-- <span class="btn btn-primary" mwl-confirm title="Start Coding" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="changeProjectSatus('recoding')" confirm-button-type="default" cancel-button-type="default" ng-if="project.status=='coding'">Change To Recoding</span> -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="container-fluid">
+          <h3>{{project.title}}</h3>
+          <label>Description :</label> <span>{{project.description}}</span> <br>
+          <label>Date :</label> <span>{{project.dueDate | date: long}}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="container-fluid">
+          <label>Project ID :</label> <h4 class="text-primary">{{project.pk}}</h4>
+          <label>Project Upload :</label> <h4 class="text-primary">{{project.lddUploadedOn | date:'dd-MMM-yyyy hh:mm a'}}</h4>
+          <label>Project Start :</label> <h4 class="text-primary">{{project.projectStart | date:'dd-MMM-yyyy hh:mm a'}}</h4>
+          <label>Project End :</label> <h4 class="text-primary">{{project.projectEnd.lastupdated__max | date:'dd-MMM-yyyy hh:mm a'}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card" ng-repeat="u in project.team" style="margin-bottom:20px;margin-top:10px;">
+          <div class="container-fluid" style="padding-top:15px;">
+            <div class="col-md-5">
+              <div class="row">
+                <img ng-src="{{u | getDP}}" width="60" height="60" />
+              </div>
+              <div class="row">
+                {{u | getName}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12" style="position:absolute;bottom:25px;left:0px">
+          <div class="col-md-8" style="font-size:15px;padding:0px;padding-bottom:20px">
+            <strong style="margin-right:13px;">Enable</strong>
+            <switch ng-model="project.disabled" class="red" ng-change="disableProject()"></switch><strong style="margin-left:13px;">Disable</strong>
+          </div>
+          <div class="col-md-4 text-right" style="padding:0px">
+            <a target="_blank" href="/api/projects/projectPerformaceReport/?projectpk={{project.pk}}" class="btn btn-warning">Performance <i class="fa fa-download"></i></a>
+          </div>
+          <div class="col-md-5">
+            <span style="font-size:23px;cursor:pointer" mwl-confirm title="Clone Project" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="$state.go('home.projects.new', {clone:project.pk})" confirm-button-type="primary" cancel-button-type="default">Clone <i class="fa fa-clone"></i></span>
+          </div>
+          <div class="col-md-7 text-right" ng-if="(me.is_superuser || project.inteam) && project.status=='complete' && !project.archived">
+            <span style="font-size:23px;cursor:pointer" mwl-confirm title="Archive Project" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="archiveProject()" confirm-button-type="danger" cancel-button-type="default">Archive <i class="fa fa-archive"></i></span>
+          </div>
+          <div class="col-md-7 text-right" ng-if="(me.is_superuser || project.inteam) && project.status!='complete' && !project.archived">
+            <span style="font-size:23px;cursor:pointer" mwl-confirm title="Abby Import" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="abbyImport()" confirm-button-type="danger" cancel-button-type="default">Abby Import <i class="fa fa-cloud-upload"></i></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-md-2 col-md-offset-10" style="padding:0px;background: -moz-linear-gradient(bottom,rgba(255,0,0,0),rgba(212, 212, 212, 1));min-height:400px;">
+      <ul class="nav nav-center" style="width:100%;">
+        <li ng-if="project.ldd" class="{{explore.mode == 'ldd' ? 'active':''}} text-center" ng-click="changeExploreMode('ldd')"><a href="">LDD</a></li>
+        <li ng-if="project.coding" class="{{explore.mode == 'coding' ? 'active':''}} text-center" ng-click="changeExploreMode('coding')"><a href="">Coding</a></li>
+        <li class="{{explore.mode == 'timeline' ? 'active':''}} text-center" ng-click="changeExploreMode('timeline')"><a href=""><i class="fa fa-commenting fa-2x"></i></a></li>
+        <li class="{{explore.mode == 'files' ? 'active':''}} text-center" ng-click="changeExploreMode('files')"><a href=""><i class="fa fa-files-o fa-2x"></i></a></li>
+        <li class="{{explore.mode == 'billing' ? 'active':''}} text-center" ng-click="changeExploreMode('billing')"><a href=""><i class="fa fa-usd fa-2x"></i></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-8 col-md-offset-4" style="overflow:auto;height:85%;position:absolute;">
+
+
+    <div class="col-md-12" ng-if="explore.mode == 'ldd'">
+        <div ng-if="project.ldd" class="row" style="margin-top:20px;">
+          <div class="col-md-6">
+            <input type="file" file-model="project.lddFiles"> <br>
+            <p class="help-block">Please upload the files list (*.txt format)</p>
+          </div>
+
+          <div class="col-md-3">
+            <input type="checkbox" ng-model="project.clearLDD"> Clear existing files
+          </div>
+
+          <button ng-if="project.lddFilesBreakup.length == 0" ng-click="uploadFilesList()" type="button" class="btn btn-default btn-sm col-md-2">
+            Upload
+          </button>
+          <button ng-if="project.lddFilesBreakup && project.lddFilesBreakup.length > 0" type="button" class="btn btn-default btn-sm col-md-2"  mwl-confirm title="Clear existing data and restart LDD process" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="uploadFilesList()" confirm-button-type="danger" cancel-button-type="default">
+            Clear and Upload
+          </button>
+        </div>
+
+        <hr>
+        <div class="row" ng-if="project.lddFilesBreakup.length > 0">
+          <div class="col-md-12">
+            <div class="col-md-2 text-right">
+              <strong>LDD File Path : </strong>
+            </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" ng-model="project.lddFilePath">
+            </div>
+          </div>
+        </div>
+        <hr>
+
+        <div class="row" ng-if="project.lddFilesBreakup.length > 0">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-3">
+                Folder
+              </div>
+              <div class="col-md-1">
+                # Count
+              </div>
+              <div class="col-md-3">
+                Coder
+              </div>
+              <div class="col-md-3">
+                QC
+              </div>
+              <div class="col-md-1">
+                Coding
+              </div>
+              <div class="col-md-1">
+                Checked
+              </div>
+            </div>
+            <hr>
+            <div style="margin-bottom:10px;" ng-repeat="folder in project.lddFilesBreakup" class="row">
+              <div class="col-md-3">
+                {{folder.folder}}
+              </div>
+              <div class="col-md-1">
+                {{folder.count}}
+              </div>
+              <div class="col-md-3">
+                <input uib-typeahead="u as (u.first_name + ' ' + u.last_name) for u in userSearch($viewValue)" type="text" class="form-control" ng-model="folder.coder" ng-disabled="folder.coded">
+              </div>
+              <div class="col-md-3">
+                <input uib-typeahead="u as (u.first_name + ' ' + u.last_name) for u in userSearch($viewValue)" type="text" class="form-control" ng-model="folder.qc" ng-disabled="folder.checked">
+              </div>
+              <div class="col-md-1 text-success" ng-if="folder.coded">
+                <i class="fa fa-check fa-lg"></i>
+              </div>
+              <div class="col-md-1 text-danger" ng-if="!folder.coded">
+                <i class="fa fa-times fa-lg"></i>
+              </div>
+              <div class="col-md-1 text-success" ng-if="folder.checked">
+                <i class="fa fa-check fa-lg"></i>
+              </div>
+              <div class="col-md-1 text-danger" ng-if="!folder.checked">
+                <i class="fa fa-times fa-lg"></i>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="container-fluid">
+                <button ng-click="assignLDD()" type="button" class="btn btn-primary">
+                  Assign
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <hr>
+        <div class="row" ng-if="shwDownloadBtn">
+          <div class="col-md-12">
+            <h3>Download LDD reports</h3>
+          </div>
+          <div class="col-md-8">
+            <!-- <a class="btn btn-default" target="_blank" href="/api/projects/LDDDownload/?type=psv&projectpk={{project.pk}}">
+            PSV
+            </a> -->
+            <a class="btn btn-success" target="_blank" href="/api/projects/LDDDownload/?type=csv&projectpk={{project.pk}}">
+              CSV
+            </a>
+            <a class="btn btn-primary" target="_blank" href="/api/projects/LDDDownload/?type=excel&projectpk={{project.pk}}">
+              Excel
+            </a>
+            <a class="btn btn-info" target="_blank" href="/api/projects/LDDDownload/?type=withcoder&projectpk={{project.pk}}">
+              LDD with coders details
+            </a>
+          </div>
+          <div class="col-md-4 text-right">
+            <span class="btn btn-warning" ng-click="convertCodingFiles()">Convert To Coding Files <i class="fa fa-mail-forward"></i></span>
+          </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-md-12" ng-if="explore.mode == 'issues'">
+      <h3 class="text-muted">Issues</h3>
+      <div class="col-md-12 ">
+        <button class="btn btn-default" type="button" style="margin-top:-5%;right:-2%;position:absolute;" ng-click="openIssueForm()"> <i class="fa fa-plus"> New</i></button>
+      </div>
+      <div class="row">
+        <div class="col-md-1">
+          Priority
+        </div>
+        <div class="col-md-5">
+          Title
+        </div>
+        <div class="col-md-2">
+          Created
+        </div>
+        <div class="col-md-2">
+          Result
+        </div>
+        <div class="col-md-2">
+          Status
+        </div>
+      </div>
+      <hr>
+
+      <div class="row hoverList" ng-repeat="q in issues" style="padding-top:10px;padding-bottom:10px;">
+        <div class="col-md-1">
+          <label class="text-success" ng-if="q.priority=='low'">{{q.priority}}</label>
+          <label class="text-warning" ng-if="q.priority=='medium'">{{q.priority}}</label>
+          <label class="text-danger" ng-if="q.priority=='high'">{{q.priority}}</label>
+        </div>
+        <div class="col-md-5">
+          {{q.title}}
+        </div>
+        <div class="col-md-2">
+          {{q.created | date:"d-M-yyyy"}}
+        </div>
+        <div class="col-md-1">
+          <span ng-if="q.result">
+            <i class="fa fa-check  fa-stack-1x fa-inverse" ng-if="q.result=='resolved'" style="color:green"></i>
+            <i class="fa fa-exclamation  fa-stack-1x fa-inverse" ng-if="q.result=='partial'" style="color:orange"></i>
+            <i class="fa fa-times  fa-stack-1x fa-inverse" ng-if="q.result=='parked'" style="color:red"></i>
+          </span>
+        </div>
+        <div class="col-md-2 text-right">
+          <div ng-if="q.status == 'resolved'">
+            {{q.status}}
+          </div>
+          <div class="dropdown" ng-if="q.status != 'resolved'">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+              {{q.status}} <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li ng-if="q.status == 'created' " ng-click="setStatus(q.pk , 'inprogress');q.status = 'inprogress'"> <a>In Progress</a> </li>
+              <li ng-if="q.status == 'created' || q.status == 'inprogress'|| q.status == 'stuck'" ng-click="setStatus(q.pk, 'resolved');q.status = 'resolved'"><a>Resolve</a></li>
+              <li ng-if="q.status != 'stuck' && q.status != 'resolved' " ng-click="setStatus(q.pk ,'stuck');q.status = 'stuck'"><a>Stuck</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn btn-default" ng-click="showDetails(q.pk)">
+            <i class="fa fa-info"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12" ng-if="explore.mode == 'coding'">
+
+      <div class="container-fluid" style="padding-top:20px;">
+        <div class="row">
+          <div class="col-md-4">
+            <input type="file" file-model="lddUploadForm.fil">
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="base directory" ng-model="lddUploadForm.dir">
+          </div>
+          <div class="col-md-4" style="padding-right:0px">
+            <img ng-src="/static/images/completed.png" class="img-circle" style="width:50px" ng-if="lddUploadForm.showImg=='success'"/>
+            <img ng-src="/static/images/loading.gif" class="img-circle" style="width:80px" ng-if="lddUploadForm.showImg=='loading'"/>
+            <button ng-if="!project.uploadingBreakFile" type="button" ng-click="uploadLDDOutput()" class="btn btn-primary pull-right">
+              Upload LDD file
+            </button>
+            <button ng-if="project.uploadingBreakFile" type="button" class="btn btn-danger pull-right">
+              Upload in Progress
+            </button>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-6">
+            <label>Coder Group</label>
+            <input uib-typeahead="u as u.title for u in teamSearch($viewValue)" ng-model="codingForm.coderTeam" type="text" class="form-control" placeholder="Search By Name">
+          </div>
+        </div>
+        <div class="row" style="padding-top:30px">
+          <div class="col-md-6">
+            <label>QC Group</label>
+            <input uib-typeahead="u as u.title for u in teamSearch($viewValue)" ng-model="codingForm.qaTeam" type="text" class="form-control" placeholder="Search By Name">
+          </div>
+        </div>
+        <div class="row" style="padding-top:30px">
+          <div class="col-md-6">
+            <label>Re-Coder Group</label>
+            <input uib-typeahead="u as u.title for u in teamSearch($viewValue)" ng-model="codingForm.reCoderTeam" type="text" class="form-control" placeholder="Search By Name">
+          </div>
+        </div>
+        <div class="row" style="padding-top:30px">
+          <div class="col-md-6">
+            <label>Re-QC Group</label>
+            <input uib-typeahead="u as u.title for u in teamSearch($viewValue)" ng-model="codingForm.reQaTeam" type="text" class="form-control" placeholder="Search By Name">
+          </div>
+        </div>
+        <div class="row" style="padding-top:30px">
+          <div class="col-md-6">
+            <label>CC Group</label>
+            <input uib-typeahead="u as u.title for u in teamSearch($viewValue)" ng-model="codingForm.ccTeam" type="text" class="form-control" placeholder="Search By Name">
+          </div>
+        </div>
+
+        <button type="button" ng-click="saveCodingAssignment()" class="btn btn-default" style="margin-top:20px;">
+          Save
+        </button>
+      </div>
+
+
+    </div>
+
+
+    <div class="col-md-12" ng-if="explore.mode == 'billing'" style="padding:25px 5px">
+      <div class="col-md-8">
+        <div class="col-md-3">
+          <span class="text-muted" style="font-size:25px;">{{secondsToHms(project.timeData.cTime)}}</span> <br> <label>Coding Time</label>
+        </div>
+        <div class="col-md-3">
+          <span class="text-muted" style="font-size:25px;">{{secondsToHms(project.timeData.qcTime)}}</span> <br> <label>Qc Time</label>
+        </div>
+        <div class="col-md-3">
+          <span class="text-muted" style="font-size:25px;">{{secondsToHms(project.timeData.rcTime)}}</span> <br> <label>ReCoding Time</label>
+        </div>
+        <div class="col-md-3">
+          <span class="text-muted" style="font-size:25px;">{{secondsToHms(project.timeData.rQcTime)}}</span> <br> <label>ReQc Time</label>
+        </div>
+      </div>
+      <div class="col-md-1">
+        <strong style="font-size:40px">=</strong>
+      </div>
+      <div class="col-md-3">
+        <span class="text-muted" style="font-size:25px;">{{secondsToHms(project.timeData.projTime)}}</span> <br> <label>Project Time</label>
+      </div>
+
+      <!-- <h3 class="text-muted">Billing</h3>
+      <div class="row">
+        <div class="col-md-3">
+          User
+        </div>
+        <div class="col-md-2">
+          Date
+        </div>
+        <div class="col-md-6">
+          Description
+        </div>
+        <div class="col-md-1">
+          Hours
+        </div>
+      </div>
+      <hr>
+      <div>
+        <div class="row" ng-repeat="t in timesheetItems" style="padding-top:10px;padding-bottom:10px;">
+          <div class="col-md-3">
+            <div class="col-md-1">
+              <input type="checkbox">
+            </div>
+            <div class="col-md-2">
+              <img ng-src="{{t.parent.user | getDP}}" class="img-circle" width="25" />
+            </div>
+            <div class="col-md-8 ">
+              <div>{{t.parent.user | getName}}</div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            {{t.parent.date|date:long}}
+          </div>
+          <div class="col-md-6">
+            {{t.comment}}
+          </div>
+          <div class="col-md-1">
+            {{t.duration}}
+          </div>
+        </div>
+        <div class="col-md-1 pull-right" style="border-top:solid 2px #eeeeee;">{{totalTime}} Hrs. </div>
+      </div> -->
+    </div>
+
+
+    <div class="col-md-12" ng-if="explore.mode == 'git'">
+      <h3 class="text-muted">Commits</h3>
+      <div ng-repeat="r in project.repos" style="border-bottom:solid 3px #eee;padding-bottom:{{!(r.commitNotifications.length< r.commitCount)? '20px':'0px'}};">
+        <div class="row text-center">
+          <h4><span class="octicon octicon-repo"></span> {{r.name}}</h4>
+        </div>
+        <div ng-repeat="n in r.commitNotifications" class="row" style="padding-top:10px;">
+          <div class="row" style="padding:10px;border-bottom:#eee solid 2px;">
+            <div class="col-md-2" style="padding-right:40px;">
+            </div>
+          </div>
+          <div class="row">
+            <img ng-src="{{n.user | getDP}}" class="img-circle pull-right" width="50" />
+          </div>
+          <div class="row">
+            <span class="pull-right">{{n.user | getName}}</span>
+          </div>
+        </div>
+        <div class="col-md-10 commitNotification" ng-click="exploreNotification($parent.$index , $index)">
+          <span class="text-muted"> {{n.time |  date : 'hh:mm:a , dd MMM'}}</span><br><strong>[{{n.repo.name}} / {{n.branch}}] :</strong> 1 new commit <br>
+          <code>{{n.sha.substring(n.sha.length-10 , n.sha.length)}}</code> : {{n.message}}
+        </div>
+      </div>
+      <nav ng-if="r.commitNotifications.length< r.commitCount">
+        <ul class="pager">
+          <li ng-click="loadMore($index)"><a href="">More</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="col-md-12" ng-if="explore.mode == 'tasks'">
+      <h3 class="text-muted">Tasks</h3>
+      <div class="row container-fluid">
+        <button type="button" class="btn btn-default pull-right" style="margin:10px;" ng-click="createTask()">
+          + Add
+        </button>
+      </div>
+      <div class="row hoverList" ng-repeat="t in project.tasks" style="padding-top:10px;padding-bottom:10px;" ng-click="openTask($index)">
+        <div class="col-md-1">
+          <i class="fa fa-check-circle-o fa-2x pull-right" style="color:{{ t.completion>70 ?'#569a23':'#d94f66'}};"></i>
+        </div>
+        <div class="col-md-5">
+          <span style="font-size:18px;">{{t.title}}</span>
+        </div>
+        <div class="col-md-2">
+          {{t.completion}}
+        </div>
+        <div class="col-md-2">
+          {{t.to | getName}}
+        </div>
+        <div class="col-md-2">
+          {{t.dueDate | timeAgo}}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12" ng-if="explore.mode == 'files'">
+      <div class="row container-fluid">
+        <h3 class="text-muted">Files</h3>
+        <div style="margin:10px;" class="btn-group btn-group-sm pull-right">
+          <button type="button" class="btn btn-default" ng-click="updateFiles();explore.addFile = !explore.addFile;">
+            <i class="fa fa-{{explore.addFile? 'mail-reply':'plus'}}"></i> {{explore.addFile ? 'Back' : 'Edit'}}
+          </button>
+          <button type="button" class="btn btn-primary" ng-click="updateFiles()" ng-if="explore.addFile">
+            Save
+          </button>
+        </div>
+      </div>
+      <div ng-if="explore.addFile">
+        <media-Field data="project.files" url="/api/projects/media/"></media-Field>
+      </div>
+      <div ng-if="!explore.addFile">
+        <div class="row" style="padding:10px;border-bottom:#eee solid 2px;">
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-6">
+            <span class="text-primary">File Name</span>
+          </div>
+          <div class="col-md-3">
+            <span>Uploader</span>
+          </div>
+          <div class="col-md-2">
+            <span>When</span>
+          </div>
+        </div>
+        <div class="row" style="padding:10px;" ng-repeat="f in project.files">
+          <div class="col-md-1">
+            <i class="fa {{f.name | fileTypeIcon}} fa-3x"></i>
+          </div>
+          <div class="col-md-6">
+            <a ng-href="{{f.attachment}}" target="_blank">{{f.name}}</a>
+          </div>
+          <div class="col-md-3">
+            <span>{{f.user | getName}}</span>
+          </div>
+          <div class="col-md-2">
+            <span>{{f.created | timeAgo}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12" ng-if="explore.mode == 'timeline'">
+      <h3 class="text-muted">Timeline</h3>
+      <ul class="timeline timeline-inverse">
+        <li ng-repeat="i in project.messages">
+          <i class="fa fa-commenting-o bg-blue"></i>
+          <div class="timeline-item">
+            <span class="time">
+              <i class="fa fa-clock-o"></i>
+              {{i.created | timeAgo}}</span>
+            <h3 class="timeline-header" style="height:41px;">
+              <img style="position:relative; float:left; top:-10px;left:-10px;" ng-src="{{i.user | getDP}}" height="40px" width="40px" />
+              {{i.user | getName}}
+            </h3>
+            <div class="timeline-body">
+              {{i.text}}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div style="position:absolute;padding:3px 20px;bottom:3px;background:#eee;border-top:solid 2px #eee;" class="col-md-8 col-md-offset-4">
+    <div class="row">
+      <div class="col-md-10">
+        <textarea class="form-control " rows="3" cols="40" placeholder="Add a comment" ng-model="commentEditor.text"></textarea>
+      </div>
+      <div class="col-md-2">
+        <button type="button" class="btn btn-default col-md-12" ng-click="sendMessage()">
+          Send
+          <i class="fa fa-paper-plane-o"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

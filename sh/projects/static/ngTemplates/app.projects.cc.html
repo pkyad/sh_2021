@@ -1,0 +1,39 @@
+<div class="" ng-controller="projectManagement.projects.cc">
+  <div class="row" style="margin:20px">
+    <div class="col-md-2">
+      <h3>{{projectData.title}}</h3>
+      <span>Project ID : {{projectData.pk}}</span>
+    </div>
+    <div class="col-md-4" style="padding-top:15px">
+      <span>Date : {{projectData.dueDate| date: long}}</span><br/>
+      <span>Description : {{projectData.description}}</span>
+    </div>
+  </div>
+  <hr/>
+  <div class="row" style="margin:20px">
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th ng-repeat="i in tableHead" ng-if="!$last">{{i}}</th>
+          <th>Action</th>
+        </tr>
+
+      </thead>
+      <tbody>
+        <tr ng-repeat="j in tableData track by $index">
+          <td ng-repeat="i in j track by $index" ng-if="!$last">{{i}}</td>
+          <td> <i class="fa fa-eye" ng-click="editCC(j)"></i> </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row text-center">
+    <button ng-click="prev()" type="button" class="btn btn-default">
+      Prev
+    </button>
+    <button ng-click="next()" type="button" class="btn btn-default">
+      Next
+    </button>
+  </div>
+</div>

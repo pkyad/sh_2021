@@ -1,0 +1,44 @@
+<div ng-controller="projectManagement.project.modal.project">
+  <div class="modal-header">
+    <div class="col-md-9">
+      <h3 class="modal-title" >Edit Project :
+        <strong>{{data.title}}</strong>
+      </h3>
+    </div>
+    <div class="col-md-3">
+      <button type="button" ng-click="save()" class="btn btn-primary pull-right">
+        Save
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-body">
+      <div class="form-group">
+        <label>Description</label>
+        <textarea class="form-control" rows="5" cols="40" placeholder="Description" ng-model="data.description"></textarea>
+      </div>
+
+      <div class="row" style="margin:0px;">
+        <div class= "form-group col-md-6" style="padding:0px;">
+          <label class="control-label col-sm-2" style="margin-top:35px;padding:0px;">Start date</label>
+          <div class="input-group" style="margin-top:35px;">
+            <input type="text" class="form-control" show-weeks="false" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="data.dueDate" is-open="status.opened"  />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="status.opened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Can QA Edit</label>
+            <input type="checkbox" class="" ng-model="data.qaCanEdit" >
+          </div>
+        </div>
+      </div>
+
+
+
+      <users-Field data="data.team" url="/api/HR/userSearch/" col="4" label="team"></users-Field>
+  </div>
+
+</div>

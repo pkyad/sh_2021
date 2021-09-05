@@ -1,0 +1,134 @@
+{% extends "base.html" %} {% load staticfiles %}
+{% block specific_head %}
+<title>{{projectname}}</title>
+
+
+{% endblock %}
+ {% block specific_css %}
+<link href="{% static 'css/app.projects.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block projectstart %}
+
+{% block startcontent %}{% endblock %}
+
+<div class="container-fluid" style="padding:0px;">
+  <div flash-message="4000" style="position:fixed;top:50px;right:10px;z-index:9999;min-width:300px;"></div>
+</div>
+
+{% endblock %}{% block specific_js %}
+<script src="{% static 'js/jquery.cookie-1.4.1.min.js' %}"></script>
+<script src="{% static 'js/angular.min.js' %}"></script>
+<script src="{% static 'js/angular-sanitize.min.js' %}"></script>
+<script src="{% static 'js/ui-bootstrap-tpls-0.14.3.min.js' %}"></script>
+<script src="{% static 'js/angular-bootstrap-confirm.min.js' %}"></script>
+<script src="{% static 'js/angular-flash.js' %}"></script>
+<script src="{% static 'js/angular-aside.min.js' %}"></script>
+<script src="{% static 'js/angular-ui-switch.min.js' %}"></script>
+ <script src="{% static 'js/custom/nativeJS.js' %}"></script>
+<!-- <script src="{% static 'js/custom/directives.js' %}"></script> -->
+<!-- <script src="{% static 'js/custom/directives.native.js' %}"></script> -->
+<!-- <script src="{% static 'js/custom/filters.js' %}"></script> -->
+<!-- <script src="{% static 'js/custom/services.js' %}"></script> -->
+{% if typ == 'coder' %}
+<script src="{% static 'js/app.projectstart.js' %}"></script>
+{% endif %}
+{% if typ == 'qa' %}
+<script src="{% static 'js/app.projectreview.js' %}"></script>
+{% endif %}
+{% if typ == 'recoding' %}
+<script src="{% static 'js/app.projectrecoding.js' %}"></script>
+{% endif %}
+{% if typ == 'reqa' %}
+<script src="{% static 'js/app.projectrereview.js' %}"></script>
+{% endif %}
+{% if typ == 'CC' %}
+<script src="{% static 'js/app.projectCC.js' %}"></script>
+{% endif %}
+{% if typ == 'dynamicForm' %}
+<script src="{% static 'js/app.projectDynamicForm.js' %}"></script>
+{% endif %}
+
+
+
+<script>
+
+  function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('document - DOMContentLoaded - capture');
+
+  }, true);
+
+
+  function postJsError(msg, url, line, stack) {
+    var error_text = msg || '';
+    var url = url || '';
+    var line = line || '';
+    var stack = stack || '';
+
+    if (stack.length > 500) {
+      stack = stack.slice(0, 500)
+    }
+
+    if (error_text.length > 200) {
+      error_text = error_text.slice(0, 200)
+    }
+
+    var obj_to_send = {
+      url: url,
+      line: line,
+      stack: stack,
+      error_text: error_text
+    }
+
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+      if (request.readyState == 4 && request.status == 200) {
+        console.log('error posted');
+      }
+    };
+    request.open('POST', '/api/ERP/error/', true);
+    request.setRequestHeader("Content-type", "application/json");
+    request.setRequestHeader("X-CSRFToken" , getCookie("csrftoken"));
+
+    request.send(JSON.stringify(obj_to_send));
+  }
+
+  window.addEventListener('error', function(e) {
+    var errorText = [
+      e.message,
+      'URL: ' + e.filename,
+      'Line: ' + e.lineno + ', Column: ' + e.colno,
+      'Stack: ' + (e.error && e.error.stack || '(no stack trace)')
+    ].join('\n');
+
+    console.log('errors*****************', errorText);
+    var msg = e.message
+    var url = e.filename
+    var line = 'Line:' + e.lineno + ', Column: ' + e.colno
+    var stack = e.error && e.error.stack || '(no stack trace)'
+    postJsError(msg, url, line, stack);
+  })
+
+
+
+
+</script>
+{% endblock %}

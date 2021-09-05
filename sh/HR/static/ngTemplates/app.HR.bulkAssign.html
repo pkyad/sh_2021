@@ -1,0 +1,63 @@
+<div class="modal-header bg-blue">
+  <div class="container-fluid">
+    <h4><span class="pull-right"><i class="fa fa-users"></i> Bulk Assignment</span> <i class="fa fa-arrow-circle-o-left pull-left fa-lg" ng-click="close()" style="cursor:pointer;"></i></h4>
+  </div>
+</div>
+<div class="modal-body">
+  <div class="row" style="margin-bottom:20px">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="col-md-10">
+        <div class="form-group">
+          <label>Teams List :</label>
+          <select  class="form-control" ng-model="form.team">
+            <option value="{{t}}" ng-repeat="t in teamsData">{{t.title}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-2 text-right" style="padding-top:25px" ng-if="teamsData.length>0&&usersData.length>0">
+        <span class="btn btn-primary" mwl-confirm title="Bulk Assign" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="assign()" confirm-button-type="success" cancel-button-type="danger" placement="bottom">Bulk Assign</span>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="font-size:20px;margin-bottom:15px">
+    <div class="container-fluid">
+      <div class="col-md-1 text-right" >
+        <input type="checkbox" ng-model="form.allSelected" ng-click="selectAll()">
+      </div>
+      <div class="col-md-11" >
+        <strong>Select All</strong>
+      </div>
+    </div>
+  </div>
+  <div class="row" ng-repeat="u in usersData">
+    <div class="container-fluid card" style="margin-bottom:10px;padding:15px;border-radius:25px" ng-init="u.selected=false">
+      <div class="col-md-1 text-right" >
+        <input type="checkbox" ng-model="u.selected">
+      </div>
+      <div class="col-md-11" style="padding:0px">
+        <div class="col-md-12" style="padding-left:0px;font-size:20px;">
+          <div class="col-md-4">
+            <img ng-src="{{u.pk.profile.displayPicture}}" onerror="this.src='/static/images/userIcon.png'" class="img img-circle" style="height:40px;width:40px"> &nbsp; {{u.first_name + ' ' +u.last_name}}
+          </div>
+          <div class="col-md-4">
+            <strong><i class="fa fa-envelope-o"></i> </strong> {{u.email}}
+          </div>
+          <div class="col-md-4">
+            <strong><i class="fa fa-mobile-phone"></i> </strong> {{u.profile.mobile}}
+          </div>
+        </div>
+        <div class="col-md-12" style="padding-left:0px">
+          <div class="col-md-3" ng-repeat="te in u.teams" style="padding-top:15px">
+            <div class="container-fluid card" style="padding:10px 0px;border-radius:15px;background:#eee">
+              <span style="cursor:pointer;position:absolute;right:20px;top:15px" ng-click="deleteTeam(u.designation,te.pk,$index,u)"><i class="fa fa-times-circle-o fa-lg"></i></span>
+              <div class="col-md-12" style="font-size:15px;">
+                <i class="fa fa-users fa-lg"></i> {{te.title}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,23 @@
+<div class="col-md-4" style="padding-bottom:10px;padding-left:10px;padding-right:10px;" ng-controller="home.expense.claims.item">
+  <div class="container-fluid card" style="border-radius:15px">
+    <div class="row">
+      <div class="col-md-10">
+        <h3>{{data.notes}}</h3>
+      </div>
+      <div class="col-md-2" style="padding-top:20px;">
+        <i class="fa fa-info-circle fa-2x text-primary pull-right" ng-click="rowActionClicked('expenseSheetBrowser')" style="position:absolute;right:40px;top:17px;cursor:pointer;"></i>
+      </div>
+    </div>
+    <hr>
+    <div class="row" style="position:relative;">
+      <div class="col-md-10">
+        <span>Approved : <strong>{{data.approved}}</strong></span><br>
+        <span>Project : <strong>{{data.project[0].title}}</strong></span><br>
+        <span>Created : <strong>{{data.created|date}}</strong></span>
+      </div>
+      <div class="col-md-2" style="padding-top:20px;">
+        <i class="{{data.submitted ? '': 'fa fa-pencil'}} fa-2x pull-right" style="position:absolute;right:40px;top:17px;cursor:pointer;" ng-click="rowActionClicked('edit')"></i>
+      </div>
+    </div>
+  </div>
+</div>

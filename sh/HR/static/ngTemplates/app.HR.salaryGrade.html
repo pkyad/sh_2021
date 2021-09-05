@@ -1,0 +1,45 @@
+<div class="container-fluid" ng-controller="sudo.salaryGrade">
+  <div class="row" style="margin-top:20px">
+    <div class="col-md-3">
+      <div class="form-group">
+        <input type="text" class="form-control" ng-model="form.title" placeholder="Tittle">
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <input type="text" class="form-control" ng-model="form.target"  placeholder="Target">
+      </div>
+    </div>
+    <div class="col-md-2">
+        <div class="btn-group">
+      <button class="btn btn-primary" ng-click="SaveGrade()">Save</button>
+      <button class="btn btn-default" ng-click="reload()"><i class="fa fa-refresh"></i></button>
+    </div>
+</div>
+  </div>
+  <div class="row" style="margin-top:20px">
+    <div class="col-md-9">
+    <table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Title</th>
+      <th>Target</th>
+      <th class="text-center">Options</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="i in targetList">
+      <td>{{$index}}</td>
+      <td>{{i.title}}</td>
+      <td>{{i.target}}</td>
+      <td class="text-center">
+        <button class="btn btn-primary" ng-click="editGrade(i.pk,$index)"><i class="fa fa-pencil"></i></button>
+           <button class="btn btn-danger" mwl-confirm title="Confirm" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="deleteGrade(i.pk,$index)" confirm-button-type="default" cancel-button-type="default" ><i class="fa fa-trash"></i></button>
+       </td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    </div>
+</div>

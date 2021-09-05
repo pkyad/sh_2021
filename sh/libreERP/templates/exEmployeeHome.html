@@ -1,0 +1,66 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html ng-app="app" ng-controller="exEmployeeHomeCtrl" id="main">
+  <head>
+    <meta charset="utf-8">
+    <title>{{BRAND_NAME}} - ERP</title>
+    <meta name="viewport" content="initial-scale=1">
+    <!-- stock css libraries -->
+    {% if useCDN %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" charset="utf-8">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" charset="utf-8">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/animatecss/3.5.1/animate.min.css" charset="utf-8">
+    {% else %}
+      <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" charset="utf-8">
+      <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" charset="utf-8">
+      <link rel="stylesheet" href="{% static 'css/animate.css' %}" charset="utf-8">
+    {% endif %}
+    <!-- custom css -->
+    <link rel="stylesheet" href="{% static 'css/custom/base.css' %}" charset="utf-8">
+
+    <style media="screen" ng-bind-html="theme"></style>
+  </head>
+  <body>
+    <div flash-message="4000" style="position:fixed;top:70px;right:10px;z-index:9999;min-width:300px;"></div>
+    <div style="height:7vh">
+      <div ng-include="headerUrl"></div>
+    </div>
+    <div ng-include="bodyUrl"></div>
+    <div class="row zoomOnHover" style="position:fixed;top:85vh;z-index: 9999;right:60px">
+      <img src="/static/images/GOTOTOP.png" alt="GO TOP" class="img img-circle" width="70" ng-click="goToTop()" id='goTop' title="Go To Top">
+      <!-- <i class="fa fa-arrow-up fa-3x pull-right " ng-click="goToTop()" style="color:#32f9d6;cursor:pointer;border:2px solid #444;background-color:#444;border-radius:18px" id='goTop' title="Go To Top"></i> -->
+    </div>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$','$']]}
+      });
+    </script>
+
+    {% if useCDN %}
+      <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    {% else %}
+      <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+      <script src="{% static 'js/bootstrap.min.js' %}"></script>
+      <script src="{% static 'js/angular.min.js' %}"></script>
+    {% endif %}
+    <script src="{% static 'js/ui-bootstrap-tpls-0.14.3.min.js' %}"></script>
+    <script src="{% static 'js/angular-flash.js' %}"></script>
+    <!-- Custom JS files -->
+    <script type="text/javascript">
+
+      var wampServer = '{{wampServer}}';
+      var BRAND_LOGO = "{{BRAND_LOGO}}";
+      var SESSION_ID = '{{sessionId}}';
+
+    </script>
+    <script src="{% static 'js/custom/nativeJS.js' %}"></script>
+    <script src="{% static 'js/custom/exEmployeeHome.js' %}"></script>
+    <script src="{% static 'js/custom/directives.native.js' %}"></script>
+    <!-- <script src="{% static 'js/custom/directives.js' %}"></script> -->
+    <script src="{% static 'js/custom/filters.js' %}"></script>
+
+  </body>
+</html>

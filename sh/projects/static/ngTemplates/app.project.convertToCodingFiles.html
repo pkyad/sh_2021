@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <h4 class="text-center">Convert To Coding Files</h4>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Dase Directory</label>
+        <input type="text" class="form-control" ng-model="form.pth" placeholder="Base Dir Path" ng-disabled="form.uploadingMsg">
+      </div>
+    </div>
+    <div class="col-md-12" ng-if="form.uploadingMsg">
+      <div class="alert alert-warning" role="alert" style="margin-bottom:20px;">
+        Please Wait Files Are Converting To Coding .....
+      </div>
+    </div>
+    <div class="col-md-12 text-center">
+      <span class="btn btn-primary" ng-click="save()">Save <i class="fa fa-save"></i></span>
+    </div>
+  </div>
+</div>

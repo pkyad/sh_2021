@@ -1,0 +1,59 @@
+<style media="screen">
+  .btn-primary{
+    background-color: white;
+    color:#0a4d59;
+    border:none;
+    border-radius:0px !important;
+  }
+</style>
+
+<div class="row container-fluid" ng-controller="controller.imageViewer" style="margin: 0px;">
+  <div class="row" style="position:fixed;top:0px;z-index:100;width:100%;height:30px;background:white ;color: #0a4d59;">
+    <div class="col-sm-6" style="padding:0px">
+      <div class="btn-group btn-group-sm" style="border-radius:0px;">
+        <button type="button" class="btn btn-sm btn-primary" ng-click="zoom('zoomin')">
+          <i class="fa fa-plus"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-primary" ng-click="zoom('zoomout')">
+          <i class="fa fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-primary" ng-click="rotateLeft()">
+          <i class="fa fa-undo"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-primary" ng-click="rotateRight()">
+          <i class="fa fa-repeat"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-primary" ng-click="zoom('reset')">Reset</button>
+        <button type="button" class="btn btn-sm btn-primary" ng-click="zoom('fitToWidth')">Fit To Width</button>
+        <button type="button" class="btn btn-sm btn-primary" ng-click="zoom('fitToHeight')">Fit To Height</button>
+      </div>
+      <strong style="font-size:12px">{{currentFileNameInView}}</strong>
+    </div>
+    <div class="col-sm-1" style="padding:0px;padding-top:3px;">
+      <strong style="font-size:12px" ng-if="imageList.length>0">Page {{flags.imageIndex+1}} Of {{imageList.length}}</strong>
+    </div>
+    <div class="col-sm-1" style="padding:0px;">
+      <select class="form-control" ng-model="flags.ddValue" ng-change="ddChange()" style="height:30px" ng-if="imageList.length>1">
+        <option value="{{$index}}" ng-repeat="d in ddSelectionData">{{d}}</option>
+      </select>
+    </div>
+    <div class="col-sm-2" style="padding:0px">
+        <div class="btn-group btn-group-sm pull-right" ng-if="imageList.length>1">
+          <button type="button" ng-click="prev()" class="btn btn-sm btn-primary" ng-if="flags.imageIndex>0">Prev</button>
+          <button type="button" ng-click="next()" class="btn btn-sm btn-primary" ng-if="flags.imageIndex<imageList.length-1">Next</button>
+        </div>
+    </div>
+    <div ng-if="!apiMode" class="col-sm-1 pull-right text-right" style="padding-top:5px;cursor:pointer" >
+      <span ng-click="logout()" >Logout </span>
+      <!-- {{norm.x | number : 2}} , {{norm.y | number :2}} -->
+    </div>
+  </div>
+  <div class="row" style="padding:15px 5px;margin-top:30px;" ng-show="!form.showloder">
+    <canvas id="canvas" ></canvas><br><br>
+    <canvas id="bigCanvas" ng-show="false"></canvas>
+  </div>
+  <div class="row text-center" ng-if="form.showloder">
+    <img src="/static/images/loading3.gif" style="width:170px;margin-top:200px;" alt="">
+  </div>
+
+</div>

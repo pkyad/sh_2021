@@ -1,0 +1,35 @@
+<div class="modal-header bg-red">
+  <h1>Report</h1>
+</div>
+<div class="modal-body">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-1">
+        <input type="checkbox" ng-model="checkbox" >
+      </div>
+      <div class="col-md-5">
+        Select All
+      </div>
+      <div class="col-md-7 pull-right">
+        <!-- <button type="button" class="btn btn-default">
+          CSV
+        </button> -->
+        <a target="_blank" href="/api/projects/projectDownload/?projectpk={{pk}}&pkList={{FieldDetails}}" class="btn btn-default" >
+          QC Report
+        </a>
+        <a target="_blank" href="/api/projects/projectDownload/?raw=1&projectpk={{pk}}&pkList={{FieldDetails}}" class="btn btn-default" >
+          Coding Report
+        </a>
+      </div>
+    </div>
+    <hr>
+    <div class="row" ng-repeat="f in FieldDetails">
+      <div class="col-md-1">
+        <input type="checkbox" ng-model="f.selected">
+      </div>
+      <div class="col-md-11">
+        {{f.name}}
+      </div>
+    </div>
+  </div>
+</div>

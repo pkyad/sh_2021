@@ -1,0 +1,50 @@
+<div id="dashboard">
+  <breadcrumb></breadcrumb>
+  <uib-tabset>
+
+      <uib-tab>
+          <uib-tab-heading>
+              Completed
+              <i class="fa fa-list-ul"></i>
+          </uib-tab-heading>
+          <div class="container-fluid">
+              <generic-Table data="data.completeTableData" config-Obj="{{projectsCompleteConfig}}" callback-Fn="completedTableAction"></generic-Table>
+          </div>
+      </uib-tab>
+
+      <uib-tab active="searchTabActive">
+          <uib-tab-heading>
+              On Going
+              <i class="fa fa-list-ul"></i>
+          </uib-tab-heading>
+          <div class="container-fluid">
+              <generic-Table data="data.tableData" config-Obj="{{projectsConfig}}" callback-Fn="tableAction"></generic-Table>
+          </div>
+      </uib-tab>
+
+      <uib-tab ng-repeat="tab in tabs" active="tab.active" disable="tab.disabled">
+          <uib-tab-heading >
+              {{tab.title}}
+              <i ng-if="tab.cancel" class="fa fa-close" ng-click="closeTab($index);"></i>
+          </uib-tab-heading>
+          <div ng-if="tab.app == 'projectBrowser'">
+              <div ng-include="'/static/ngTemplates/app.projects.explore.html'"></div>
+          </div>
+          <div ng-if="tab.app == 'taskBrowser'">
+              <div ng-include="'/static/ngTemplates/app.taskBoard.explore.html'"></div>
+          </div>
+          <div ng-if="tab.app == 'projectField'">
+              <div ng-include="'/static/ngTemplates/app.projects.Fields.html'"></div>
+          </div>
+          <div ng-if="tab.app == 'fileUpload'">
+              <div ng-include="'/static/ngTemplates/app.projects.fileUpload.html'"></div>
+          </div>
+          <div ng-if="tab.app == 'start'">
+              <div ng-include="'/static/ngTemplates/app.projects.start.html'"></div>
+          </div>
+          <div ng-if="tab.app == 'projectCC'">
+              <div ng-include="'/static/ngTemplates/app.projects.cc.html'"></div>
+          </div>
+      </uib-tab>
+  </uib-tabset>
+</div>

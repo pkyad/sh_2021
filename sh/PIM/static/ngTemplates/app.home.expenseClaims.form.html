@@ -1,0 +1,120 @@
+<div ng-controller="home.expense.claims.form">
+  <div class="container-fluid">
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-5">
+      <h3 ng-if="mode == 'edit'">Edit Expense : <strong>{{form.notes}}</strong></h3>
+      <h3 ng-if="mode == 'new'">Create a Expense</h3>
+      <div class="form-group" style="padding-top: 19px;">
+        <label>Title</label>
+        <input type="text" class="form-control" ng-model="form.notes">
+      </div>
+      <div class="form-group">
+        <label>Project</label>
+        <input type="text" class="form-control" ng-model="form.projects" uib-typeahead="p as p.title for p in projectSearch($viewValue)" placeholder="Search For Project" ng-disabled="form.pk">
+      </div>
+      <div class="form-group" ng-if="form.projects.pk">
+        <strong>Description:</strong>{{form.projects.description}}
+      </div>
+      <div class="btn-group ">
+        <button type="button" class="btn btn-danger" ng-click="resetForm()" ng-if="mode=='new'">
+          Reset
+          </button>
+        <button type="button" class="btn btn-success" ng-click="saveExpenseSheet()">Save</button>
+      </div>
+      <div class="cards" style="border-left:4px solid #4192cd;box-shadow:0 2px 8px rgba(26,24,20,0.2);margin-top: 25px;" ng-repeat="data in form.invoices">
+        <div class="row" style="padding: 15px;" ng-mouseenter="hover = true;" ng-mouseleave="hover = false;">
+          <div class="col-md-12">
+            <span><strong>Expense Title : </strong>{{data.code}}</span><br/>
+            <span><strong>Dated : </strong>{{data.dated}}</span>
+            <button type="button" mwl-confirm title="Confirm" message="Are you sure?" confirm-text="Yes <i class='fa fa-check'></i>" cancel-text="No" on-confirm="deleteInvoice(data.pk , $index)" confirm-button-type="danger" cancel-button-type="default" class="btn-danger btn-sm  pull-right"
+              style="padding-bottom: 9px;"> <i class="fa fa-trash fa-lg"></i> </button>
+            <a href="{{data.attachment}}" target="_blank" class="btn btn-primary pull-right" ng-if="data.attachment"> <i class="fa fa-paperclip fa-lg" ></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5" ng-if="mode=='edit'" style="margin-bottom:20px">
+      <h3>Add a Invoice</h3>
+      <div class="col-md-12 row">
+        <div class="form-group" style="padding-top: 15px;">
+          <label>Expense Title</label>
+          <input type="text" class="form-control" ng-model="invoiceForm.code" uib-typeahead="p as p.title for p in codeSearch($viewValue)">
+        </div>
+      </div>
+
+      <!-- <div class="form-group" ng-if="invoiceForm.service.pk&&invoiceForm.service.address">
+        <span><strong>City : </strong>{{invoiceForm.service.address.city}}<br/></span>
+        <span><strong>State : </strong>{{invoiceForm.service.address.state}}<br/></span>
+        <span><strong>Pincode : </strong>{{invoiceForm.service.address.pincode}}</span>
+      </div> -->
+      <!-- <div class="form-group col-md-6" style="padding-left:0px">
+        <label>Expense Code</label>
+        <select class="form-control" ng-model="invoiceForm.code">
+          <option value="{{c.particular + ' : '+ c.rate}}" ng-repeat="c in expenseCodes">{{c.particular}}</option>
+        </select>
+      </div> -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Amount</label>
+            <input type="tel" class="form-control" ng-model="invoiceForm.amount">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group ">
+            <label>Currency</label>
+            <select class="form-control" ng-model="invoiceForm.currency">
+              <option value="INR">INR</option>
+              <option value="USD">USD</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Dated</label>
+            <div class="input-group">
+              <input type="text" class="form-control" show-weeks="false" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="invoiceForm.dated" is-open="statusDue.opened" ng-init="today" disabled/>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="statusDue.opened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Attachment</label>
+            <input type="file" file-model="invoiceForm.attachment">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>GST Amount</label>
+            <input type="text" class="form-control" ng-model="invoiceForm.gstVal">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>GST IN</label>
+            <input type="text" class="form-control" ng-model="invoiceForm.gstIN">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="8" ng-model="invoiceForm.description"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 row">
+        <button type="button" class="btn btn-primary" ng-click="saveInvoice()">Add <i class="fa fa-plus-circle fa-lg"></i></button>
+      </div>
+    </div>
+  </div>
+</div>

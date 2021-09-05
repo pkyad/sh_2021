@@ -1,0 +1,190 @@
+<div class="" style="min-height:93vh;">
+  <breadcrumb></breadcrumb>
+  <div class="container-fluid">
+
+    <h4>LDD projects</h4>
+
+    <div class="row" style="border-bottom:2px solid #eeeeee;">
+      <div class="container-fluid">
+        <div class="col-md-2">
+          <label>Project</label>
+        </div>
+        <div class="col-md-2">
+          <label>Batch</label>
+        </div>
+        <div class="col-md-1">
+          <label>File Count</label>
+        </div>
+        <div class="col-md-1">
+          <label>Final Count</label>
+        </div>
+        <div class="col-md-2">
+          <label>Coder</label>
+        </div>
+        <div class="col-md-1">
+          Coded
+        </div>
+        <div class="col-md-2">
+          <label>QC</label>
+        </div>
+        <div class="col-md-1">
+          Checked
+        </div>
+      </div>
+    </div>
+
+    <div class="row" ng-repeat="ldd in lddInProgress">
+      <div class="container-fluid">
+        <div class="col-md-2">
+          {{ldd.project_name}}
+        </div>
+        <div class="col-md-2">
+          {{ldd.folder}}
+        </div>
+        <div class="col-md-1">
+          {{ldd.count}}
+        </div>
+        <div class="col-md-1">
+          {{ldd.pagesCount}}
+        </div>
+        <div class="col-md-2">
+          {{ldd.coder | getName}}
+        </div>
+        <div class="col-md-1 ">
+          <i ng-if="ldd.coded" class="fa fa-check text-success"></i>
+          <i ng-if="!ldd.coded" class="fa fa-times text-danger"></i>
+        </div>
+        <div class="col-md-2">
+          {{ldd.qc | getName}}
+        </div>
+        <div class="col-md-1">
+          <i ng-if="ldd.checked" class="fa fa-check text-success"></i>
+          <i ng-if="!ldd.checked" class="fa fa-times text-danger"></i>
+        </div>
+      </div>
+    </div>
+
+
+    <hr>
+    <div class="row" style="padding-bottom:15px" ng-if="onlineData.length>0">
+      <div class="col-md-12 text-right">
+        <span class="btn btn-primary" ng-click="download('all')">Download <i class="fa fa-download"></i></span>
+      </div>
+    </div>
+    <div class="row" style="padding:5px;">
+      <div class="col-md-12" style="padding:0px">
+        <div class="col-md-6" style="padding:0px">
+          <div class="col-md-1">
+            <strong># ID</strong>
+          </div>
+          <div class="col-md-4">
+            <strong>Project</strong>
+          </div>
+          <div class="col-md-3">
+            <strong>Started On</strong>
+          </div>
+          <div class="col-md-2">
+            <strong>Status</strong>
+          </div>
+          <div class="col-md-2">
+            <strong>Total Files</strong>
+          </div>
+        </div>
+        <div class="col-md-6" style="padding:0px">
+          <div class="col-md-3">
+            <strong>Coding</strong>
+          </div>
+          <div class="col-md-3">
+            <strong>Qc</strong>
+          </div>
+          <div class="col-md-2">
+            <strong>Re Coding</strong>
+          </div>
+          <div class="col-md-2">
+            <strong>Re Qc</strong>
+          </div>
+          <div class="col-md-2">
+            <strong>Excel</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-repeat="on in onlineData" style="padding:1px 5px;">
+      <div class="col-md-12" style="background: #d4d4d4;padding: 0px;padding-top:10px;cursor:pointer" ng-click="openDetails(on)">
+        <div class="col-md-6" style="padding:0px">
+          <div class="col-md-1">
+            <span>{{on.pk}}</span>
+          </div>
+          <div class="col-md-4">
+            <span>{{on.project}}</span>
+          </div>
+          <div class="col-md-3">
+            <span>{{on.projectStart | date : 'dd-MMM-yyyy hh mm a'}}</span>
+          </div>
+          <div class="col-md-2">
+            <span>{{on.status}}</span>
+          </div>
+          <div class="col-md-2">
+            <span>{{on.totalFiles | number}}</span>
+          </div>
+        </div>
+        <div class="col-md-6" style="padding:0px">
+          <div class="col-md-3">
+            <span>{{on.codingval | number}} ({{on.coding}} %)</span>
+          </div>
+          <div class="col-md-3">
+            <span>{{on.qcval | number}} ({{on.qc}} %)</span>
+          </div>
+          <div class="col-md-2">
+            <span>{{on.reCodingval | number}} ({{on.recoding}} %)</span>
+          </div>
+          <div class="col-md-2">
+            <span>{{on.reQcval | number}} ({{on.reqc}} %)</span>
+          </div>
+          <div class="col-md-2">
+            <strong ng-click="download('one',on.pk);$event.stopPropagation()"><i class="fa fa-download fa-2x"></i></strong>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" ng-show="on.showData">
+        <div class="row" style="margin:20px">
+          <div class="col-md-12 card" style="border-radius:15px">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">SNo.</th>
+                  <th scope="col">User</th>
+                  <th scope="col" style="width:15%">Total Coding</th>
+                  <th scope="col" style="width:15%">Total Qc</th>
+                  <th scope="col" style="width:15%">Total LDD Coding</th>
+                  <th scope="col" style="width:15%">Total LDD Qc</th>
+                  <th scope="col" style="width:15%">Wrong</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="u in on.userStats track by $index">
+                  <td>{{$index+1}}</td>
+                  <td><img ng-src="{{u.userpk | getDP}}" class="img img-circle" style="height:40px;width:40px"> &nbsp; {{u.userpk | getName}}</td>
+                  <td>{{u.codingCount}}</td>
+                  <td>{{u.qcCount}}</td>
+                  <td>{{u.lddcoderCount}}</td>
+                  <td>{{u.lddqcCount}}</td>
+                  <td style="color:red">{{u.wcount}} ( {{u.wpercent}}% )</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="row text-center">
+      <button ng-click="more()" type="button" class="btn btn-default">
+        More
+      </button>
+    </div> -->
+
+  </div>
+
+
+</div>

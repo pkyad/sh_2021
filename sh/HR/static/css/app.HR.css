@@ -1,0 +1,10 @@
+.nav-sidebar-inverse> li > a {
+  color:var(--themeMain);
+  border-right: solid 6px white;
+}
+
+.nav-sidebar-inverse> li > a:hover, .nav-sidebar-inverse > li >a:focus , .nav-sidebar-inverse> .active > a{
+	background: white;
+  border-right: solid 6px var(--headerNavbarHighlight);;
+	color: var(--themeMain);
+}

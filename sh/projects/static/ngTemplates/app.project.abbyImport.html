@@ -1,0 +1,19 @@
+<div class="modal-header text-center">
+  <h4>Upload Coded Data As Excel</h4>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Excel file</label>
+        <input type="file" file-model="form.xlFile">
+      </div>
+      <button type="button" class="btn btn-primary" ng-click="upload()">Upload</button>
+    </div>
+    <div class="col-md-12" style="padding-left:30px;padding-top:15px">
+      <div class="alert alert-warning" role="alert" ng-if="form.uploadingMsg" style="margin-bottom:20px;">
+        Please Wait File is Uploading .....
+      </div>
+    </div>
+  </div>
+</div>

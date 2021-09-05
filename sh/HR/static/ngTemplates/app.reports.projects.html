@@ -1,0 +1,117 @@
+<div class="" style="min-height:93vh;">
+  <breadcrumb></breadcrumb>
+  <div class="container-fluid">
+    <div class="row" style="padding:5px;border-bottom:1px solid #eee;font-size:20px">
+      <div class="col-md-12">
+        <div class="col-md-2">
+          <strong># ID</strong>
+        </div>
+        <div class="col-md-4">
+          <strong>Project</strong>
+        </div>
+        <div class="col-md-2">
+          <strong>Project Upload</strong>
+        </div>
+        <div class="col-md-2">
+          <strong>Project Start</strong>
+        </div>
+        <div class="col-md-2">
+          <strong>Status</strong>
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-repeat="p in projectsData" style="padding:1px 5px;font-size:15px;margin-bottom:10px;" ng-init="p.showData=false">
+      <div class="col-md-12 card" style="padding-top: 10px;cursor:pointer" ng-click="openData(p)">
+        <div class="col-md-2">
+          <span>{{p.pk}}</span>
+        </div>
+        <div class="col-md-4">
+          <span>{{p.title}}</span>
+        </div>
+        <div class="col-md-2">
+          <span>{{p.lddUploadedOn | date : 'dd-MMM-yyyy hh:mm a'}}</span>
+        </div>
+        <div class="col-md-2">
+          <span>{{p.projectStart | date : 'dd-MMM-yyyy hh:mm a'}}</span>
+        </div>
+        <div class="col-md-2">
+          <span style="color:{{p.status=='complete'?'red':''}}">{{p.status}}</span>
+        </div>
+      </div>
+      <div class="col-md-12" ng-show="p.showData">
+        <div class="col-md-10 col-md-offset-1" style="padding:0px;padding-top:10px">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Starting Date</label>
+              <div class="input-group">
+                <input type="text" class="form-control" show-weeks="false" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="p.stDate" is-open="p.stOpened" disabled/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="p.stOpened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label>Time</label>
+              <select class="form-control" ng-model="p.stTime" ng-change="chnageTime('start',p)">
+                <option value="{{t.val}}" ng-repeat="t in timesData">{{t.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Ending Date</label>
+              <div class="input-group">
+                <input type="text" class="form-control" show-weeks="false" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="p.edDate" is-open="p.edOpened" min-date="p.stDate" disabled/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="p.edOpened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label>Time</label>
+              <select class="form-control" ng-model="p.edTime" ng-change="chnageTime('end',p)">
+                <option value="{{t.val}}" ng-repeat="t in timesData">{{t.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-2 btn btn-primary text-right" style="margin-top:25px" ng-click="fetchData(p)">
+            <span>Fetch &nbsp; <i class="fa fa-refresh"></i></span>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-12" style="padding:10px;">
+            <div class="container-fluid" style="border:1px solid #dedcdc">
+              <canvas id="coding{{p.pk}}" style="padding:20px;" height="50"></canvas>
+            </div>
+          </div>
+          <div class="col-md-12" style="padding:10px;">
+            <div class="container-fluid" style="border:1px solid #dedcdc">
+              <canvas id="qc{{p.pk}}" style="padding:20px;" height="50"></canvas>
+            </div>
+          </div>
+          <div class="col-md-12" style="padding:10px;">
+            <div class="container-fluid" style="border:1px solid #dedcdc">
+              <canvas id="recoding{{p.pk}}" style="padding:20px;" height="50"></canvas>
+            </div>
+          </div>
+          <div class="col-md-12" style="padding:10px;">
+            <div class="container-fluid" style="border:1px solid #dedcdc">
+              <canvas id="reqc{{p.pk}}" style="padding:20px;" height="50"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row text-center">
+      <button ng-click="more()" type="button" class="btn btn-default">
+        More
+      </button>
+    </div>
+
+  </div>
+</div>

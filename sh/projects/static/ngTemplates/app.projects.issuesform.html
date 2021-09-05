@@ -1,0 +1,64 @@
+<div class="modal-header bg-blue">
+  <h3 class="text-center">Create an Issue</h3>
+</div>
+<div class="modal-body">
+  <div class="form-group">
+    <label>Title</label>
+    <input type="text" class="form-control" ng-model="form.title">
+  </div>
+
+  <div class="form-group">
+    <label style="margin-top:20px;">Priority</label>
+    <!-- <select class="form-control" ng-model="form.priority"> -->
+    <div class="row">
+      <div class="col-md-3 text-center">
+        <img src="/static/images/images_low.png" style="height:50px;height:50px;" class="img img-circle">
+        <br>
+        Low
+        <br>
+        <input ng-model="form.priority" name="low" type="radio" ng-value="'low'" value="low">
+      </div>
+      <div class="col-md-3 text-center">
+        <img src="/static/images/images_medi.png" style="height:50px;height:50px;" class="img img-circle">
+        <br>
+        Medium
+        <br>
+        <input ng-model="form.priority" name="medium" type="radio" ng-value="'medium'" value="medium">
+      </div>
+      <div class="col-md-3 text-center">
+        <img src="/static/images/images_high.png" style="height:50px;height:50px;" class="img img-circle">
+        <br>
+        High
+        <br>
+        <input ng-model="form.priority" name="high" type="radio" ng-value="'high'" value="high">
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>Responsible</label>
+    <input uib-typeahead="user as user.username for user in userSearch($viewValue)" ng-model="form.responsible" type="text" class="form-control" placeholder="Select user">
+  </div>
+  <div class="form-group">
+    <label>Description</label>
+    <textarea class="form-control" rows="4" cols="50" ng-model="form.description" style="resize: none;"></textarea>
+  </div>
+  <div class="form-group">
+    <label>File</label>
+    <input type="file" file-model="form.file">
+  </div>
+  <label>Tentative Closing Date</label>
+  <div class="input-group">
+    <input type="text" class="form-control" show-weeks="false" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="form.tentresdt" is-open="status.opened" disabled min-date="today"/>
+    <span class="input-group-btn">
+      <button type="button" class="btn btn-default" ng-click="status.opened = true;"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+  </div>
+
+  <label></label>
+  <div class="form-group">
+    <div class="btn-group">
+      <button class="btn btn-default" type="button" ng-click="reset()"> reset</button>
+      <button class="btn btn-primary" type="button" ng-click="save()">save </button>
+    </div>
+  </div>
+</div>
