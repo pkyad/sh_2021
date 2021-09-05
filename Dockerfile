@@ -4,4 +4,5 @@ WORKDIR /mysite/
 COPY requirements.pip /mysite/
 RUN apt-get install libjpeg62-turbo-dev libtiff-dev
 RUN pip install -r requirements.pip
+COPY sh /mysite/
 WORKDIR /mysite/sh/
