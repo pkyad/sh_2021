@@ -53,7 +53,7 @@ from io import BytesIO
 import base64
 import re
 from pytesseract import image_to_string
-from cleaned_handwriting.runOCR import *
+# from cleaned_handwriting.runOCR import *
 
 if globalSettings.API_MODE:
     from scripts.PDFReader.reader2 import *
