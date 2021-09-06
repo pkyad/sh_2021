@@ -2,11 +2,12 @@ version: "3.3"
    
 services:
     web:
-        build: .
+        # build: .
+        image: pkyad/shpl
         container_name: shpl
-        command: python manage.py runserver 0.0.0.0:9000
-        volumes:
-            - ./sh:/mysite/sh
+        command: ls 
+        # volumes:
+        #     - ./sh:/mysite/sh
         ports:
             - "9000:9000"
         environment: 
@@ -15,28 +16,28 @@ services:
             POSTGRES_DATABASE_IP: '192.168.1.106'
 
     
-    db:
-        container_name: pg_container
-        image: postgres
-        restart: always
-        environment:
-            POSTGRES_USER: root
-            POSTGRES_PASSWORD: root
-            POSTGRES_DB: test_db
-        ports:
-            - "5432:5432"
-        volumes:
-            - /home/pradeep/pgsql_sh/:/var/lib/postgresql/data
+    # db:
+    #     container_name: pg_container
+    #     image: postgres
+    #     restart: always
+    #     environment:
+    #         POSTGRES_USER: root
+    #         POSTGRES_PASSWORD: root
+    #         POSTGRES_DB: test_db
+    #     ports:
+    #         - "5432:5432"
+    #     volumes:
+    #         - /home/pradeep/pgsql_sh/:/var/lib/postgresql/data
     
     
-    pgadmin:
-        container_name: pgadmin4_container
-        image: dpage/pgadmin4
-        restart: always
-        environment:
-            PGADMIN_DEFAULT_EMAIL: admin@admin.com
-            PGADMIN_DEFAULT_PASSWORD: root
-        ports:
-            - "5050:80"
+    # pgadmin:
+    #     container_name: pgadmin4_container
+    #     image: dpage/pgadmin4
+    #     restart: always
+    #     environment:
+    #         PGADMIN_DEFAULT_EMAIL: admin@admin.com
+    #         PGADMIN_DEFAULT_PASSWORD: root
+    #     ports:
+    #         - "5050:80"
 
 
