@@ -169,54 +169,32 @@ app.controller("projectManagement.projects.company.form", function($scope, $stat
   // }
 
   $scope.createCompany = function() {
-    console.log('jbvjbdvjbdjfvbfd................');
     if (typeof $scope.form.name != "string" || $scope.form.name.length == 0) {
       Flash.create('warning', 'Company name is Required')
       return
     }
-    // if (typeof $scope.form.user != "object") {
-    //   Flash.create('warning', 'Please Select Suggested User')
-    //   return
-    // }
-    var method = 'POST'
-    var addUrl = '/api/ERP/address/'
     var serviceUrl = '/api/ERP/service/'
-
-    if ($scope.mode == 'edit') {
-      method = 'PATCH'
-      addUrl = addUrl + $scope.form.address.pk + '/'
-      serviceUrl = serviceUrl + $scope.form.pk + '/'
-    }
-    console.log(addUrl, serviceUrl);
+    var dataToSend = {
+      name: $scope.form.name,
+      mobile: $scope.form.mobile,
+      about: $scope.form.about,
+      telephone: $scope.form.telephone,
+      cin: $scope.form.cin,
+      tin: $scope.form.tin,
+      logo: $scope.form.logo,
+      web: $scope.form.web,
+    };
     $http({
-      method: method,
-      url: addUrl,
-      data: $scope.form.address
+      method: $scope.form.pk ? 'PATCH' : 'POST',
+      url: serviceUrl,
+      data: dataToSend
     }).
     then(function(response) {
-      var dataToSend = {
-        name: $scope.form.name,
-        mobile: $scope.form.mobile,
-        about: $scope.form.about,
-        address: response.data.pk,
-        telephone: $scope.form.telephone,
-        cin: $scope.form.cin,
-        tin: $scope.form.tin,
-        logo: $scope.form.logo,
-        web: $scope.form.web,
-      };
-      $http({
-        method: method,
-        url: serviceUrl,
-        data: dataToSend
-      }).
-      then(function(response) {
-        Flash.create('success', 'Created');
-        if ($scope.mode == 'new') {
-          $scope.resetForm()
-        }
-      });
-    })
+      Flash.create('success', 'Created');
+      if ($scope.mode == 'new') {
+        $scope.resetForm()
+      }
+    });
 
   }
 
