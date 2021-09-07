@@ -76,7 +76,7 @@ BRAND_NAME = 'SourceHUB'
 BRAND_LOGO = '/static/images/eai_logo.png'
 BRAND_LOGO_INVERT = '/static/images/24_tutors_icon_invert.svg'
 IMAGEVIEWER_URL = '/imageViewer/?imageurl='
-TOOL_NAME = 'Samper 2.0'
+TOOL_NAME = 'App 1.0'
 SHOW_COMMON_APPS = True
 DEFAULT_STATE = '/home'
 
