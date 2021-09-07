@@ -71,12 +71,12 @@ LOGOUT_REDIRECT = 'ERP' # similarly the url to which the user will be directed o
 USE_CDN = False # when turned on the application will use the cndjs.com and other similar
 #content delivery network for css and jss libraries
 # Application definition
-BRAND_NAME = 'Test COmpany'
+BRAND_NAME = 'SourceHUB'
 
 BRAND_LOGO = '/static/images/eai_logo.png'
 BRAND_LOGO_INVERT = '/static/images/24_tutors_icon_invert.svg'
 IMAGEVIEWER_URL = '/imageViewer/?imageurl='
-TOOL_NAME = 'Samper 2.0'
+TOOL_NAME = 'Application name'
 SHOW_COMMON_APPS = True
 DEFAULT_STATE = '/home'
 
