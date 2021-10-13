@@ -283,3 +283,7 @@ REST_FRAMEWORK = {
 
 # WAMP_SERVER = 'pradeepyadav.net'
 WAMP_SERVER = 'wss://ws.syrow.com:443/ws'
+
+# Redis and Celery Conf
+CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_RESULT_BACKEND = "redis://redis:6379/0"

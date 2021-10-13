@@ -1,0 +1,11 @@
+- To create task 
+http://localhost:9001/add/ - POST
+
+- To get Resut of the task
+
+http://localhost:9001/add?task_id=<task_id> - GET
+
+
+View is defined in HR.views (last view)
+
+Url defined in LibreERP.urls (last url)

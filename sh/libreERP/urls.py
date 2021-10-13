@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.conf import settings as globalSettings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from HR.views import loginView , logoutView , home , registerView , tokenAuthentication , root, generateOTP, customerLoginView,customerHomeView,pwdResetView , lightHome, getTokenByEmail
+from HR.views import loginView , logoutView , home , registerView , tokenAuthentication , root, generateOTP, customerLoginView,customerHomeView,pwdResetView , lightHome, getTokenByEmail,run_task
 from projects.views import projeCtcoderStart,projectQaStart , projectRecoderStart , projectreQaStart, projectreCCStart, ImageViewerView, dynamicFormView, allDoneView, ConfigurationManagerView
 from projects.views import QuickProjectView, downloadProjectReportByAPI, getDynamicForm , projectDocsView
 from tools.views import getCurrentImageView 
@@ -46,7 +46,7 @@ urlpatterns = [
     url(r'^doc/', include('django.contrib.admindocs.urls')),
     url(r'^getToken/', getTokenByEmail , name = 'getName'),
 
-
+    url(r'^add/', run_task , name = 'add'),
 ]
 
 if globalSettings.DEBUG:

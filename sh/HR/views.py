@@ -694,3 +694,23 @@ def getTokenByEmail(request):
         tkn = account.apiKey
 
     return JsonResponse({"token" : tkn} , status = status.HTTP_200_OK)
+
+
+from . import tasks
+from celery.result import AsyncResult
+
+@csrf_exempt
+def run_task(request):
+    # task = tasks.create_task.delay(int(1))
+    if request.method == "GET":
+        task_id = request.GET['task_id']
+        task_result = AsyncResult(task_id)
+        result = {
+            "task_id": task_id,
+            "task_status": task_result.status,
+            "task_result": task_result.result
+        }
+        return JsonResponse(result, status=200)
+    if request.method == "POST":
+        task = tasks.add.delay(1,2)
+        return JsonResponse({"task_id": task.id}, status=202)
