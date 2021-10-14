@@ -20,7 +20,7 @@ services:
             - db
 
     
-    db:
+    database:
         container_name: pg_container
         image: postgres
         restart: always
