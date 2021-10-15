@@ -285,5 +285,11 @@ REST_FRAMEWORK = {
 WAMP_SERVER = 'wss://ws.syrow.com:443/ws'
 
 # Redis and Celery Conf
-CELERY_BROKER_URL = "redis://redis:6379/0"
-CELERY_RESULT_BACKEND = "redis://redis:6379/0"
+
+REDIS_URL = "redis://{host}:{port}/0".format(
+    host=os.getenv('REDIS_HOST', 'localhost'),
+    port=os.getenv('REDIS_PORT', '6379')
+)
+
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
